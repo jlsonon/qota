@@ -6,7 +6,7 @@
 *A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) instrument for tracking remaining quotas across Google Antigravity, Claude Code, and OpenAI Codex.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-black.svg?style=flat-square)](https://github.com/jlsonon/limits)
+[![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-black.svg?style=flat-square)](https://github.com/jlsonon/qota)
 [![Tests](https://img.shields.io/badge/Tests-13%2F13%20Passed-black.svg?style=flat-square)](test/)
 [![Privacy: Zero Cloud](https://img.shields.io/badge/Privacy-100%25%20Local%20Telemetry-black.svg?style=flat-square)](#zero-cloud-telemetry--privacy)
 [![UI: Obsidian Monochrome](https://img.shields.io/badge/Design-Architectural%20Monochrome-black.svg?style=flat-square)](#design-philosophy)
@@ -96,8 +96,8 @@ The interactive web showcase and desktop client support zero-latency tactile key
 ### 1. Installation & Local Execution
 ```bash
 # Clone repository
-git clone https://github.com/jlsonon/limits.git
-cd limits
+git clone https://github.com/jlsonon/qota.git
+cd qota
 
 # Install dependencies
 npm install
@@ -141,7 +141,7 @@ npm run build:win
 ## Architecture & Codebase Map
 
 ```
-limits/
+qota/
 ├── assets/                  # High-DPI tray icons and color-coded status beacons
 │   ├── icon.png             # Application glyph
 │   ├── tray-green.png       # Menu bar icon: >= 50%

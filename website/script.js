@@ -1085,7 +1085,7 @@ function initClipboard() {
 
   copyBtn.addEventListener('click', async () => {
     playPromptThump();
-    const text = `git clone https://github.com/jlsonon/limits.git\ncd limits\nnpm install\nnpm start`;
+    const text = `git clone https://github.com/jlsonon/qota.git\ncd qota\nnpm install\nnpm start`;
     try {
       await navigator.clipboard.writeText(text);
       const original = copyBtn.textContent;

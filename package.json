@@ -26,6 +26,10 @@
   ],
   "author": "Qota Dev",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jlsonon/qota.git"
+  },
   "devDependencies": {
     "electron": "^33.2.1"
   },
