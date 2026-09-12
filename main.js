@@ -376,14 +376,14 @@ function updateTray(status) {
     tray.setImage(colorIcon);
   }
 
-  // On macOS, show the remaining sprint units right in the menu bar text!
+  // On macOS, show the remaining sprint percentage right in the menu bar text!
   if (process.platform === 'darwin') {
-    tray.setTitle(` ${status.sprint.remaining}u`);
+    tray.setTitle(` ${status.sprint.percentage}%`);
   }
 
   const assistantTag = (status.activeAssistant || 'antigravity').toUpperCase();
   tray.setToolTip(
-    `[${assistantTag}] Qota\nModel: ${status.activeModel ? status.activeModel.name : 'Unknown'}\n5h Limit: ${status.sprint.remaining}/${status.sprint.max} (${status.sprint.percentage}%)\nWeekly: ${status.weekly.remaining}/${status.weekly.max} (${status.weekly.percentage}%)\nRefill: ${status.sprint.formattedReset}`
+    `[${assistantTag}] Qota • ${status.sprint.percentage}%\nModel: ${status.activeModel ? status.activeModel.name : 'Unknown'}\nSprint: ${status.sprint.percentage}% (${status.sprint.remaining}/${status.sprint.max} units)\nWeekly: ${status.weekly.percentage}% (${status.weekly.remaining}/${status.weekly.max} units)\nRefill: ${status.sprint.formattedReset}`
   );
 }
 

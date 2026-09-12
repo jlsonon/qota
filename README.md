@@ -16,7 +16,7 @@ A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) applica
   - Draggable anywhere on your desktop with floating window persistence.
 - **Always-on Color-Coded Menu Bar Monitor (`NSStatusItem` / Tray)**:
   - Color-coded indicator from green (&ge; 50%) &rarr; yellow/orange (20% to 49%) &rarr; red (&lt; 20%).
-  - Live unit counter directly in the macOS menu bar (e.g. ` 250u`).
+  - Live percentage counter directly in the macOS menu bar (e.g. ` 100%`, ` 88%`).
   - Clicking opens the full dashboard with session, weekly, and per-project workspace breakdowns.
 - **Service Status Alerts (Public Statuspage.io Monitoring)**:
   - Orange-red warning banner automatically appears when Claude API, Claude Code, or Codex / OpenAI API has degraded performance or an outage.
@@ -29,9 +29,8 @@ A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) applica
   - Monitors Claude Code prompt cache hit rate with a live 5-minute TTL countdown to cache expiry.
 - **One-Click Section Visibility**:
   - Single-click toggles in Settings to show or hide sections (Antigravity, Claude Code, Codex, Grok CLI).
-- **Strict Minimalist Monochrome Aesthetics**:
-  - Three ultra-clean themes: Obsidian (Dark), Paper (Light), and Titanium (Slate).
-  - Zero emojis throughout the codebase and interface.
+- **Architectural Monochrome Aesthetic**:
+  - Precision dark Obsidian interface with zero emojis throughout the codebase and UI.
 
 ---
 

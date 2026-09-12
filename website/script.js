@@ -465,18 +465,19 @@ function syncHUDDisplay() {
   const trayUnits = document.getElementById('tray-live-units');
   const trayModel = document.getElementById('tray-live-model');
   const trayDot = document.getElementById('tray-live-dot');
+  const macMenuTrayPct = document.getElementById('mac-menu-tray-pct');
+  const macMenuTrayDot = document.getElementById('mac-menu-tray-dot');
 
-  if (trayUnits) trayUnits.textContent = `${cfg.currentSprint}u`;
+  if (trayUnits) trayUnits.textContent = `${pct}%`;
+  if (macMenuTrayPct) macMenuTrayPct.textContent = `${pct}%`;
   if (trayModel) trayModel.textContent = cfg.trayTag;
+
+  const dotClass = pct < 20 ? 'red' : (pct < 45 ? 'amber' : 'green');
   if (trayDot) {
-    trayDot.className = 'tray-dot';
-    if (pct < 20) {
-      trayDot.classList.add('red');
-    } else if (pct < 45) {
-      trayDot.classList.add('amber');
-    } else {
-      trayDot.classList.add('green');
-    }
+    trayDot.className = `tray-dot ${dotClass}`;
+  }
+  if (macMenuTrayDot) {
+    macMenuTrayDot.className = `tray-dot ${dotClass}`;
   }
 
   const trayAsst = document.getElementById('tray-menu-asst');
