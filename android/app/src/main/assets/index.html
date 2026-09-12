@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QOTA — Real-time AI Quota HUD for macOS &amp; Windows</title>
+  <meta name="description" content="A razor-thin, tactile HUD anchored above all windows — even native macOS Full Screen spaces. Continuous local telemetry for Antigravity, Claude Code, and OpenAI Codex with zero cloud relays.">
+
+  <!-- Crisp SVG Favicon (Architectural Monochrome) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-obsidian">
+
+  <!-- Sticky System Bar (macOS Status Bar Style) -->
+  <header class="sys-bar" id="system-bar">
+    <div class="sys-bar-inner">
+      <div class="sys-identity">
+        <a href="#" class="sys-logo" aria-label="Qota Home">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" class="logo-icon">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+          <span class="logo-text">QOTA</span>
+        </a>
+        <div class="sys-divider"></div>
+        <div class="sys-status-pill mono">
+          <span class="status-indicator"></span>
+          <span>v1.0.4 &bull; LOCAL TELEMETRY DAEMON</span>
+        </div>
+      </div>
+
+      <!-- Live Interactive System Tray Status Indicator -->
+      <div class="sys-tray-simulator" id="sys-tray-module">
+        <div class="sys-tray-trigger" id="sys-tray-trigger" title="Inspect Qota macOS Menu Bar Popover">
+          <span class="tray-apple-glyph">&apple;</span>
+          <div class="tray-pill-preview">
+            <span class="tray-dot green" id="tray-live-dot"></span>
+            <span class="tray-units mono" id="tray-live-units">88%</span>
+            <span class="tray-model-tag mono" id="tray-live-model">AGY: FLASH 3.8</span>
+          </div>
+        </div>
+
+        <!-- Simulated macOS Menu Bar Popover Dropdown -->
+        <div class="tray-menu-popover" id="tray-menu-popover" style="display: none;">
+          <div class="tray-menu-header">
+            <span class="tray-menu-title mono">QOTA DAEMON</span>
+            <span class="tray-menu-status mono">ONLINE</span>
+          </div>
+          <div class="tray-menu-item"><span class="menu-label">Active Assistant</span><span class="menu-val mono" id="tray-menu-asst">Antigravity</span></div>
+          <div class="tray-menu-item"><span class="menu-label">Sprint Quota</span><span class="menu-val mono" id="tray-menu-quota">220 / 250u (88%)</span></div>
+          <div class="tray-menu-item"><span class="menu-label">Cycle Resets In</span><span class="menu-val mono">3h 14m</span></div>
+          <div class="tray-menu-divider"></div>
+          <div class="tray-menu-item action-item" id="tray-menu-action-ontop"><span class="menu-label">Always On Front</span><span class="menu-val mono">&check;</span></div>
+          <div class="tray-menu-item action-item" id="tray-menu-action-reset"><span class="menu-label">Force Refresh Stream</span><span class="menu-val mono">&circlearrowright;</span></div>
+        </div>
+      </div>
+
+      <div class="sys-controls">
+        <a href="#simulator" class="sys-link">Studio</a>
+        <a href="#architecture" class="sys-link">Specs</a>
+        <button type="button" class="audio-toggle-btn active" id="btn-audio-toggle" title="Toggle Procedural Web Audio Haptics">
+          <span class="audio-wave-icon">
+            <span></span><span></span><span></span>
+          </span>
+          <span class="audio-label mono">HAPTICS: ON</span>
+        </button>
+        <a href="#download" class="sys-btn-download">Get Qota</a>
+        <div class="theme-mode-toggle" id="theme-mode-toggle" role="group" aria-label="Theme mode toggle">
+          <button type="button" class="theme-mode-btn" data-theme-set="light" id="btn-theme-light" title="Switch to Light Mode">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="4.5"/>
+              <line x1="12" y1="2" x2="12" y2="4"/>
+              <line x1="12" y1="20" x2="12" y2="22"/>
+              <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+              <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+              <line x1="2" y1="12" x2="4" y2="12"/>
+              <line x1="20" y1="12" x2="22" y2="12"/>
+              <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+              <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+            </svg>
+            <span class="mono">LIGHT</span>
+          </button>
+          <button type="button" class="theme-mode-btn active" data-theme-set="dark" id="btn-theme-dark" title="Switch to Dark Mode">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <span class="mono">DARK</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Mac Studio Display Stage -->
+  <main>
+    <section class="hero-stage">
+      <div class="stage-constraint">
+        <div class="spec-kicker mono">
+          <span class="kicker-pulse"></span>
+          <span>HARDENED DESKTOP OVERLAY &bull; MACOS &amp; WINDOWS</span>
+        </div>
+
+        <h1 class="hero-display">
+          Real-time AI quotas.<br>
+          <span class="text-subdued">Zero cognitive friction.</span>
+        </h1>
+
+        <p class="hero-subtext">
+          A razor-thin, tactile HUD anchored above all windows — even native macOS Full Screen spaces and fullscreen Windows terminals.
+          Continuous local telemetry for <strong>Antigravity</strong>, <strong>Claude Code</strong>, and <strong>OpenAI Codex</strong> with zero cloud relays.
+        </p>
+
+        <div class="proof-bar mono">
+          <div class="proof-item"><span class="check">&bull;</span> NSScreenSaverWindowLevel (Highest Cocoa Level)</div>
+          <div class="proof-item"><span class="check">&bull;</span> 100% Local Transcript Engine</div>
+          <div class="proof-item"><span class="check">&bull;</span> Instant Multi-Tool Auto-Switch</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE MAC STUDIO DISPLAY (Hero Centerpiece) -->
+    <section id="simulator" class="sim-stage">
+      <div class="stage-constraint">
+        <!-- Mac Studio Hardware Monitor Frame -->
+        <div class="mac-display-frame" id="sim-viewport">
+          <!-- Authentic macOS Desktop Menu Bar -->
+          <div class="mac-desktop-menubar">
+            <div class="mac-menu-left">
+              <span class="mac-apple-logo">&apple;</span>
+              <span class="mac-menu-title">Qota</span>
+              <span class="mac-menu-sub">File</span>
+              <span class="mac-menu-sub">Edit</span>
+              <span class="mac-menu-sub">View</span>
+              <span class="mac-menu-sub">Window</span>
+              <span class="mac-menu-sub">Help</span>
+            </div>
+            <!-- Desktop Spaces Switcher in Menu Bar -->
+            <div class="sim-spaces-bar" id="sim-spaces-bar" role="tablist" aria-label="macOS Spaces">
+              <button type="button" class="space-tab-btn active" data-space="1" role="tab" aria-selected="true" id="space-tab-1">
+                <span class="space-dot"></span>
+                <span class="space-title mono">Space 1 &bull; VS Code</span>
+              </button>
+              <button type="button" class="space-tab-btn" data-space="2" role="tab" aria-selected="false" id="space-tab-2">
+                <span class="space-dot"></span>
+                <span class="space-title mono">Space 2 &bull; Ghostty</span>
+              </button>
+              <button type="button" class="space-tab-btn" data-space="3" role="tab" aria-selected="false" id="space-tab-3">
+                <span class="space-dot"></span>
+                <span class="space-title mono">Space 3 &bull; Browser</span>
+              </button>
+            </div>
+            <div class="mac-menu-right mono">
+              <span class="mac-menu-tray-pill"><span class="tray-dot green" id="mac-menu-tray-dot"></span> <span id="mac-menu-tray-pct">88%</span></span>
+              <span class="mac-status-icon" title="Wi-Fi Connected">&wifi;</span>
+              <span class="mac-status-icon" title="Battery 100%">&empty;</span>
+              <span class="mac-clock-readout" id="mac-clock-time">Thu 11:32 AM</span>
+            </div>
+          </div>
+
+          <!-- Active OS Window Frame Header -->
+          <div class="sim-topbar">
+            <div class="window-buttons">
+              <span class="win-btn close" title="Close"></span>
+              <span class="win-btn min" title="Minimize"></span>
+              <span class="win-btn max" title="Full Screen"></span>
+            </div>
+            <div class="sim-window-label mono">
+              <span>PROJECT WORKSPACE</span>
+              <span class="window-sep">&bull;</span>
+              <span>DEV CONTAINER</span>
+            </div>
+            <div class="sim-window-tag mono"><span class="active-pulse"></span> NSScreenSaver (1001)</div>
+          </div>
+
+          <!-- Desktop Space Surfaces Container -->
+          <div class="sim-editor-surface" id="sim-editor-surface">
+            <!-- Space 1 Surface: VS Code Code Surface -->
+            <div class="space-surface active" id="space-surface-1">
+              <div class="editor-gutter mono">
+                <span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span>
+              </div>
+              <pre class="editor-code mono"><code><span class="c-dim">// Qota: Local Session Telemetry Daemon</span>
+<span class="c-kw">import</span> { QuotaEngine, DesktopHUD } <span class="c-kw">from</span> <span class="c-str">'@qota/core'</span>;
+
+<span class="c-fn">const</span> hud = <span class="c-kw">new</span> <span class="c-fn">DesktopHUD</span>({
+  windowLevel: <span class="c-str">'screen-saver'</span>, <span class="c-dim">// Stays in front of all full-screen windows</span>
+  multipliers: { gemini: <span class="c-num">1</span>, claude: <span class="c-num">4</span>, codex: <span class="c-num">2</span> },
+  adaptivePillWidth: <span class="c-num">285</span>
+});
+hud.<span class="c-fn">pinToAllWorkspaces</span>();</code></pre>
+            </div>
+
+            <!-- Space 2 Surface: Ghostty Terminal Tmux Surface -->
+            <div class="space-surface" id="space-surface-2" style="display: none;">
+              <div class="terminal-shell mono">
+                <div class="terminal-prompt-line">
+                  <span class="term-user">developer@macbook</span>:<span class="term-path">~/qota</span>$ <span class="term-cmd">qota --listen --verbose</span>
+                </div>
+                <div class="terminal-output">
+                  <span class="term-dim">[04:18:12]</span> <span class="term-green">OK</span> Daemon attached to process PID 81924 (Electron Cocoa bridge)<br>
+                  <span class="term-dim">[04:18:12]</span> <span class="term-cyan">INFO</span> Tracking quota for: Antigravity, Claude Code, OpenAI Codex<br>
+                  <span class="term-dim">[04:18:14]</span> <span class="term-yellow">SYNC</span> Language server telemetry socket connected: unix:///tmp/qota.sock<br>
+                  <span class="term-dim">[04:18:15]</span> <span class="term-green">LIVE</span> 5-Hour sprint cycle resets in 3h 14m &bull; Baseline healthy
+                </div>
+              </div>
+            </div>
+
+            <!-- Space 3 Surface: Browser Docs Surface -->
+            <div class="space-surface" id="space-surface-3" style="display: none;">
+              <div class="browser-wireframe mono">
+                <div class="browser-address-bar">
+                  <span class="browser-ssl">&lock;</span>
+                  <span class="browser-url">https://docs.qota.dev/architecture/window-levels</span>
+                </div>
+                <div class="browser-content-body">
+                  <h4 class="browser-heading">Cocoa Window Level Hierarchy</h4>
+                  <p class="browser-para">Standard floating utility windows use <code>NSFloatingWindowLevel</code> (level 3), which causes them to hide behind native macOS Full Screen Spaces. QOTA binds directly to <code>NSScreenSaverWindowLevel</code> (level 1001) to remain tactile and persistent across every virtual desktop.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Quota Depletion Floating Chip -->
+            <div id="replica-toast-chip" class="replica-toast-chip mono" style="display: none;"></div>
+
+            <!-- THE DRAGGABLE FLOATING HUD PILL REPLICA (Pinned Across All Spaces) -->
+            <div id="interactive-hud" class="floating-hud-replica">
+              <div class="hud-drag-handle" id="hud-drag-handle">
+                <div class="hud-top-line">
+                  <div class="hud-identity">
+                    <span id="replica-badge" class="replica-badge mono">AGY</span>
+                    <span id="replica-model" class="replica-model">Gemini 3.8 Flash (High)</span>
+                  </div>
+                  <!-- Hover Actions: Reveal smoothly on mouseover -->
+                  <div class="replica-actions">
+                    <button id="replica-btn-7d" class="replica-btn mono" title="Toggle 7D Weekly Baseline Rail">7D</button>
+                    <button id="replica-btn-matrix" class="replica-btn" title="Inspect Model Multiplier Matrix">
+                      <svg viewBox="0 0 24 24" width="9" height="9" stroke="currentColor" stroke-width="2.4" fill="none">
+                        <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Rail 1: 5-Hour Limit Rail -->
+                <div class="replica-rail-row">
+                  <div class="replica-track">
+                    <div id="replica-fill-5h" class="replica-fill sprint-rail" style="width: 88%;">
+                      <div class="rail-shimmer"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rail 2: Weekly Limit Rail (Toggleable) -->
+                <div id="replica-weekly-row" class="replica-rail-row">
+                  <div class="replica-track">
+                    <div id="replica-fill-7d" class="replica-fill weekly-rail" style="width: 97%;">
+                      <div class="rail-shimmer"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Collapsible Multi-Model Matrix Inside HUD -->
+              <div id="replica-matrix-popover" class="replica-matrix-popover" style="display: none;">
+                <div class="matrix-popover-title mono">MODEL WEIGHT ACCOUNTING</div>
+                <div class="matrix-model-row">
+                  <span class="mono">Gemini 3.8 Flash</span>
+                  <span class="mono weight-tag">1x cost</span>
+                </div>
+                <div class="matrix-model-row">
+                  <span class="mono">OpenAI o3-mini</span>
+                  <span class="mono weight-tag">2x cost</span>
+                </div>
+                <div class="matrix-model-row">
+                  <span class="mono">Claude Sonnet 4.6</span>
+                  <span class="mono weight-tag">4x cost</span>
+                </div>
+                <div class="matrix-model-row">
+                  <span class="mono">Claude Opus / o1</span>
+                  <span class="mono weight-tag">8x cost</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Drag Instruction Cue with Live Coordinates -->
+            <div class="drag-cue mono">
+              <span class="cue-arrow">&nwarr;</span>
+              <span id="drag-cue-text">Drag HUD anywhere &bull; Hover to expose actions &bull; X: 24px, Y: 24px</span>
+            </div>
+
+            <!-- Local Filesystem Delta Stream Drawer -->
+            <div class="sim-fs-stream mono" id="sim-fs-stream">
+              <div class="fs-stream-head">
+                <span class="fs-indicator"></span>
+                <span>LOCAL TRANSLATOR &bull; ~/.gemini/antigravity/history.jsonl</span>
+                <span class="fs-tail-tag">STREAM ACTIVE</span>
+              </div>
+              <div class="fs-stream-body" id="fs-stream-body">
+                <div class="fs-log-row"><span class="fs-time">11:18:02</span> <span class="fs-op">WATCH_INIT</span> <span class="fs-msg">Listening on local sqlite &amp; JSONL sockets (0 cloud relays)</span></div>
+                <div class="fs-log-row"><span class="fs-time">11:18:05</span> <span class="fs-op">HUD_READY</span> <span class="fs-msg">Cocoa level 1001 &bull; Global workspace persistence engaged</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TACTILE CONTROLS & PHYSICAL KEYCAPS RIBBON (Directly Under Mac Screen) -->
+        <div class="mac-controls-dock">
+          <!-- Assistant Mode Selector -->
+          <div class="assistant-bar">
+            <button class="asst-pill-btn active" data-asst="antigravity" data-model="Gemini 3.8 Flash (High)" data-cost="1 unit" data-costval="2" data-sprint="220" data-weekly="97">
+              <span class="pill-badge mono">AGY</span>
+              <span class="pill-name">Antigravity</span>
+              <span class="pill-detail mono">1x &bull; 88%</span>
+            </button>
+            <button class="asst-pill-btn" data-asst="claude" data-model="Claude Sonnet 4.6 (Thinking)" data-cost="4 units" data-costval="8" data-sprint="155" data-weekly="74">
+              <span class="pill-badge mono">CLAUDE</span>
+              <span class="pill-name">Claude Code</span>
+              <span class="pill-detail mono">4x &bull; 62%</span>
+            </button>
+            <button class="asst-pill-btn" data-asst="codex" data-model="OpenAI o3-mini (High)" data-cost="2 units" data-costval="4" data-sprint="195" data-weekly="89">
+              <span class="pill-badge mono">CODEX</span>
+              <span class="pill-name">OpenAI Codex</span>
+              <span class="pill-detail mono">2x &bull; 78%</span>
+            </button>
+          </div>
+
+          <!-- Telemetry Actions -->
+          <div class="telemetry-bar">
+            <div class="telemetry-button-row">
+              <button id="btn-sim-prompt" class="sim-action-btn primary" title="Dispatch prompt (Spacebar)">
+                Dispatch Prompt (<span id="btn-sim-cost">1 unit</span>)
+              </button>
+              <button id="btn-sim-refill" class="sim-action-btn secondary" title="Refill Sprint to 250 units (R)">
+                Refill Sprint (+250u)
+              </button>
+            </div>
+            <span class="telemetry-readout mono" id="sim-readout">Sprint: 220/250u &bull; 88%</span>
+          </div>
+
+          <!-- Keeby-inspired Tactile Keycaps Ribbon -->
+          <div class="keyboard-ribbon mono" id="keyboard-ribbon">
+            <span class="ribbon-title">PHYSICAL SHORTCUTS:</span>
+            <div class="ribbon-keys">
+              <div class="key-badge" data-key="1" id="key-badge-1"><kbd>1</kbd><span>AGY</span></div>
+              <div class="key-badge" data-key="2" id="key-badge-2"><kbd>2</kbd><span>CLAUDE</span></div>
+              <div class="key-badge" data-key="3" id="key-badge-3"><kbd>3</kbd><span>CODEX</span></div>
+              <div class="key-badge" data-key=" " id="key-badge-space"><kbd>SPACE</kbd><span>DISPATCH</span></div>
+              <div class="key-badge" data-key="r" id="key-badge-r"><kbd>R</kbd><span>REFILL</span></div>
+              <div class="key-badge" data-key="t" id="key-badge-t"><kbd>T</kbd><span>7D</span></div>
+              <div class="key-badge" data-key="m" id="key-badge-m"><kbd>M</kbd><span>MATRIX</span></div>
+              <div class="key-badge" data-key="d" id="key-badge-d"><kbd>D</kbd><span>THEME</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Architectural Spec Strip (Condensed, High-Density) -->
+    <section id="architecture" class="arch-stage">
+      <div class="stage-constraint">
+        <div class="spec-strip-compact">
+          <div class="spec-pill-item">
+            <div class="spec-head mono"><span class="spec-num">01</span> NSSCREENSAVER 1001</div>
+            <div class="spec-summary">Commands Cocoa hardware level 1001. Permanently floating over native macOS Full Screen spaces.</div>
+          </div>
+          <div class="spec-pill-item">
+            <div class="spec-head mono"><span class="spec-num">02</span> LOCAL TRANSCRIPTS</div>
+            <div class="spec-summary">0 cloud relays. Hooks into local filesystem changes in <code>~/.gemini</code> and <code>~/.claude</code>.</div>
+          </div>
+          <div class="spec-pill-item">
+            <div class="spec-head mono"><span class="spec-num">03</span> WEIGHTED ACCOUNTING</div>
+            <div class="spec-summary">Proportional multipliers (Flash 1x, o3-mini 2x, Sonnet 4x, Opus 8x) on dual sprint/weekly rails.</div>
+          </div>
+          <div class="spec-pill-item">
+            <div class="spec-head mono"><span class="spec-num">04</span> HOVER-REVEAL ONLY</div>
+            <div class="spec-summary">285px micro-pill. Zero numbers or emoji clutter. Actions expose strictly on cursor hover.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Single High-Precision Download Terminal Strip -->
+    <section id="download" class="download-stage">
+      <div class="stage-constraint">
+        <div class="download-strip-unified">
+          <div class="download-header-row">
+            <div>
+              <span class="section-tag mono">INSTANT DEPLOYMENT</span>
+              <h2 class="download-title">Run Qota on your system</h2>
+            </div>
+            <div class="download-actions-cluster">
+              <a href="#" class="btn-binary primary-dl" id="btn-mac-dl">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.41c.64-.78 1.08-1.86.96-2.95-1 .04-2.12.67-2.77 1.43-.58.67-1.1 1.77-.96 2.84 1.12.09 2.18-.57 2.77-1.32z"/>
+                </svg>
+                <span>Download macOS (.dmg)</span>
+              </a>
+              <a href="#" class="btn-binary secondary-dl" id="btn-win-dl">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4h-13.051M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.899"/>
+                </svg>
+                <span>Download Windows (.exe)</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Download Modal Drawer (Populated on click) -->
+          <div id="dl-info-modal" class="dl-info-modal" style="display: none;">
+            <div class="dl-modal-inner">
+              <div class="dl-modal-head">
+                <span class="mono" id="dl-modal-title">QOTA INSTALLATION PACKAGE</span>
+                <button id="dl-modal-close" class="replica-btn">&times;</button>
+              </div>
+              <div class="dl-modal-body">
+                <p id="dl-modal-desc" class="subtle">Package initialized. You can also run Qota instantly via direct local source clone:</p>
+                <div class="checksum-line mono">
+                  <span>SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clean Terminal Clone Block -->
+          <div class="cli-box">
+            <div class="cli-header">
+              <span class="mono subtle">DIRECT CLI INSTALLATION &bull; BREW / GIT</span>
+              <button id="cli-copy-btn" class="copy-pill mono">COPY COMMANDS</button>
+            </div>
+            <pre class="cli-code mono"><code>git clone https://github.com/jlsonon/qota.git
+cd qota
+npm install &amp;&amp; npm start</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Grounded Minimalist Footer -->
+  <footer class="site-footer">
+    <div class="footer-constraint">
+      <div class="footer-left">
+        <span class="footer-brand-title">QOTA</span>
+        <span class="footer-copyright mono">&copy; 2026 QOTA DEV &bull; OPEN-SOURCE UNDER MIT LICENSE</span>
+      </div>
+      <div class="footer-links mono">
+        <a href="#simulator">STUDIO</a>
+        <a href="#architecture">SPECS</a>
+        <a href="#download">DOWNLOADS</a>
+        <a href="https://github.com/jlsonon/qota" target="_blank" rel="noopener">GITHUB</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floating_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_floating_hud"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Status Beacon Dot -->
+    <View
+        android:id="@+id/hud_beacon"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_floating_hud"
+        android:backgroundTint="@color/hud_green" />
+
+    <!-- Model Tag -->
+    <TextView
+        android:id="@+id/hud_model_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AGY"
+        android:textColor="@color/text_subtle"
+        android:textSize="10sp"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        android:layout_marginEnd="6dp" />
+
+    <!-- Percentage Readout -->
+    <TextView
+        android:id="@+id/hud_pct_readout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="88%"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:fontFamily="monospace"
+        android:textStyle="bold" />
+
+    <!-- Expand Button -->
+    <TextView
+        android:id="@+id/hud_expand_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="[↗]"
+        android:textColor="@color/text_subtle"
+        android:textSize="11sp"
+        android:fontFamily="monospace" />
+
+</LinearLayout>

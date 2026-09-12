@@ -6,3 +6,8 @@ dist/
 build/
 .env
 .env.local
+
+# Binaries and large packages
+*.dmg
+*.app/
+*.apk

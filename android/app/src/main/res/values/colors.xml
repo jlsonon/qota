@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_obsidian">#FF08090B</color>
+    <color name="hud_bg">#F20D1016</color>
+    <color name="hud_border">#33FFFFFF</color>
+    <color name="hud_green">#FF10B981</color>
+    <color name="text_subtle">#88FFFFFF</color>
+</resources>

@@ -1,0 +1,55 @@
+{
+  "name": "qota",
+  "version": "1.0.0",
+  "description": "Universal cross-platform macOS Menu Bar and Windows System Tray HUD for Antigravity, Claude Code, and OpenAI Codex quotas.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/test-quota-service.js && node test/test-live-watcher.js",
+    "test:e2e": "node test/test-e2e-electron.js",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "qota",
+    "antigravity",
+    "claude-code",
+    "openai-codex",
+    "gemini",
+    "claude",
+    "codex",
+    "quota",
+    "tray",
+    "menubar",
+    "hud"
+  ],
+  "author": "Qota Dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jlsonon/qota.git"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1"
+  },
+  "build": {
+    "appId": "com.qota.hud",
+    "productName": "Qota",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": ["dmg", "zip"],
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "assets/icon.png"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*"
+    ]
+  }
+}

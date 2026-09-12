@@ -1,0 +1,17 @@
+{
+  "name": "QOTA — AI Quota Monitor",
+  "short_name": "QOTA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#08090b",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "app/src/main/res/drawable/ic_launcher.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
