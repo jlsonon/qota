@@ -127,7 +127,7 @@ let pollInterval = null;
 // Ensure single instance lock
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
-  console.log('Antigravity Limits is already running. Focusing active window...');
+  console.log('Qota is already running. Focusing active window...');
   app.quit();
 } else {
   app.on('second-instance', () => {
@@ -287,7 +287,7 @@ function createTray() {
   }
 
   tray = new Tray(icon);
-  tray.setToolTip('Antigravity Limits');
+  tray.setToolTip('Qota — AI Quota Monitor');
 
   // macOS / Windows click behaviors
   tray.on('click', () => {
@@ -345,7 +345,7 @@ function createTray() {
       },
       { type: 'separator' },
       {
-        label: 'Quit Antigravity Limits',
+        label: 'Quit Qota',
         click: () => {
           app.isQuitting = true;
           app.quit();
@@ -383,7 +383,7 @@ function updateTray(status) {
 
   const assistantTag = (status.activeAssistant || 'antigravity').toUpperCase();
   tray.setToolTip(
-    `[${assistantTag}] Limits\nModel: ${status.activeModel ? status.activeModel.name : 'Unknown'}\n5h Limit: ${status.sprint.remaining}/${status.sprint.max} (${status.sprint.percentage}%)\nWeekly: ${status.weekly.remaining}/${status.weekly.max} (${status.weekly.percentage}%)\nRefill: ${status.sprint.formattedReset}`
+    `[${assistantTag}] Qota\nModel: ${status.activeModel ? status.activeModel.name : 'Unknown'}\n5h Limit: ${status.sprint.remaining}/${status.sprint.max} (${status.sprint.percentage}%)\nWeekly: ${status.weekly.remaining}/${status.weekly.max} (${status.weekly.percentage}%)\nRefill: ${status.sprint.formattedReset}`
   );
 }
 
@@ -442,7 +442,7 @@ function createWindow() {
     mainWindow.focus();
     applyAlwaysOnFront();
     console.log('\n======================================================');
-    console.log('ANTIGRAVITY LIMITS RUNNING');
+    console.log('QOTA RUNNING');
     console.log('- Floating Quota Bar is visible on your screen.');
     console.log('- Always on front (visible even over Full Screen apps).');
     console.log('- Drag it anywhere on your desktop.');

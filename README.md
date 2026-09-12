@@ -1,8 +1,8 @@
-# Antigravity Limits (Quota Monitor)
+# QOTA (AI Quota Monitor)
 
-A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) application for tracking remaining limits and quotas on **Google Antigravity** models in real time.
+A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) application for tracking remaining quotas and limits on **Google Antigravity**, **Claude Code**, and **OpenAI Codex** in real time.
 
-![Antigravity Limits Preview](assets/icon.png)
+![QOTA Preview](assets/icon.png)
 
 ---
 

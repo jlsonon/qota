@@ -1,5 +1,5 @@
 /**
- * LIMITS — Interactive Engine (A+++++++ Tactile Edition)
+ * QOTA — Interactive Engine (A+++++++ Tactile Edition)
  *
  * Implements:
  * 1. Web Audio API Haptics Synthesizer (Zero audio assets, pure synthetic acoustic feedback)
@@ -49,7 +49,7 @@ function initWebAudioHaptics() {
   const toggleBtn = document.getElementById('btn-audio-toggle');
 
   // Retrieve user preference
-  const stored = localStorage.getItem('limits-audio');
+  const stored = localStorage.getItem('qota-audio') ?? localStorage.getItem('limits-audio');
   if (stored !== null) {
     audioEnabled = stored === 'true';
   } else {
@@ -63,7 +63,7 @@ function initWebAudioHaptics() {
       e.stopPropagation();
       getAudioContext();
       audioEnabled = !audioEnabled;
-      localStorage.setItem('limits-audio', audioEnabled ? 'true' : 'false');
+      localStorage.setItem('qota-audio', audioEnabled ? 'true' : 'false');
       updateAudioToggleUI();
       if (audioEnabled) {
         playKeyClick(1000);
@@ -269,7 +269,7 @@ function initThemeManager() {
   const lightBtn = document.getElementById('btn-theme-light');
   const darkBtn = document.getElementById('btn-theme-dark');
 
-  const storedTheme = localStorage.getItem('limits-theme');
+  const storedTheme = localStorage.getItem('qota-theme') ?? localStorage.getItem('limits-theme');
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
 
@@ -279,7 +279,7 @@ function initThemeManager() {
     lightBtn.addEventListener('click', () => {
       playKeyClick(900);
       applyTheme('light');
-      localStorage.setItem('limits-theme', 'light');
+      localStorage.setItem('qota-theme', 'light');
     });
   }
 
@@ -287,13 +287,13 @@ function initThemeManager() {
     darkBtn.addEventListener('click', () => {
       playKeyClick(700);
       applyTheme('dark');
-      localStorage.setItem('limits-theme', 'dark');
+      localStorage.setItem('qota-theme', 'dark');
     });
   }
 
   if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('limits-theme')) {
+      if (!localStorage.getItem('qota-theme') && !localStorage.getItem('limits-theme')) {
         applyTheme(e.matches ? 'dark' : 'light');
       }
     });
@@ -321,7 +321,7 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
   const target = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', target);
-  localStorage.setItem('limits-theme', target);
+  localStorage.setItem('qota-theme', target);
 
   const lightBtn = document.getElementById('btn-theme-light');
   const darkBtn = document.getElementById('btn-theme-dark');
@@ -994,7 +994,7 @@ function initActionHandlers() {
       playPromptThump();
       if (dlModal && dlTitle && dlDesc) {
         dlTitle.textContent = 'MACOS UNIVERSAL (.DMG) — APPLE SILICON & INTEL';
-        dlDesc.innerHTML = 'Built for macOS 12+ (Monterey, Ventura, Sonoma, Sequoia). Includes hardened runtime with <code>NSScreenSaverWindowLevel</code>. If macOS Gatekeeper alerts on first run, use: <code>xattr -cr /Applications/Limits.app</code>';
+        dlDesc.innerHTML = 'Built for macOS 12+ (Monterey, Ventura, Sonoma, Sequoia). Includes hardened runtime with <code>NSScreenSaverWindowLevel</code>. If macOS Gatekeeper alerts on first run, use: <code>xattr -cr /Applications/Qota.app</code>';
         dlModal.style.display = 'block';
         dlModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
@@ -1084,7 +1084,7 @@ function initClipboard() {
 
   copyBtn.addEventListener('click', async () => {
     playPromptThump();
-    const text = `git clone https://github.com/antigravity/antigravity-limits.git\ncd antigravity-limits\nnpm install\nnpm start`;
+    const text = `git clone https://github.com/jlsonon/limits.git\ncd limits\nnpm install\nnpm start`;
     try {
       await navigator.clipboard.writeText(text);
       const original = copyBtn.textContent;

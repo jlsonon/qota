@@ -1,5 +1,5 @@
 /**
- * Antigravity Limits - Minimalist Black & White Renderer
+ * Qota - Minimalist Black & White Renderer
  */
 
 let currentStatus = null;
@@ -464,7 +464,7 @@ function renderOfficialPools(groups, activeModel) {
   if (!container) return;
 
   if (!groups || groups.length === 0) {
-    container.innerHTML = '<div class="subtle" style="text-align: center; padding: 14px; font-size: 10px;">Listening for Antigravity limits...</div>';
+    container.innerHTML = '<div class="subtle" style="text-align: center; padding: 14px; font-size: 10px;">Listening for Antigravity quotas...</div>';
     return;
   }
 

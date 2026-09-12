@@ -1,7 +1,7 @@
 {
-  "name": "antigravity-quota-monitor",
+  "name": "qota",
   "version": "1.0.0",
-  "description": "Universal cross-platform macOS Menu Bar and Windows System Tray HUD for Antigravity, Claude Code, and OpenAI Codex quotas and limits.",
+  "description": "Universal cross-platform macOS Menu Bar and Windows System Tray HUD for Antigravity, Claude Code, and OpenAI Codex quotas.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -12,6 +12,7 @@
     "dist": "electron-builder"
   },
   "keywords": [
+    "qota",
     "antigravity",
     "claude-code",
     "openai-codex",
@@ -21,17 +22,16 @@
     "quota",
     "tray",
     "menubar",
-    "limits",
     "hud"
   ],
-  "author": "Antigravity Dev",
+  "author": "Qota Dev",
   "license": "MIT",
   "devDependencies": {
     "electron": "^33.2.1"
   },
   "build": {
-    "appId": "com.antigravity.quotamonitor",
-    "productName": "Antigravity Limits",
+    "appId": "com.qota.hud",
+    "productName": "Qota",
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": ["dmg", "zip"],
