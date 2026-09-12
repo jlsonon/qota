@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="obsidian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Limits</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="mode-compact">
+  <!-- 1. FLOATING DYNAMIC DECREASING QUOTA BAR (Compact Island HUD) -->
+  <div id="floating-hud" class="floating-hud-pill">
+    <div class="hud-drag-zone">
+      <!-- Top Line: Model Name, Assistant Tag, and Hover Actions -->
+      <div class="hud-header-line">
+        <div class="hud-model-group">
+          <span id="hud-assistant-badge" class="hud-assistant-badge">AGY</span>
+          <span id="hud-model-name" class="hud-model-name">Gemini 3.8 Flash (High)</span>
+        </div>
+        <div class="hud-actions no-drag">
+          <button id="btn-toggle-hud-weekly" class="hud-pill-toggle" title="Toggle Weekly Limit Rail">7D</button>
+          <button id="btn-hud-expand" class="hud-icon-btn" title="Expand Full Dashboard">
+            <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2.2" fill="none">
+              <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Rail 1: 5-Hour Limit Straight Rail -->
+      <div class="hud-rail-row" id="hud-sprint-rail-row">
+        <div class="hud-bar-rail">
+          <div id="hud-bar-fill" class="hud-bar-fill" style="width: 100%;">
+            <div class="hud-bar-shimmer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Rail 2: Weekly Limit Straight Rail (Toggleable) -->
+      <div class="hud-rail-row hud-weekly-rail-row" id="hud-weekly-rail-row">
+        <div class="hud-bar-rail">
+          <div id="hud-weekly-bar-fill" class="hud-bar-fill hud-bar-weekly" style="width: 100%;">
+            <div class="hud-bar-shimmer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. FULL MATRIX DASHBOARD (Expanded View) -->
+  <div id="full-dashboard" class="window-shell">
+    <div class="ambient-glow"></div>
+
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-glyph">
+          <svg class="orbit-svg" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="13" class="orbit-ring" />
+            <circle cx="16" cy="16" r="9" class="orbit-inner" />
+            <polygon points="16,7 23,16 16,25 9,16" class="orbit-diamond" />
+          </svg>
+        </div>
+        <div class="brand-meta">
+          <div class="brand-title">AI CODING</div>
+          <div class="brand-caption">LIMITS &bull; ANTIGRAVITY / CLAUDE / CODEX</div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div id="status-pill" class="status-badge healthy" title="Session: Active">
+          <span class="status-beacon"></span>
+          <span id="status-text">HEALTHY</span>
+        </div>
+        <button id="btn-theme-toggle" class="action-icon-btn" title="Switch Theme (Obsidian / Paper / Titanium)">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.2" fill="none">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        <button id="btn-collapse-hud" class="action-icon-btn" title="Collapse to Floating Bar">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.2" fill="none">
+            <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </button>
+        <button id="btn-sync" class="action-icon-btn" title="Refresh Telemetry">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.2" fill="none">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+        </button>
+        <button id="btn-close" class="action-icon-btn dismiss" title="Hide to Tray">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.2" fill="none">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+
+
+    <!-- Navigation Bar -->
+    <nav class="matrix-nav">
+      <button class="nav-item active" data-tab="overview">Limits</button>
+      <button class="nav-item" data-tab="models">Models</button>
+      <button class="nav-item" data-tab="settings">Settings</button>
+    </nav>
+
+    <!-- Tab Viewport -->
+    <main class="matrix-viewport">
+      <!-- TAB 1: LIMITS & BREAKDOWN -->
+      <section id="tab-overview" class="viewport-panel active">
+        <!-- SECTION: ANTIGRAVITY -->
+        <div data-section="antigravity" class="dashboard-section-block">
+          <!-- Weekly Baseline Tile (Positioned at Top) -->
+          <div class="bento-tile weekly-tile">
+            <div class="tile-head">
+              <div class="tile-headline">
+                <span class="micro-badge">7-DAY BASELINE</span>
+                <h4>Weekly Cap</h4>
+              </div>
+              <span id="weekly-status-chip" class="status-tag safe">NORMAL</span>
+            </div>
+
+            <div class="linear-gauge-wrap">
+              <div class="gauge-meta">
+                <span id="weekly-units" class="mono font-semibold">2,800 / 2,800 units</span>
+                <span id="weekly-pct" class="mono">100%</span>
+              </div>
+              <div class="linear-rail">
+                <div id="weekly-progress-fill" class="linear-fill weekly" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="weekly-cycle-row">
+              <span class="subtle">Weekly Reset in:</span>
+              <span id="weekly-timer" class="mono highlight">7d 00h</span>
+            </div>
+          </div>
+
+          <!-- Official Antigravity Quota Pools -->
+          <div class="official-pools-container">
+            <div class="pools-header">
+              <div class="pools-title-wrap">
+                <span class="section-tag mono">ANTIGRAVITY</span>
+                <h4 class="pools-heading">Model Quota Pools</h4>
+              </div>
+            </div>
+            <div id="official-pools-list" class="pools-card-grid">
+              <!-- Dynamically populated with Gemini & Claude/GPT pools -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION: CLAUDE CODE & PROMPT CACHE -->
+        <div data-section="claudeCode" class="dashboard-section-block">
+          <div class="bento-tile cache-tile">
+            <div class="tile-head">
+              <div class="tile-headline">
+                <span class="section-tag mono">CLAUDE CODE</span>
+                <h4>Prompt Cache Health</h4>
+              </div>
+              <span id="cache-status-chip" class="status-tag safe">WARM</span>
+            </div>
+
+            <div class="cache-metrics-row">
+              <div class="cache-metric-item">
+                <span class="cache-label">Cache Hit Rate</span>
+                <span id="cache-hit-rate" class="cache-value mono highlight">88%</span>
+              </div>
+              <div class="cache-metric-divider"></div>
+              <div class="cache-metric-item">
+                <span class="cache-label">Cache Expiry</span>
+                <span id="cache-ttl-timer" class="cache-value mono">05:00</span>
+              </div>
+            </div>
+
+            <div class="cache-note-row">
+              <span class="subtle">Status line:</span>
+              <span id="cache-status-line" class="mono subtle-text">Cache 88% Hit Rate • Expires in 05:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION: CODEX / OPENAI STATUS -->
+        <div data-section="codex" class="dashboard-section-block">
+          <div class="bento-tile service-tile">
+            <div class="tile-head">
+              <div class="tile-headline">
+                <span class="section-tag mono">CODEX / OPENAI</span>
+                <h4>Public Service Status</h4>
+              </div>
+              <span id="codex-status-chip" class="status-tag safe">OPERATIONAL</span>
+            </div>
+            <div class="service-details-row">
+              <span class="subtle">Statuspage.io:</span>
+              <span id="codex-status-desc" class="mono">All Systems Operational</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION: GROK CLI -->
+        <div data-section="grokCli" class="dashboard-section-block">
+          <div class="bento-tile service-tile">
+            <div class="tile-head">
+              <div class="tile-headline">
+                <span class="section-tag mono">GROK CLI</span>
+                <h4>Rate Limit & Status</h4>
+              </div>
+              <span id="grok-status-chip" class="status-tag safe">READY</span>
+            </div>
+            <div class="service-details-row">
+              <span class="subtle">Engine:</span>
+              <span class="mono">Grok CLI Telemetry Active</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: ALL MODELS MATRIX -->
+      <section id="tab-models" class="viewport-panel">
+        <div class="panel-intro">
+          <h4>Models & Assistant Matrix</h4>
+          <p class="subtle">Auto-synchronized with Antigravity, Claude Code, and OpenAI Codex:</p>
+        </div>
+
+        <div id="models-list" class="model-cards-matrix">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 3: SETTINGS / CONFIG -->
+      <section id="tab-settings" class="viewport-panel">
+        <!-- Minimalist Themes -->
+        <div class="config-section">
+          <h4>Minimalist Theme</h4>
+          <div class="theme-picker" id="theme-picker">
+            <button class="theme-choice-btn active" data-theme="obsidian">Obsidian</button>
+            <button class="theme-choice-btn" data-theme="paper">Paper</button>
+            <button class="theme-choice-btn" data-theme="titanium">Titanium</button>
+          </div>
+        </div>
+
+        <!-- Section Visibility Toggles (One-Click) -->
+        <div class="config-section">
+          <h4>Section Visibility</h4>
+          <label class="toggle-row">
+            <span>Antigravity Quota & Pools</span>
+            <input type="checkbox" id="chk-sec-antigravity" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Claude Code & Prompt Cache</span>
+            <input type="checkbox" id="chk-sec-claudeCode" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Codex / OpenAI Status</span>
+            <input type="checkbox" id="chk-sec-codex" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Grok CLI Monitor</span>
+            <input type="checkbox" id="chk-sec-grokCli" checked>
+          </label>
+        </div>
+
+        <!-- Floating HUD Options -->
+        <div class="config-section">
+          <h4>Floating Window Options</h4>
+          <label class="toggle-row">
+            <span>Show Weekly Limit Rail in Floating HUD</span>
+            <input type="checkbox" id="chk-hud-weekly" checked>
+          </label>
+        </div>
+
+        <!-- Notification Thresholds -->
+        <div class="config-section">
+          <h4>Notification Thresholds</h4>
+          <label class="toggle-row">
+            <span>Context 70% Limit Nudge</span>
+            <input type="checkbox" id="chk-context-nudge" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Sprint Low Threshold (&le; 20%)</span>
+            <input type="checkbox" id="chk-sprint-low" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Weekly Low Threshold (&le; 15%)</span>
+            <input type="checkbox" id="chk-weekly-low" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Sprint Refill Alert (+250u)</span>
+            <input type="checkbox" id="chk-sprint-refill" checked>
+          </label>
+          <label class="toggle-row">
+            <span>Audio Chimes</span>
+            <input type="checkbox" id="chk-sound" checked>
+          </label>
+        </div>
+
+        <!-- Background Sync Frequency -->
+        <div class="config-section">
+          <h4>Background Sync Frequency</h4>
+          <div class="frequency-picker">
+            <label class="radio-pill"><input type="radio" name="refresh-interval" value="30"> 30s</label>
+            <label class="radio-pill"><input type="radio" name="refresh-interval" value="60" checked> 1m</label>
+            <label class="radio-pill"><input type="radio" name="refresh-interval" value="300"> 5m</label>
+          </div>
+        </div>
+
+        <div class="config-actions">
+          <button id="btn-save-settings" class="primary-action-btn">Save Configuration</button>
+          <button id="btn-quit-app" class="secondary-danger-btn">Quit</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer System Bar -->
+    <footer class="system-footer">
+      <div class="footer-left">
+        <span id="agy-conn-dot" class="beacon-dot live"></span>
+        <span id="agy-conn-text" class="beacon-text">Antigravity: Synced</span>
+      </div>
+      <div class="footer-right">
+        <span id="last-updated" class="mono subtle">Just now</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

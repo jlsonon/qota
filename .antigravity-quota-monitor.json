@@ -1,0 +1,116 @@
+{
+  "sprintRemaining": 237,
+  "sprintMax": 250,
+  "sprintResetAt": 1789198041992,
+  "weeklyRemaining": 2787,
+  "weeklyMax": 2800,
+  "weeklyResetAt": 1789784841992,
+  "lastSyncedAt": 1789180042021,
+  "logWatermarks": {
+    "/Users/jlsonon/.claude/projects/-Users-jlsonon-Downloads-PrimeReviewer-PH/bdc3d9ed-2d3b-44fa-a5ee-58ac92be01c1.jsonl": 7085,
+    "/Users/jlsonon/.claude/projects/-Users-jlsonon-Downloads-PrimeReviewer-PH/d6455053-371a-45ab-93ce-838a95653500.jsonl": 12010,
+    "/Users/jlsonon/.claude/projects/-Users-jlsonon-Downloads-luckybingo/fd9bf12b-1845-48a9-8c5f-544a504be771.jsonl": 8554,
+    "/Users/jlsonon/.codex/history.jsonl": 1729200,
+    "/var/folders/35/q7b4g2zn5ds6ws3gggr7wr2h0000gn/T/agy-live-test-VSlg5S/brain/test-convo-123/.system_generated/logs/transcript.jsonl": 328
+  },
+  "activeAssistant": "claude",
+  "activeModelId": "claude-sonnet-4.6",
+  "activeModelName": "Claude Sonnet 4.6 (Thinking)",
+  "activeSessionId": "test-convo-123",
+  "antigravityPath": "/Users/jlsonon/.gemini/antigravity",
+  "claudePath": "/Users/jlsonon/.claude",
+  "codexPath": "/Users/jlsonon/.codex",
+  "windowMode": "compact",
+  "liveQuotaGroups": null,
+  "liveQuotaDescription": "",
+  "serviceStatuses": [
+    {
+      "id": "claude",
+      "name": "Claude API / Code",
+      "status": "operational",
+      "indicator": "none",
+      "description": "All Systems Operational",
+      "lastChecked": 1789180041992
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI / Codex API",
+      "status": "operational",
+      "indicator": "none",
+      "description": "All Systems Operational",
+      "lastChecked": 1789180041992
+    }
+  ],
+  "serviceAlert": null,
+  "contextUsage": {
+    "tokens": 0,
+    "maxTokens": 200000,
+    "percentage": 0,
+    "nudgeActive": false,
+    "nudgeMessage": ""
+  },
+  "promptCache": {
+    "available": true,
+    "hitRatePercentage": 88,
+    "ttlRemainingMs": 300000,
+    "expiresAt": 1789180341992
+  },
+  "projectBreakdown": [
+    {
+      "name": "Antigravity Workspace",
+      "path": "/Users/jlsonon/.gemini/antigravity",
+      "unitsUsed": 0,
+      "sessionUserInputs": 0,
+      "sessionToolCalls": 0,
+      "lastActive": 1789180042013,
+      "active": true
+    }
+  ],
+  "settings": {
+    "pollingIntervalSec": 60,
+    "notifySprintLow": true,
+    "notifySprintLowThreshold": 20,
+    "notifyWeeklyLow": true,
+    "notifyWeeklyLowThreshold": 15,
+    "notifySprintRefilled": true,
+    "autoDetectAntigravity": true,
+    "soundEnabled": true,
+    "theme": "obsidian",
+    "showWeeklyInHud": true,
+    "notifyContextLimit": true,
+    "notifyContextThreshold": 70,
+    "visibleSections": {
+      "antigravity": true,
+      "claudeCode": true,
+      "codex": true,
+      "grokCli": true
+    },
+    "antigravityDir": "/var/folders/35/q7b4g2zn5ds6ws3gggr7wr2h0000gn/T/agy-live-test-VSlg5S"
+  },
+  "history": [
+    {
+      "id": "evt-1789180042021-ui6y",
+      "timestamp": 1789180042021,
+      "modelId": "claude-sonnet-4.6",
+      "modelName": "Claude Sonnet 4.6 (Thinking)",
+      "units": 12,
+      "description": "Agent action (3 ops)"
+    },
+    {
+      "id": "evt-1789180042021-0zln",
+      "timestamp": 1789180042021,
+      "modelId": "gemini-3.8-flash",
+      "modelName": "Gemini 3.8 Flash (High)",
+      "units": 1,
+      "description": "User prompt dispatched"
+    },
+    {
+      "id": "init",
+      "timestamp": 1789180041992,
+      "modelId": "system",
+      "modelName": "System",
+      "units": 0,
+      "description": "Antigravity Quota Engine initialized"
+    }
+  ]
+}

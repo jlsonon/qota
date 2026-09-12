@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#141720"/>
+      <stop offset="100%" stop-color="#050608"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Grounded Architectural Dark Squircle -->
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bgGrad)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+
+  <!-- Outer Fine Orbital Guide Ring -->
+  <circle cx="64" cy="64" r="42" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+  <!-- High-Precision Solid Outer Ring -->
+  <circle cx="64" cy="64" r="32" fill="none" stroke="#ffffff" stroke-width="3.5"/>
+
+  <!-- Center Levitation Diamond Prism -->
+  <polygon points="64,36 82,64 64,92 46,64" fill="#ffffff"/>
+
+  <!-- Center Micro-Core Inset -->
+  <circle cx="64" cy="64" r="3.5" fill="#08090b"/>
+</svg>

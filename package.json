@@ -1,0 +1,51 @@
+{
+  "name": "antigravity-quota-monitor",
+  "version": "1.0.0",
+  "description": "Universal cross-platform macOS Menu Bar and Windows System Tray HUD for Antigravity, Claude Code, and OpenAI Codex quotas and limits.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/test-quota-service.js && node test/test-live-watcher.js",
+    "test:e2e": "node test/test-e2e-electron.js",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "antigravity",
+    "claude-code",
+    "openai-codex",
+    "gemini",
+    "claude",
+    "codex",
+    "quota",
+    "tray",
+    "menubar",
+    "limits",
+    "hud"
+  ],
+  "author": "Antigravity Dev",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.1"
+  },
+  "build": {
+    "appId": "com.antigravity.quotamonitor",
+    "productName": "Antigravity Limits",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": ["dmg", "zip"],
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "assets/icon.png"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*"
+    ]
+  }
+}
