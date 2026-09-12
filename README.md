@@ -1,75 +1,179 @@
-# QOTA (AI Quota Monitor)
+<div align="center">
 
-A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) application for tracking remaining quotas and limits on **Google Antigravity**, **Claude Code**, and **OpenAI Codex** in real time.
+# QOTA
 
-![QOTA Preview](assets/icon.png)
+**Universal Real-Time AI Quota Monitor & Tactile HUD**  
+*A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) instrument for tracking remaining quotas across Google Antigravity, Claude Code, and OpenAI Codex.*
 
----
+[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg?style=flat-square)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-black.svg?style=flat-square)](https://github.com/jlsonon/limits)
+[![Tests](https://img.shields.io/badge/Tests-13%2F13%20Passed-black.svg?style=flat-square)](test/)
+[![Privacy: Zero Cloud](https://img.shields.io/badge/Privacy-100%25%20Local%20Telemetry-black.svg?style=flat-square)](#zero-cloud-telemetry--privacy)
+[![UI: Obsidian Monochrome](https://img.shields.io/badge/Design-Architectural%20Monochrome-black.svg?style=flat-square)](#design-philosophy)
 
-## Features
+```
++-------------------------------------------------------------------------------+
+|  Qota File Edit View Window Help          [Space 1] [Space 2]   88% •  Wi-Fi | <-- Live % & Tray Beacon
++-------------------------------------------------------------------------------+
+|                                                                               |
+|   01  // QOTA: Local Telemetry Daemon                  +-------------------+  |
+|   02  import { QuotaEngine, DesktopHUD } from 'qota';  | AGY Gemini 3.8 [↗]|  | <-- Draggable Level 1001 HUD
+|   03  const hud = new DesktopHUD({ windowLevel: 1001 });| ======------- 88% |  |     (NSScreenSaverWindowLevel)
+|                                                        +-------------------+  |
+|   [LOCAL TRANSLATOR STREAM ACTIVE • ~/.gemini/antigravity/history.jsonl]       |
++-------------------------------------------------------------------------------+
+```
 
-- **Redesigned Floating Window HUD**:
-  - Top header displaying your active model (e.g., `Gemini 3.8 Flash (High)`, `Claude Opus 4.6 (Thinking)`).
-  - Straight progress rail for 5-hour limit percentage.
-  - Optional toggleable straight progress rail for 7-day weekly limit.
-  - Hover-to-reveal expand button (`[↗]`) that smoothly appears on mouse hover and fades out on hover-out.
-  - Draggable anywhere on your desktop with floating window persistence.
-- **Always-on Color-Coded Menu Bar Monitor (`NSStatusItem` / Tray)**:
-  - Color-coded indicator from green (&ge; 50%) &rarr; yellow/orange (20% to 49%) &rarr; red (&lt; 20%).
-  - Live percentage counter directly in the macOS menu bar (e.g. ` 100%`, ` 88%`).
-  - Clicking opens the full dashboard with session, weekly, and per-project workspace breakdowns.
-- **Service Status Alerts (Public Statuspage.io Monitoring)**:
-  - Orange-red warning banner automatically appears when Claude API, Claude Code, or Codex / OpenAI API has degraded performance or an outage.
-  - Read solely from official public Statuspage endpoints (`status.claude.com`, `status.openai.com`); never calls LLM usage APIs.
-- **Context Nudges & Notifications**:
-  - Live tracking of conversation context window fullness.
-  - At &ge; 70% capacity (or rapid fills), displays a status nudge: `Context at 74% — Run /compact or /clear to prevent token waste`.
-  - Opt-in native system notifications when limits or thresholds are crossed.
-- **Prompt Cache Health**:
-  - Monitors Claude Code prompt cache hit rate with a live 5-minute TTL countdown to cache expiry.
-- **One-Click Section Visibility**:
-  - Single-click toggles in Settings to show or hide sections (Antigravity, Claude Code, Codex, Grok CLI).
-- **Architectural Monochrome Aesthetic**:
-  - Precision dark Obsidian interface with zero emojis throughout the codebase and UI.
+</div>
 
 ---
 
-## Getting Started
+## Overview
 
-### 1. Launching the App (Development Mode)
+**QOTA** is an ultra-lightweight, native desktop HUD and menu bar monitor purpose-built for engineers utilizing AI coding assistants. Instead of checking dashboards or guessing your remaining tokens, QOTA projects a razor-thin, tactile instrument anchored above all open windows—even across native macOS Full Screen spaces—giving you immediate visibility into your cycle allowances.
+
+---
+
+## Key Capabilities
+
+### 1. Persistent Cocoa Level 1001 Floating HUD
+* **`NSScreenSaverWindowLevel` (Level 1001)**: Standard floating utility windows use `NSFloatingWindowLevel` (Level 3), causing them to disappear behind native macOS Full Screen IDE spaces. QOTA binds directly to Level 1001, remaining visible over full-screen editors (VS Code, Cursor, Ghostty).
+* **Ultra-Compact Footprint**: 285px &times; 40px micro-pill that can be dragged and docked anywhere across multi-monitor setups.
+* **Decreasing Sprint Rail**: Live linear gauge with shimmer feedback indicating remaining units in the current 5-hour cycle.
+* **Hover-to-Reveal Actions**: Expand button (`[↗]`) and optional 7-day weekly limit rail appear smoothly on cursor hover and fade out on departure.
+
+### 2. Live Percentage Menu Bar & System Tray (`NSStatusItem` / Tray)
+* **Direct Percentage Readout**: Displays the active remaining sprint percentage directly in your macOS menu bar (e.g. ` 88%`, ` 100%`).
+* **Color-Coded Health Beacon**:
+  * `Green`: &ge; 50% capacity remaining.
+  * `Yellow / Amber`: 20% &ndash; 49% capacity (pre-throttle threshold).
+  * `Red`: &lt; 20% capacity (throttle imminent).
+* **Tray Context Menu**: Quick access to trigger manual refills, toggle between Floating HUD and Full Dashboard, or inspect detailed model breakdowns.
+
+### 3. Multi-Assistant Weighted Accounting
+QOTA tracks multi-model consumption using exact proportional multipliers based on token consumption cost:
+
+| Assistant / Model | Multiplier | Sprint Units / Call | Status |
+|---|:---:|:---:|:---:|
+| **Google Antigravity** &bull; Gemini 3.8 Flash (High) | `1x` | -1 unit | Baseline |
+| **OpenAI Codex** &bull; o3-mini (Reasoning) | `2x` | -2 units | Standard |
+| **Anthropic Claude Code** &bull; Claude 3.7 Sonnet | `4x` | -4 units | High Density |
+| **Anthropic Claude Code** &bull; Claude 3 Opus (Thinking) | `8x` | -8 units | Maximum Reasoning |
+
+### 4. Zero-Cloud Telemetry & Privacy
+* **100% Local File Ingestion**: Watches local session files (such as `~/.gemini/antigravity/history.jsonl` and session transcripts) to calculate deductions.
+* **Zero Cloud Relays**: Never sends telemetry, credentials, or prompts to external servers.
+* **No LLM Quota Overhead**: Ingestion runs purely via local file system hooks with 0 API calls or token usage.
+
+### 5. Smart Health & Outage Detection
+* **Context Window Nudge**: Proactively tracks context window fullness. When a session exceeds 70% capacity, QOTA displays a subtle status nudge (`Context at 74% — Run /compact or /clear to prevent token waste`).
+* **Prompt Cache TTL Countdown**: Tracks Claude Code prompt cache hit rates with a live 5-minute countdown timer to cache expiry.
+* **Public Service Outage Alerts**: Direct polling of public Statuspage endpoints (`status.claude.com`, `status.openai.com`) to alert you of upstream API degradations before your workflow stalls.
+
+---
+
+## Keyboard Controls & Shortcuts
+
+The interactive web showcase and desktop client support zero-latency tactile keyboard bindings:
+
+| Key | Action | Description |
+|:---:|---|---|
+| <kbd>1</kbd> | **Switch to Antigravity** | Sets active assistant to Gemini Flash (1x consumption) |
+| <kbd>2</kbd> | **Switch to Claude Code** | Sets active assistant to Claude Sonnet / Opus (4x&ndash;8x consumption) |
+| <kbd>3</kbd> | **Switch to OpenAI Codex** | Sets active assistant to o3-mini (2x consumption) |
+| <kbd>SPACE</kbd> | **Simulate Prompt Dispatch** | Triggers prompt deduction with floating `-2u` telemetry toast |
+| <kbd>R</kbd> | **Refill Sprint** | Restores 5-hour sprint pool to 250 units (100%) |
+| <kbd>D</kbd> | **Toggle Dashboard** | Switches between Floating HUD bar and Expanded Matrix view |
+
+---
+
+## Quick Start
+
+### Prerequisites
+* **Node.js**: v18.0.0 or higher
+* **npm**: v9.0.0 or higher
+
+### 1. Installation & Local Execution
 ```bash
+# Clone repository
+git clone https://github.com/jlsonon/limits.git
+cd limits
+
+# Install dependencies
+npm install
+
+# Launch QOTA in Development Mode
 npm start
 ```
-The app will launch and dock itself into your Menu Bar (macOS) or System Tray (Windows). Click the icon to view your quota gauges and countdown timers.
+Upon launch, QOTA docks directly into your macOS Menu Bar or Windows System Tray and spawns the floating HUD.
 
-### 2. Running Unit Tests
+### 2. Running Test Suites
 ```bash
 npm test
 ```
-Validates the QuotaService engine, multipliers, and reset schedules.
+Executes all 13 unit tests verifying quota deduction maths, multipliers, live JSONL file watchers, and status alerts.
 
 ---
 
-## Building Executables for macOS & Windows
+## Packaging Executables
 
-### Package for macOS (.dmg and .app)
+QOTA utilizes `electron-builder` to assemble standalone, hardened production binaries.
+
+### Build for macOS (.dmg and .app)
 ```bash
 npm run build:mac
 ```
-Generates a signed, standalone `.app` and `.dmg` in the `dist/` directory for Apple Silicon (`arm64`) and Intel (`x64`).
+* Produces signed Universal binaries for **Apple Silicon (`arm64`)** and **Intel (`x64`)** inside `dist/`.
+* Hardened runtime enabled with `NSScreenSaverWindowLevel` entitlements.
+* *Note: If macOS Gatekeeper alerts on an unsigned local build, run:*
+  ```bash
+  xattr -cr /Applications/Qota.app
+  ```
 
-### Package for Windows (.exe installer & portable)
+### Build for Windows (.exe and portable)
 ```bash
 npm run build:win
 ```
-Generates an installer (`.exe`) and portable standalone executable in the `dist/` directory.
+* Generates an NSIS setup installer (`.exe`) and a standalone zero-install portable executable in `dist/`.
 
 ---
 
-## Architecture
+## Architecture & Codebase Map
 
-- **`main.js`**: Electron main process managing tray lifecycle, positioning mathematics for both OSes, background polling, and native notifications.
-- **`preload.js`**: Context isolation bridge exposing type-safe IPC methods.
-- **`src/quota-service.js`**: Core quota engine tracking sprint/weekly limits, countdown timestamps, and model multipliers.
-- **`src/index.html` & `src/styles.css`**: Spatial glassmorphism interface adhering to Antigravity design guidelines.
-- **`src/renderer.js`**: DOM controller with a 1-second ticker for smooth countdown timers.
+```
+limits/
+├── assets/                  # High-DPI tray icons and color-coded status beacons
+│   ├── icon.png             # Application glyph
+│   ├── tray-green.png       # Menu bar icon: >= 50%
+│   ├── tray-yellow.png      # Menu bar icon: 20% - 49%
+│   └── tray-red.png         # Menu bar icon: < 20%
+├── src/                     # Desktop HUD & Dashboard source
+│   ├── index.html           # Floating HUD & expanded dashboard DOM
+│   ├── styles.css           # Obsidian monochrome design system
+│   ├── renderer.js          # HUD animation ticker & IPC bridge
+│   └── quota-service.js     # Core accounting engine & transcript stream watcher
+├── website/                 # Interactive web documentation & simulator
+│   ├── index.html           # "Mac Studio" single-viewport hero showcase
+│   ├── styles.css           # Web design system & frosted glassmorphism
+│   └── script.js            # Web Audio haptics engine & desktop spaces simulator
+├── test/                    # Automated test suites
+│   ├── test-quota-service.js
+│   └── test-live-watcher.js
+├── main.js                  # Electron main process (Window level 1001, Tray lifecycle)
+├── preload.js               # Context isolation security bridge
+└── package.json             # Project metadata & build scripts
+```
+
+---
+
+## Design Philosophy
+
+* **Architectural Minimalism**: Eliminates flashy consumer gradients, oversized cards, and visual distractions.
+* **Monochrome Precision**: Built purely with obsidian pitch blacks (`#08090b`), slate grays, and crisp laser-white monospace typography.
+* **Zero Emojis**: Every indicator, status tag, and button uses custom SVGs, micro-glyphs, or high-density typography.
+
+---
+
+## License
+
+Open source under the [MIT License](LICENSE). &copy; 2026 QOTA DEV.
