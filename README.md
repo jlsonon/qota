@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/icon.png" alt="QOTA Logo" width="96" height="96" />
+
 # QOTA
 
 **Universal Real-Time AI Quota Monitor & Tactile HUD**  
@@ -10,19 +12,6 @@
 [![Tests](https://img.shields.io/badge/Tests-13%2F13%20Passed-black.svg?style=flat-square)](test/)
 [![Privacy: Zero Cloud](https://img.shields.io/badge/Privacy-100%25%20Local%20Telemetry-black.svg?style=flat-square)](#zero-cloud-telemetry--privacy)
 [![UI: Obsidian Monochrome](https://img.shields.io/badge/Design-Architectural%20Monochrome-black.svg?style=flat-square)](#design-philosophy)
-
-```
-+-------------------------------------------------------------------------------+
-|  Qota File Edit View Window Help          [Space 1] [Space 2]   88% •  Wi-Fi | <-- Live % & Tray Beacon
-+-------------------------------------------------------------------------------+
-|                                                                               |
-|   01  // QOTA: Local Telemetry Daemon                  +-------------------+  |
-|   02  import { QuotaEngine, DesktopHUD } from 'qota';  | AGY Gemini 3.8 [↗]|  | <-- Draggable Level 1001 HUD
-|   03  const hud = new DesktopHUD({ windowLevel: 1001 });| ======------- 88% |  |     (NSScreenSaverWindowLevel)
-|                                                        +-------------------+  |
-|   [LOCAL TRANSLATOR STREAM ACTIVE • ~/.gemini/antigravity/history.jsonl]       |
-+-------------------------------------------------------------------------------+
-```
 
 </div>
 
