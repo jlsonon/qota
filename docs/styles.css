@@ -125,6 +125,12 @@ a {
   gap: 16px;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .brand-link {
   display: flex;
   align-items: center;

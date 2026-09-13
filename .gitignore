@@ -8,6 +8,7 @@ build/
 .env.local
 
 # Binaries and large packages
-*.dmg
+macos/*.dmg
 *.app/
 *.apk
+
