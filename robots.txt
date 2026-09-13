@@ -1,0 +1,6 @@
+# robots.txt for https://qota.live
+User-agent: *
+Allow: /
+
+# Canonical XML Sitemap
+Sitemap: https://qota.live/sitemap.xml

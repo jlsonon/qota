@@ -3,31 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QOTA — Real-time AI Quota HUD &amp; Menu Bar</title>
-  <meta name="description" content="Satisfying, real-time AI quota tracking for your Mac and Windows. Persistent floating HUD anchored above all windows with zero cloud relays.">
-  <meta name="theme-color" content="#F5F5F5">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>QOTA — Satisfying Real-Time AI Quota HUD &amp; macOS Menu Bar</title>
+  <meta name="title" content="QOTA — Satisfying Real-Time AI Quota HUD &amp; macOS Menu Bar">
+  <meta name="description" content="Satisfying, real-time AI quota HUD for macOS and Windows. Track Antigravity, Claude Code, and Codex limits with zero cloud relays and 100% privacy.">
+  <meta name="keywords" content="AI quota tracker, Antigravity HUD, Claude Code quota, OpenAI Codex quota tracker, macOS menu bar quota, Windows system tray, local AI telemetry, token limit monitor">
+  <meta name="author" content="QOTA Team">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://qota.live/">
 
-  <link rel="canonical" href="https://qota.live">
+  <!-- OpenGraph / Facebook / LinkedIn / Discord -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="QOTA">
-  <meta property="og:title" content="QOTA — Real-time AI Quota HUD &amp; Menu Bar">
-  <meta property="og:description" content="Satisfying, real-time AI quota tracking for your Mac and Windows. Persistent floating HUD anchored above all windows with zero cloud relays.">
-  <meta property="og:url" content="https://qota.live">
+  <meta property="og:url" content="https://qota.live/">
+  <meta property="og:title" content="QOTA — Satisfying Real-Time AI Quota HUD &amp; macOS Menu Bar">
+  <meta property="og:description" content="Satisfying, real-time AI quota HUD for macOS and Windows. Track Antigravity, Claude Code, and Codex limits with zero cloud relays and 100% privacy.">
+  <meta property="og:image" content="https://qota.live/assets/og-image.png">
+  <meta property="og:image:secure_url" content="https://qota.live/assets/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="QOTA — Real-Time AI Quota HUD and macOS Menu Bar">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter / X Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="QOTA — Real-time AI Quota HUD &amp; Menu Bar">
-  <meta name="twitter:description" content="Satisfying, real-time AI quota tracking for your Mac and Windows.">
+  <meta name="twitter:url" content="https://qota.live/">
+  <meta name="twitter:title" content="QOTA — Satisfying Real-Time AI Quota HUD &amp; macOS Menu Bar">
+  <meta name="twitter:description" content="Satisfying, real-time AI quota HUD for macOS and Windows. Track Antigravity, Claude Code, and Codex limits with zero cloud relays.">
+  <meta name="twitter:image" content="https://qota.live/assets/og-image.png">
+  <meta name="twitter:image:alt" content="QOTA — Real-Time AI Quota HUD and macOS Menu Bar">
+  <meta name="twitter:site" content="@qotahud">
+  <meta name="twitter:creator" content="@qotahud">
 
-  <!-- Architectural Monochrome Favicon -->
+  <!-- Mobile & PWA Theme Meta -->
+  <meta name="theme-color" content="#F5F5F5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="QOTA">
+  <meta name="application-name" content="QOTA">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Architectural Monochrome Favicon & Apple Touch Icon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="assets/icon.png">
 
-  <!-- Inter & JetBrains Mono Fonts -->
+  <!-- DNS Prefetch & Font Preconnects -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Structured Data: SoftwareApplication Schema (Google Rich Results Eligible) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "QOTA",
+    "operatingSystem": "macOS 12.0+, Windows 10/11, Linux, Android",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "UtilitiesApplication",
+    "description": "Satisfying, real-time AI quota tracking HUD and macOS menu bar application for Antigravity, Claude Code, and OpenAI Codex.",
+    "url": "https://qota.live",
+    "downloadUrl": "https://qota.live/downloads/qota-macos.zip",
+    "screenshot": "https://qota.live/assets/og-image.png",
+    "softwareVersion": "1.0.4",
+    "license": "https://opensource.org/licenses/MIT",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "QOTA",
+      "url": "https://qota.live"
+    },
+    "featureList": [
+      "Cocoa Level 1001 Floating HUD over full-screen IDEs",
+      "Native macOS Menu Bar Pill with live percentage readout",
+      "Zero Cloud Relays - 100% local session files and SQLite WAL",
+      "Multi-model proportional accounting for Gemini Flash, Claude Sonnet, and OpenAI Codex"
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "QOTA",
+    "url": "https://qota.live",
+    "logo": "https://qota.live/favicon.svg",
+    "sameAs": [
+      "https://github.com/jlsonon/qota"
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: WebSite Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "QOTA",
+    "url": "https://qota.live/",
+    "description": "Tactile real-time AI quota tracking HUD and macOS menu bar for developers."
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage Schema (Rich Results Eligible) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is QOTA?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "QOTA is a tactile, zero-cloud desktop application and floating HUD for macOS and Windows. It provides continuous real-time visibility over your AI sprint quotas and weekly rate limits across Antigravity, Claude Code, and OpenAI Codex."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does QOTA track quotas without cloud relays?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "QOTA hooks directly into local session files and SQLite WAL databases on your drive (~/.gemini/antigravity and ~/.claude/sessions). Zero API keys are needed, and 0 bytes ever leave your computer."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Cocoa Level 1001?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "On macOS, window level 1001 (NSScreenSaverWindowLevel) pins the floating HUD above all native full-screen spaces (such as full-screen VS Code or Ghostty) without stealing window focus or interrupting keystrokes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which AI models and multipliers are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "QOTA supports Google Antigravity (Flash 3.8 at 1x), OpenAI Codex (o3-mini High at 2x), and Anthropic Claude Code (Sonnet 4.6 at 4x and Opus / o1 at 8x) with automatic proportional accounting."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is QOTA free and open source?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, QOTA is 100% free and open-source software distributed under the permissive MIT License on GitHub."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does QOTA work on Windows and Linux?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! QOTA includes universal packages for Windows 10/11 (with native System Tray integration and WS_EX_TOPMOST pinning) as well as Linux and Android overlay support."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
+  <!-- Accessibility Skip Link -->
+  <a href="#showcase" class="skip-link">Skip to main content</a>
 
   <!-- Top Navigation (Keeby Style) -->
   <header class="navbar-wrap">
@@ -52,6 +205,7 @@
         <a href="#tutorial" class="nav-link">Tutorial</a>
         <a href="#features" class="nav-link">Features</a>
         <a href="#specs" class="nav-link">Specs</a>
+        <a href="#faq" class="nav-link">FAQ</a>
         <a href="#download" class="nav-btn-dark">
           <svg viewBox="0 0 17 20" width="13" height="15" fill="currentColor">
             <path d="M12.15 0c.12 1.17-.35 2.33-1.05 3.17-.71.84-1.85 1.5-2.97 1.41-.14-1.13.36-2.33 1.03-3.07C9.87.67 11.06.06 12.15 0zm3.56 6.82c-.09.05-2.12 1.22-2.1 3.63.02 2.88 2.54 3.87 2.57 3.88-.02.07-.4 1.37-1.33 2.72-.82 1.17-1.67 2.34-3.01 2.36-1.32.02-1.74-.78-3.25-.78s-1.99.76-3.24.8c-1.29.04-2.27-1.27-3.1-2.43C.55 14.72-.73 10.2 1.03 7.14c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.49.87 3.27.87.78 0 2.24-1.07 3.77-.91.64.03 2.45.26 3.61 1.95l-.09.08z"/>
@@ -660,6 +814,49 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
       </div>
     </section>
 
+    <!-- Keeby-Style FAQ Section ("Everything you need to know") -->
+    <section class="faq-section" id="faq">
+      <div class="section-container">
+        <div class="section-header text-center">
+          <span class="pill-kicker mono">FREQUENTLY ASKED QUESTIONS</span>
+          <h2 class="section-title">Everything you need to know.</h2>
+          <p class="section-sub">Clear answers on architecture, privacy, compatibility, and local telemetry.</p>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-card">
+            <h3 class="faq-question">What is QOTA?</h3>
+            <p class="faq-answer">QOTA is a tactile, zero-cloud desktop application and floating HUD for macOS and Windows. It provides continuous real-time visibility over your AI sprint quotas and weekly rate limits across Antigravity, Claude Code, and OpenAI Codex.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3 class="faq-question">How does QOTA track quotas without cloud relays?</h3>
+            <p class="faq-answer">QOTA hooks directly into local session files and SQLite WAL databases on your drive (such as <code>~/.gemini/antigravity</code> and <code>~/.claude/sessions</code>). Zero API keys are needed, and 0 bytes ever leave your computer.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3 class="faq-question">What is Cocoa Level 1001?</h3>
+            <p class="faq-answer">On macOS, window level 1001 (<code>NSScreenSaverWindowLevel</code>) pins the floating HUD above all native full-screen spaces (such as full-screen VS Code or Ghostty) without stealing window focus or interrupting keystrokes.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3 class="faq-question">Which AI models and multipliers are supported?</h3>
+            <p class="faq-answer">QOTA supports Google Antigravity (Flash 3.8 at 1x), OpenAI Codex (o3-mini High at 2x), and Anthropic Claude Code (Sonnet 4.6 at 4x and Opus / o1 at 8x) with automatic proportional accounting.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3 class="faq-question">Is QOTA free and open source?</h3>
+            <p class="faq-answer">Yes, QOTA is 100% free and open-source software distributed under the permissive MIT License on GitHub.</p>
+          </div>
+
+          <div class="faq-card">
+            <h3 class="faq-question">Does QOTA work on Windows and Linux?</h3>
+            <p class="faq-answer">Yes! QOTA includes universal packages for Windows 10/11 (with native System Tray integration and <code>WS_EX_TOPMOST</code> pinning) as well as Linux and Android overlay support.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Keeby-Style Bottom Hero CTA ("Try it. You'll hear the difference.") -->
     <section class="bottom-cta-section" id="download">
       <div class="bottom-cta-box">
@@ -711,6 +908,7 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
         <a href="#tutorial">TUTORIAL</a>
         <a href="#features">FEATURES</a>
         <a href="#specs">SPECS</a>
+        <a href="#faq">FAQ</a>
         <a href="https://github.com/jlsonon/qota" target="_blank" rel="noopener">GITHUB</a>
       </div>
     </div>

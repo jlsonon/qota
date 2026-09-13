@@ -1417,6 +1417,76 @@ a {
   font-weight: 600;
 }
 
+/* Accessibility Skip Link */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 20px;
+  background: var(--text-heading);
+  color: var(--bg-card);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  z-index: 1000;
+  transition: top 0.15s ease;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Keeby-Style FAQ Section
+   -------------------------------------------------------------------------- */
+.faq-section {
+  padding: 60px 20px;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.faq-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-float);
+}
+
+.faq-question {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text-heading);
+  margin-bottom: 10px;
+}
+
+.faq-answer {
+  font-size: 14px;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.faq-answer code {
+  background: var(--bg-pill);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-heading);
+}
+
 /* --------------------------------------------------------------------------
    Keeby-Style Bottom Hero CTA ("Try it. You'll feel the clarity.")
    -------------------------------------------------------------------------- */
