@@ -243,6 +243,58 @@ a {
   opacity: 0.95;
 }
 
+/* Navigation GitHub Star Button */
+.nav-github-star {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-heading);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-github-star:hover {
+  transform: translateY(-1px);
+  border-color: rgba(227, 179, 65, 0.6);
+  box-shadow: 0 2px 12px rgba(227, 179, 65, 0.2);
+}
+
+.nav-github-star .gh-icon {
+  opacity: 0.85;
+}
+
+.nav-github-star .star-icon {
+  color: #e3b341;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-github-star:hover .star-icon {
+  transform: scale(1.25) rotate(12deg);
+}
+
+.nav-github-star .gh-star-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.nav-github-star .gh-count-pill {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  background: var(--bg-canvas-subtle);
+  border: 1px solid var(--border-light);
+  padding: 1px 7px;
+  border-radius: 9999px;
+  color: var(--text-muted);
+}
+
 .theme-toggle {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -435,7 +487,61 @@ a {
 .hero-foot-note {
   font-size: 13px;
   color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+/* Hero GitHub Star Badge */
+.hero-star-row {
   margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-star-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-heading);
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-star-badge:hover {
+  transform: translateY(-2px);
+  border-color: rgba(227, 179, 65, 0.7);
+  box-shadow: 0 4px 18px rgba(227, 179, 65, 0.25);
+}
+
+.hero-star-badge .gh-icon {
+  opacity: 0.9;
+}
+
+.hero-star-badge .star-sparkle {
+  color: #e3b341;
+  font-size: 14px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-star-badge:hover .star-sparkle {
+  transform: scale(1.3) rotate(20deg);
+}
+
+.hero-star-badge .hero-star-counter {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  background: var(--bg-canvas-subtle);
+  border: 1px solid var(--border-light);
+  padding: 1px 7px;
+  border-radius: 9999px;
+  color: var(--text-muted);
 }
 
 .hero-cli-bar {
@@ -1595,6 +1701,9 @@ a {
     display: none;
   }
   .nav-right .nav-link {
+    display: none;
+  }
+  .nav-github-star .gh-star-text {
     display: none;
   }
   .screen-hud-pill {

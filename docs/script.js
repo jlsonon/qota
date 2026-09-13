@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initClipboard();
   initMacClock();
   initInteractiveShowcase();
+  initGitHubStars();
 });
 
 /* --------------------------------------------------------------------------
@@ -453,4 +454,65 @@ function initInteractiveShowcase() {
     dragTarget.addEventListener('pointercancel', stopDrag);
   }
 }
+
+/* --------------------------------------------------------------------------
+   GitHub Stars Manager
+   -------------------------------------------------------------------------- */
+function initGitHubStars() {
+  const navStars = document.getElementById('gh-nav-stars');
+  const heroStars = document.getElementById('hero-gh-stars');
+
+  const CACHE_KEY = 'qota_gh_stars';
+  const CACHE_TIME_KEY = 'qota_gh_stars_time';
+  const CACHE_DURATION = 3600 * 1000; // 1 hour
+
+  // Check cached count
+  const cached = localStorage.getItem(CACHE_KEY);
+  const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+  if (cached && cachedTime && Date.now() - parseInt(cachedTime, 10) < CACHE_DURATION) {
+    applyStars(cached);
+  } else {
+    fetchRepoStars();
+  }
+
+  async function fetchRepoStars() {
+    try {
+      const res = await fetch('https://api.github.com/repos/jlsonon/qota');
+      if (res.ok) {
+        const data = await res.json();
+        if (typeof data.stargazers_count === 'number') {
+          const formatted = data.stargazers_count >= 1000
+            ? (data.stargazers_count / 1000).toFixed(1) + 'k'
+            : data.stargazers_count.toString();
+          localStorage.setItem(CACHE_KEY, formatted);
+          localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+          applyStars(formatted);
+        }
+      }
+    } catch (e) {
+      // Offline or rate-limited: default fallback remains
+    }
+  }
+
+  function applyStars(count) {
+    if (navStars) navStars.textContent = count;
+    if (heroStars) heroStars.textContent = count;
+  }
+
+  // Celebratory click reaction on star buttons
+  const starButtons = document.querySelectorAll('.nav-github-star, .hero-star-badge');
+  starButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const starIcon = btn.querySelector('.star-icon, .star-sparkle');
+      if (starIcon) {
+        starIcon.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        starIcon.style.transform = 'scale(1.5) rotate(35deg)';
+        setTimeout(() => {
+          starIcon.style.transform = '';
+        }, 350);
+      }
+    });
+  });
+}
+
 
