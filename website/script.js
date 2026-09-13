@@ -1,13 +1,14 @@
 /**
  * QOTA — Client Interaction Script
  * Minimalist, ultra-fast, zero-dependency.
- * Handles theme toggling, clipboard copy, and native clock formatting.
+ * Handles theme toggling, clipboard copy, native clock, and interactive HUD showcase.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initThemeManager();
   initClipboard();
   initMacClock();
+  initInteractiveShowcase();
 });
 
 /* --------------------------------------------------------------------------
@@ -104,3 +105,352 @@ function initMacClock() {
   updateClock();
   setInterval(updateClock, 10000);
 }
+
+/* --------------------------------------------------------------------------
+   Interactive Floating HUD Showcase (Actual Cocoa Level 1001 Simulation)
+   -------------------------------------------------------------------------- */
+function initInteractiveShowcase() {
+  const canvas = document.querySelector('.mac-canvas');
+  const hudPill = document.getElementById('sim-hud-pill');
+  const dashboard = document.getElementById('sim-hud-dashboard');
+  const asstBadge = document.getElementById('sim-hud-asst-badge');
+  const modelName = document.getElementById('sim-hud-model-name');
+  const rateBadge = document.getElementById('sim-hud-rate-badge');
+  const sprintUnits = document.getElementById('sim-sprint-units');
+  const sprintFill = document.getElementById('sim-sprint-fill');
+  const weeklyPct = document.getElementById('sim-weekly-pct');
+  const weeklyFill = document.getElementById('sim-weekly-fill');
+  const resetTimer = document.getElementById('sim-reset-timer');
+  const toggle7dBtn = document.getElementById('sim-hud-7d-toggle');
+  const expandBtn = document.getElementById('sim-hud-expand-btn');
+  const weeklyRailItem = document.getElementById('sim-weekly-rail-item');
+
+  // Expanded Dashboard Elements
+  const dashCollapse = document.getElementById('sim-dash-collapse');
+  const dashClose = document.getElementById('sim-dash-close');
+  const dashSync = document.getElementById('sim-dash-sync');
+  const dashActiveTitle = document.getElementById('dash-active-model-title');
+  const dashActiveMult = document.getElementById('dash-active-multiplier');
+  const dashSprintUnits = document.getElementById('dash-sprint-units');
+  const dashSprintFill = document.getElementById('dash-sprint-fill');
+  const dashResetTimer = document.getElementById('dash-reset-timer');
+  const dashWeeklyUnits = document.getElementById('dash-weekly-units');
+  const dashWeeklyPct = document.getElementById('dash-weekly-pct');
+  const dashWeeklyFill = document.getElementById('dash-weekly-fill');
+  const dashTabs = document.querySelectorAll('.dash-tab');
+
+  // Menu Bar Controls
+  const menuPill = document.getElementById('sim-menubar-pill');
+  const menuPct = document.getElementById('sim-menu-pct');
+  const menuModel = document.getElementById('sim-menu-model');
+  const menuPopover = document.getElementById('sim-menubar-popover');
+  const popCycleModel = document.getElementById('pop-cycle-model');
+  const popModelVal = document.getElementById('pop-model-val');
+  const popSprintVal = document.getElementById('pop-sprint-val');
+  const popWeeklyVal = document.getElementById('pop-weekly-val');
+  const popToggleHud = document.getElementById('pop-toggle-hud');
+  const popQuit = document.getElementById('pop-quit');
+
+  if (!canvas || !hudPill) return;
+
+  // Realistic AI Model Quota Profiles
+  const MODELS = [
+    {
+      asst: 'AGY',
+      name: 'Gemini 3.8 Flash (High)',
+      rate: '1x • 88%',
+      sprintPct: 88,
+      sprintUnits: '220 / 250u',
+      weeklyPct: 97,
+      weeklyUnits: '2,716 / 2,800 units',
+      resetText: 'RESETS IN 3H 14M',
+      dashResetText: 'Resets in 3h 14m',
+      menubarTag: 'AGY FLASH',
+      menubarPct: '88%',
+      multiplier: '1x'
+    },
+    {
+      asst: 'CLAUDE',
+      name: 'Claude 3.7 Sonnet (Thinking)',
+      rate: '4x • 64%',
+      sprintPct: 64,
+      sprintUnits: '160 / 250u',
+      weeklyPct: 82,
+      weeklyUnits: '2,296 / 2,800 units',
+      resetText: 'RESETS IN 1H 45M',
+      dashResetText: 'Resets in 1h 45m',
+      menubarTag: 'CLAUDE',
+      menubarPct: '64%',
+      multiplier: '4x'
+    },
+    {
+      asst: 'CODEX',
+      name: 'OpenAI o3-mini (High)',
+      rate: '2x • 78%',
+      sprintPct: 78,
+      sprintUnits: '195 / 250u',
+      weeklyPct: 91,
+      weeklyUnits: '2,548 / 2,800 units',
+      resetText: 'RESETS IN 4H 02M',
+      dashResetText: 'Resets in 4h 02m',
+      menubarTag: 'CODEX',
+      menubarPct: '78%',
+      multiplier: '2x'
+    }
+  ];
+
+  let currentModelIndex = 0;
+
+  function applyModel(index) {
+    currentModelIndex = (index + MODELS.length) % MODELS.length;
+    const m = MODELS[currentModelIndex];
+
+    // Update Floating HUD Pill
+    if (asstBadge) asstBadge.textContent = m.asst;
+    if (modelName) modelName.textContent = m.name;
+    if (rateBadge) rateBadge.textContent = m.rate;
+    if (sprintUnits) sprintUnits.textContent = m.sprintUnits;
+    if (sprintFill) sprintFill.style.width = `${m.sprintPct}%`;
+    if (weeklyPct) weeklyPct.textContent = `${m.weeklyPct}%`;
+    if (weeklyFill) weeklyFill.style.width = `${m.weeklyPct}%`;
+    if (resetTimer) resetTimer.textContent = m.resetText;
+
+    // Update Expanded Dashboard View
+    if (dashActiveTitle) dashActiveTitle.textContent = m.name.toUpperCase();
+    if (dashActiveMult) dashActiveMult.textContent = m.multiplier;
+    if (dashSprintUnits) dashSprintUnits.textContent = `${m.sprintUnits} (${m.sprintPct}%)`;
+    if (dashSprintFill) dashSprintFill.style.width = `${m.sprintPct}%`;
+    if (dashResetTimer) dashResetTimer.textContent = m.dashResetText;
+    if (dashWeeklyUnits) dashWeeklyUnits.textContent = m.weeklyUnits;
+    if (dashWeeklyPct) dashWeeklyPct.textContent = `${m.weeklyPct}%`;
+    if (dashWeeklyFill) dashWeeklyFill.style.width = `${m.weeklyPct}%`;
+
+    // Update Status Bar Pill & Popover
+    if (menuPct) menuPct.textContent = m.menubarPct;
+    if (menuModel) menuModel.textContent = m.menubarTag;
+    if (popModelVal) popModelVal.textContent = m.name.split(' (')[0];
+    if (popSprintVal) popSprintVal.textContent = `${m.sprintUnits} (${m.sprintPct}%)`;
+    if (popWeeklyVal) popWeeklyVal.textContent = `${m.weeklyPct}% Remaining`;
+  }
+
+  // Model Switch Listeners
+  if (asstBadge) {
+    asstBadge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      applyModel(currentModelIndex + 1);
+    });
+  }
+
+  if (popCycleModel) {
+    popCycleModel.addEventListener('click', () => {
+      applyModel(currentModelIndex + 1);
+    });
+  }
+
+  // 7-Day Baseline Rail Toggle
+  if (toggle7dBtn && weeklyRailItem) {
+    toggle7dBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = toggle7dBtn.classList.toggle('active');
+      weeklyRailItem.classList.toggle('hide-rail', !isActive);
+    });
+  }
+
+  // Expand / Collapse Matrix Dashboard
+  function expandDashboard() {
+    if (!dashboard || !hudPill) return;
+    hudPill.style.display = 'none';
+    dashboard.style.display = 'block';
+
+    // Align dashboard position with current hud pill coordinates if set
+    if (hudPill.style.left) {
+      const maxLeft = Math.max(10, canvas.clientWidth - dashboard.offsetWidth - 10);
+      const targetLeft = Math.min(parseFloat(hudPill.style.left), maxLeft);
+      dashboard.style.left = `${targetLeft}px`;
+      dashboard.style.right = 'auto';
+    }
+    if (hudPill.style.top) {
+      const maxTop = Math.max(10, canvas.clientHeight - dashboard.offsetHeight - 10);
+      const targetTop = Math.min(parseFloat(hudPill.style.top), maxTop);
+      dashboard.style.top = `${targetTop}px`;
+      dashboard.style.bottom = 'auto';
+    }
+  }
+
+  function collapseDashboard() {
+    if (!dashboard || !hudPill) return;
+    dashboard.style.display = 'none';
+    hudPill.style.display = 'block';
+  }
+
+  if (expandBtn) {
+    expandBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      expandDashboard();
+    });
+  }
+
+  // Double-click floating HUD to expand
+  hudPill.addEventListener('dblclick', (e) => {
+    if (e.target.closest('button')) return;
+    expandDashboard();
+  });
+
+  if (dashCollapse) {
+    dashCollapse.addEventListener('click', (e) => {
+      e.stopPropagation();
+      collapseDashboard();
+    });
+  }
+
+  if (dashClose) {
+    dashClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      collapseDashboard();
+    });
+  }
+
+  if (dashSync) {
+    dashSync.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dashSync.style.transform = 'rotate(360deg)';
+      dashSync.style.transition = 'transform 0.4s ease';
+      setTimeout(() => {
+        dashSync.style.transform = '';
+        dashSync.style.transition = '';
+      }, 400);
+      applyModel(currentModelIndex);
+    });
+  }
+
+  // Dashboard Tabs Switcher
+  dashTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      dashTabs.forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      const targetTab = tab.getAttribute('data-tab');
+
+      document.querySelectorAll('.dash-pane').forEach((pane) => {
+        pane.style.display = pane.id === `pane-${targetTab}` ? 'block' : 'none';
+      });
+    });
+  });
+
+  // Menu Bar Popover Toggle
+  if (menuPill && menuPopover) {
+    menuPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isVisible = menuPopover.style.display === 'flex';
+      menuPopover.style.display = isVisible ? 'none' : 'flex';
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menuPopover.contains(e.target) && !menuPill.contains(e.target)) {
+        menuPopover.style.display = 'none';
+      }
+    });
+  }
+
+  if (popToggleHud) {
+    popToggleHud.addEventListener('click', () => {
+      const isHidden = hudPill.style.display === 'none' && (!dashboard || dashboard.style.display === 'none');
+      if (isHidden) {
+        hudPill.style.display = 'block';
+        popToggleHud.querySelector('.pop-highlight').textContent = 'Visible (Level 1001)';
+      } else {
+        hudPill.style.display = 'none';
+        if (dashboard) dashboard.style.display = 'none';
+        popToggleHud.querySelector('.pop-highlight').textContent = 'Hidden';
+      }
+    });
+  }
+
+  if (popQuit && menuPopover) {
+    popQuit.addEventListener('click', () => {
+      menuPopover.style.display = 'none';
+      if (hudPill) hudPill.style.display = 'none';
+      if (dashboard) dashboard.style.display = 'none';
+      setTimeout(() => {
+        if (hudPill) hudPill.style.display = 'block';
+      }, 1200);
+    });
+  }
+
+  // Draggable Mechanics for Floating HUD and Dashboard
+  makeElementDraggable(hudPill, canvas, document.getElementById('sim-hud-drag-handle'));
+  makeElementDraggable(dashboard, canvas, document.getElementById('sim-dash-drag-handle'));
+
+  function makeElementDraggable(el, container, handle) {
+    if (!el || !container) return;
+    const dragTarget = handle || el;
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialLeft = 0;
+    let initialTop = 0;
+
+    dragTarget.addEventListener('pointerdown', (e) => {
+      // Ignore clicks on buttons or interactive inputs
+      if (e.target.closest('button') || e.target.closest('.btn-interactive')) return;
+
+      isDragging = true;
+      el.classList.add('is-dragging');
+      dragTarget.setPointerCapture(e.pointerId);
+
+      const rect = el.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      initialLeft = rect.left - containerRect.left;
+      initialTop = rect.top - containerRect.top;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      e.preventDefault();
+    });
+
+    dragTarget.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+      const elWidth = el.offsetWidth;
+      const elHeight = el.offsetHeight;
+
+      let newLeft = initialLeft + dx;
+      let newTop = initialTop + dy;
+
+      // Constrain inside container bounds
+      const minX = 6;
+      const maxX = Math.max(minX, containerWidth - elWidth - 6);
+      const minY = 6;
+      const maxY = Math.max(minY, containerHeight - elHeight - 6);
+
+      newLeft = Math.max(minX, Math.min(newLeft, maxX));
+      newTop = Math.max(minY, Math.min(newTop, maxY));
+
+      el.style.left = `${newLeft}px`;
+      el.style.top = `${newTop}px`;
+      el.style.right = 'auto';
+      el.style.bottom = 'auto';
+    });
+
+    const stopDrag = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      el.classList.remove('is-dragging');
+      try {
+        dragTarget.releasePointerCapture(e.pointerId);
+      } catch (err) {
+        // Ignored
+      }
+    };
+
+    dragTarget.addEventListener('pointerup', stopDrag);
+    dragTarget.addEventListener('pointercancel', stopDrag);
+  }
+}
+

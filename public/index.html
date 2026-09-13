@@ -152,12 +152,44 @@
               <span class="menubar-item">Help</span>
             </div>
             <div class="menubar-right">
-              <!-- Live Menu Bar Pill -->
-              <div class="menubar-qota-pill">
+              <!-- Live Menu Bar Pill (Interactive) -->
+              <div class="menubar-qota-pill" id="sim-menubar-pill" title="Click to open status menu">
                 <span class="pill-dot"></span>
-                <span class="pill-pct mono">88%</span>
-                <span class="pill-model mono">AGY FLASH</span>
+                <span class="pill-pct mono" id="sim-menu-pct">88%</span>
+                <span class="pill-model mono" id="sim-menu-model">AGY FLASH</span>
               </div>
+
+              <!-- Status Popover Dropdown -->
+              <div id="sim-menubar-popover" class="macos-menu-popover" style="display: none;">
+                <div class="pop-header mono">
+                  <span class="pop-dot"></span>
+                  <span>QOTA Telemetry &bull; Healthy</span>
+                </div>
+                <div class="pop-divider"></div>
+                <div class="pop-item mono" id="pop-cycle-model">
+                  <span>Active Model</span>
+                  <span id="pop-model-val" class="pop-highlight">Gemini 3.8 Flash</span>
+                </div>
+                <div class="pop-item mono">
+                  <span>5h Sprint Window</span>
+                  <span id="pop-sprint-val">220 / 250u (88%)</span>
+                </div>
+                <div class="pop-item mono">
+                  <span>7-Day Baseline</span>
+                  <span id="pop-weekly-val">97% Remaining</span>
+                </div>
+                <div class="pop-divider"></div>
+                <div class="pop-item mono" id="pop-toggle-hud">
+                  <span>Floating HUD</span>
+                  <span class="pop-highlight">Visible (Level 1001)</span>
+                </div>
+                <div class="pop-divider"></div>
+                <div class="pop-item mono text-muted" id="pop-quit">
+                  <span>Quit QOTA</span>
+                  <span>⌘Q</span>
+                </div>
+              </div>
+
               <span class="menubar-icon">&wifi;</span>
               <span class="menubar-icon">&empty;</span>
               <span class="menubar-time mono" id="mac-clock-time">Thu 11:32 AM</span>
@@ -193,42 +225,163 @@
 
 hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
 
-              <!-- Floating Tactile HUD Micro-Pill (Level 1001 Replica) -->
-              <div class="screen-hud-pill">
-                <div class="hud-header-row">
-                  <div class="hud-brand-tag mono">AGY</div>
-                  <div class="hud-model-title">Gemini 3.8 Flash (High)</div>
-                  <div class="hud-rate-badge mono">1x &bull; 88%</div>
-                </div>
-
-                <!-- Dual Progress Limit Rails -->
-                <div class="hud-rail-section">
-                  <div class="rail-title-row mono">
-                    <span>5-HOUR SPRINT LIMIT</span>
-                    <span>220 / 250u</span>
-                  </div>
-                  <div class="rail-bar-track">
-                    <div class="rail-bar-fill sprint-fill" style="width: 88%;">
-                      <div class="rail-glow"></div>
+              <!-- Floating Tactile HUD (Authentic Level 1001 Island HUD) -->
+              <div id="sim-hud-pill" class="screen-hud-pill sim-draggable" title="Drag to reposition &bull; Double-click to expand">
+                <div class="hud-drag-zone" id="sim-hud-drag-handle">
+                  <!-- Top Line: Model Name, Assistant Tag, and Actions -->
+                  <div class="hud-header-row">
+                    <button id="sim-hud-asst-badge" class="hud-brand-tag mono btn-interactive" title="Click to cycle model">AGY</button>
+                    <div id="sim-hud-model-name" class="hud-model-title">Gemini 3.8 Flash (High)</div>
+                    <div id="sim-hud-rate-badge" class="hud-rate-badge mono">1x &bull; 88%</div>
+                    <div class="hud-actions-group">
+                      <button id="sim-hud-7d-toggle" class="hud-mini-btn active mono" title="Toggle 7D Baseline Rail">7D</button>
+                      <button id="sim-hud-expand-btn" class="hud-mini-btn" title="Expand Full Matrix Dashboard">
+                        <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2.2" fill="none">
+                          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+                        </svg>
+                      </button>
                     </div>
                   </div>
 
-                  <div class="rail-title-row mono weekly-row">
-                    <span>7-DAY BASELINE</span>
-                    <span>97%</span>
-                  </div>
-                  <div class="rail-bar-track">
-                    <div class="rail-bar-fill weekly-fill" style="width: 97%;">
-                      <div class="rail-glow"></div>
+                  <!-- Dual Progress Limit Rails -->
+                  <div class="hud-rail-section">
+                    <!-- Progress Rail 1: 5-Hour Limit Straight Rail -->
+                    <div class="hud-rail-item" id="sim-sprint-rail-item">
+                      <div class="rail-title-row mono">
+                        <span>5-HOUR SPRINT LIMIT</span>
+                        <span id="sim-sprint-units">220 / 250u</span>
+                      </div>
+                      <div class="rail-bar-track">
+                        <div id="sim-sprint-fill" class="rail-bar-fill sprint-fill" style="width: 88%;">
+                          <div class="rail-glow"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Progress Rail 2: Weekly Limit Straight Rail -->
+                    <div class="hud-rail-item" id="sim-weekly-rail-item">
+                      <div class="rail-title-row mono weekly-row">
+                        <span>7-DAY BASELINE</span>
+                        <span id="sim-weekly-pct">97%</span>
+                      </div>
+                      <div class="rail-bar-track">
+                        <div id="sim-weekly-fill" class="rail-bar-fill weekly-fill" style="width: 97%;">
+                          <div class="rail-glow"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="hud-bottom-row mono">
-                  <span>RESETS IN 3H 14M</span>
-                  <span>ZERO CLOUD RELAYS</span>
+                  <!-- Bottom Telemetry Status Row -->
+                  <div class="hud-bottom-row mono">
+                    <span id="sim-reset-timer">RESETS IN 3H 14M</span>
+                    <span class="zero-cloud-tag">ZERO CLOUD RELAYS</span>
+                  </div>
                 </div>
               </div>
+
+              <!-- Interactive Expanded Matrix Dashboard Replica (Opened via [↗] or double-click) -->
+              <div id="sim-hud-dashboard" class="sim-dashboard-shell sim-draggable" style="display: none;">
+                <div class="dash-header" id="sim-dash-drag-handle">
+                  <div class="dash-brand">
+                    <svg class="dash-orbit" viewBox="0 0 32 32" width="16" height="16">
+                      <circle cx="16" cy="16" r="13" fill="none" stroke="#2ea043" stroke-width="2" />
+                      <circle cx="16" cy="16" r="9" fill="none" stroke="#2ea043" stroke-width="1.2" opacity="0.6" />
+                      <polygon points="16,7 23,16 16,25 9,16" fill="#2ea043" opacity="0.8" />
+                    </svg>
+                    <span class="dash-title mono">QOTA</span>
+                    <span class="dash-status safe mono">HEALTHY</span>
+                  </div>
+                  <div class="dash-controls">
+                    <button id="sim-dash-collapse" class="dash-ctrl-btn" title="Collapse to Floating HUD">
+                      <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.2" fill="none">
+                        <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>
+                      </svg>
+                    </button>
+                    <button id="sim-dash-sync" class="dash-ctrl-btn" title="Refresh Telemetry">
+                      <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.2" fill="none">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                      </svg>
+                    </button>
+                    <button id="sim-dash-close" class="dash-ctrl-btn" title="Close">
+                      <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.2" fill="none">
+                        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="dash-tabs mono">
+                  <button class="dash-tab active" data-tab="quotas">Quotas</button>
+                  <button class="dash-tab" data-tab="models">Models</button>
+                  <button class="dash-tab" data-tab="settings">Settings</button>
+                </div>
+
+                <div class="dash-content">
+                  <div class="dash-pane active" id="pane-quotas">
+                    <div class="dash-tile">
+                      <div class="tile-label-row mono">
+                        <span>WEEKLY BASELINE CAP</span>
+                        <span class="chip-safe mono">NORMAL</span>
+                      </div>
+                      <div class="tile-val-row mono">
+                        <span id="dash-weekly-units">2,716 / 2,800 units</span>
+                        <span id="dash-weekly-pct">97%</span>
+                      </div>
+                      <div class="rail-bar-track">
+                        <div id="dash-weekly-fill" class="rail-bar-fill weekly-fill" style="width: 97%;"></div>
+                      </div>
+                    </div>
+
+                    <div class="dash-tile">
+                      <div class="tile-label-row mono">
+                        <span id="dash-active-model-title">GEMINI 3.8 FLASH (HIGH)</span>
+                        <span id="dash-active-multiplier" class="chip-mult mono">1x</span>
+                      </div>
+                      <div class="tile-val-row mono">
+                        <span id="dash-sprint-units">220 / 250 units (88%)</span>
+                        <span id="dash-reset-timer" style="color: #8b949e;">Resets in 3h 14m</span>
+                      </div>
+                      <div class="rail-bar-track">
+                        <div id="dash-sprint-fill" class="rail-bar-fill sprint-fill" style="width: 88%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="dash-pane" id="pane-models" style="display: none;">
+                    <div class="model-row-item">
+                      <span class="mono">Gemini 3.8 Flash</span>
+                      <span class="mono tag-unit">1 unit (1x)</span>
+                    </div>
+                    <div class="model-row-item">
+                      <span class="mono">Claude 3.7 Sonnet</span>
+                      <span class="mono tag-unit">4 units (4x)</span>
+                    </div>
+                    <div class="model-row-item">
+                      <span class="mono">OpenAI o3-mini</span>
+                      <span class="mono tag-unit">2 units (2x)</span>
+                    </div>
+                  </div>
+
+                  <div class="dash-pane" id="pane-settings" style="display: none;">
+                    <div class="settings-row mono">
+                      <span>Window Level</span>
+                      <span style="color: #2ea043;">NSScreenSaver (1001)</span>
+                    </div>
+                    <div class="settings-row mono">
+                      <span>Database Path</span>
+                      <span>~/.gemini/antigravity</span>
+                    </div>
+                    <div class="settings-row mono">
+                      <span>Telemetry Mode</span>
+                      <span style="color: #2ea043;">100% Local / Zero Cloud</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Guide Hint -->
+              <div class="canvas-hint mono" id="sim-drag-hint">✦ Tactile HUD: Drag to reposition &bull; Click AGY to switch model &bull; Click ↗ to expand</div>
             </div>
           </div>
         </div>
@@ -262,15 +415,15 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
             <div class="t-card-visual">
               <div class="t-visual-item">
                 <span class="t-dot green"></span>
-                <span><strong>macOS:</strong> Unzip &amp; double-click <code>Install-Qota.command</code></span>
+                <span class="one-liner"><strong>macOS:</strong> Run <code>Install-Qota.command</code></span>
               </div>
               <div class="t-visual-item">
                 <span class="t-dot green"></span>
-                <span><strong>Windows:</strong> Unzip &amp; run <code>install.bat</code></span>
+                <span class="one-liner"><strong>Windows:</strong> Run <code>install.bat</code></span>
               </div>
               <div class="t-visual-item">
                 <span class="t-dot green"></span>
-                <span><strong>Android:</strong> Enable floating overlay permission</span>
+                <span class="one-liner"><strong>Android:</strong> Grant overlay permission</span>
               </div>
             </div>
             <div class="t-card-foot mono">
@@ -291,15 +444,15 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
             <div class="t-card-visual">
               <div class="t-visual-item">
                 <span class="t-dot blue"></span>
-                <span>Stays in front of full-screen VS Code &amp; Ghostty</span>
+                <span class="one-liner">Floats over full-screen VS Code &amp; Ghostty</span>
               </div>
               <div class="t-visual-item">
                 <span class="t-dot blue"></span>
-                <span>Live percentage readout in the native menu bar</span>
+                <span class="one-liner">Live % readout in native menu bar</span>
               </div>
               <div class="t-visual-item">
                 <span class="t-dot blue"></span>
-                <span>Hover to view cycle resets and multipliers</span>
+                <span class="one-liner">Hover to view resets &amp; multipliers</span>
               </div>
             </div>
             <div class="t-card-foot mono">
@@ -320,15 +473,15 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
             <div class="t-card-visual">
               <div class="t-visual-item">
                 <span class="t-dot orange"></span>
-                <span><strong>Gemini 3.8 Flash:</strong> 1x multiplier (1u)</span>
+                <span class="one-liner"><strong>Gemini Flash:</strong> 1x multiplier (1u)</span>
               </div>
               <div class="t-visual-item">
                 <span class="t-dot orange"></span>
-                <span><strong>OpenAI o3-mini:</strong> 2x multiplier (2u)</span>
+                <span class="one-liner"><strong>OpenAI o3-mini:</strong> 2x multiplier (2u)</span>
               </div>
               <div class="t-visual-item">
                 <span class="t-dot orange"></span>
-                <span><strong>Claude Sonnet:</strong> 4x multiplier (4u)</span>
+                <span class="one-liner"><strong>Claude Sonnet:</strong> 4x multiplier (4u)</span>
               </div>
             </div>
             <div class="t-card-foot mono">
