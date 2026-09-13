@@ -8,11 +8,15 @@
 *A sleek, glassmorphic desktop Menu Bar (macOS) and System Tray (Windows) instrument for tracking remaining quotas across Google Antigravity, Claude Code, and OpenAI Codex.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg?style=flat-square)](LICENSE)
-[![Website](https://img.shields.io/badge/Website-jlsonon.github.io%2Fqota-black.svg?style=flat-square)](https://jlsonon.github.io/qota)
+[![Website](https://img.shields.io/badge/Website-Live%20Showcase-black.svg?style=flat-square)](https://jlsonon.github.io/qota)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-black.svg?style=flat-square)](https://github.com/jlsonon/qota)
 [![Tests](https://img.shields.io/badge/Tests-13%2F13%20Passed-black.svg?style=flat-square)](test/)
 [![Privacy: Zero Cloud](https://img.shields.io/badge/Privacy-100%25%20Local%20Telemetry-black.svg?style=flat-square)](#zero-cloud-telemetry--privacy)
 [![UI: Obsidian Monochrome](https://img.shields.io/badge/Design-Architectural%20Monochrome-black.svg?style=flat-square)](#design-philosophy)
+
+<br/>
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjlsonon%2Fqota&project-name=qota&root-directory=website)
 
 </div>
 
