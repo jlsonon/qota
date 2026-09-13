@@ -456,7 +456,7 @@ function initInteractiveShowcase() {
 }
 
 /* --------------------------------------------------------------------------
-   GitHub Stars Manager
+   GitHub Stars Manager (Live Polling + Optimistic +1)
    -------------------------------------------------------------------------- */
 function initGitHubStars() {
   const navStars = document.getElementById('gh-nav-stars');
@@ -464,9 +464,12 @@ function initGitHubStars() {
 
   const CACHE_KEY = 'qota_gh_stars';
   const CACHE_TIME_KEY = 'qota_gh_stars_time';
-  const CACHE_DURATION = 3600 * 1000; // 1 hour
+  const CLICKED_KEY = 'qota_gh_starred_optimistic';
+  const CACHE_DURATION = 60 * 1000; // 1 minute fresh cache
 
-  // Check cached count
+  let currentStarsCount = 1;
+
+  // Initialize from cache if recent, else fetch immediately
   const cached = localStorage.getItem(CACHE_KEY);
   const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
   if (cached && cachedTime && Date.now() - parseInt(cachedTime, 10) < CACHE_DURATION) {
@@ -475,41 +478,82 @@ function initGitHubStars() {
     fetchRepoStars();
   }
 
+  // Periodic background polling (every 60s when user is active on tab)
+  setInterval(() => {
+    if (document.visibilityState === 'visible') {
+      fetchRepoStars();
+    }
+  }, 60000);
+
+  // Re-fetch immediately when user returns to this tab from GitHub
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      fetchRepoStars();
+    }
+  });
+
   async function fetchRepoStars() {
     try {
       const res = await fetch('https://api.github.com/repos/jlsonon/qota');
       if (res.ok) {
         const data = await res.json();
         if (typeof data.stargazers_count === 'number') {
-          const formatted = data.stargazers_count >= 1000
-            ? (data.stargazers_count / 1000).toFixed(1) + 'k'
-            : data.stargazers_count.toString();
+          currentStarsCount = data.stargazers_count;
+          const formatted = formatCount(currentStarsCount);
           localStorage.setItem(CACHE_KEY, formatted);
           localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
           applyStars(formatted);
         }
       }
     } catch (e) {
-      // Offline or rate-limited: default fallback remains
+      // Offline or network error: retain current display
     }
   }
 
-  function applyStars(count) {
-    if (navStars) navStars.textContent = count;
-    if (heroStars) heroStars.textContent = count;
+  function formatCount(num) {
+    return num >= 1000 ? (num / 1000).toFixed(1) + 'k' : num.toString();
   }
 
-  // Celebratory click reaction on star buttons
+  function applyStars(countStr) {
+    if (navStars) {
+      navStars.textContent = countStr;
+      triggerBounce(navStars);
+    }
+    if (heroStars) {
+      heroStars.textContent = countStr;
+      triggerBounce(heroStars);
+    }
+  }
+
+  function triggerBounce(el) {
+    el.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    el.style.transform = 'scale(1.18)';
+    setTimeout(() => {
+      el.style.transform = '';
+    }, 250);
+  }
+
+  // Optimistic +1 and celebratory micro-interaction on click
   const starButtons = document.querySelectorAll('.nav-github-star, .hero-star-badge');
   starButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const starIcon = btn.querySelector('.star-icon, .star-sparkle');
       if (starIcon) {
-        starIcon.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        starIcon.style.transform = 'scale(1.5) rotate(35deg)';
+        starIcon.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        starIcon.style.transform = 'scale(1.6) rotate(35deg)';
         setTimeout(() => {
           starIcon.style.transform = '';
-        }, 350);
+        }, 400);
+      }
+
+      // Optimistic increment if not already clicked in this browser
+      if (!sessionStorage.getItem(CLICKED_KEY)) {
+        sessionStorage.setItem(CLICKED_KEY, 'true');
+        currentStarsCount += 1;
+        const newFormatted = formatCount(currentStarsCount);
+        localStorage.setItem(CACHE_KEY, newFormatted);
+        localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+        applyStars(newFormatted);
       }
     });
   });
