@@ -1,12 +1,6 @@
 # Vercel Ignore File
-# Ignore heavy OS binaries (>100MB exceeds Vercel static file limits)
+# Exclude OS binaries >100MB to comply with Vercel limits
 macos/Qota-macOS-Universal.dmg
 macos/Qota.app
-windows/Qota-Windows-Portable
 android/app/build
-node_modules
-.git
-.github
 test
-src
-assets

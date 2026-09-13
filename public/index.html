@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QOTA — Real-time AI Quota HUD &amp; Menu Bar</title>
+  <meta name="description" content="Satisfying, real-time AI quota tracking for your Mac and Windows. Persistent floating HUD anchored above all windows with zero cloud relays.">
+  <meta name="theme-color" content="#F5F5F5">
+
+  <!-- Architectural Monochrome Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation (Keeby Style) -->
+  <header class="navbar-wrap">
+    <nav class="navbar" aria-label="Main navigation">
+      <!-- Left: Logo & Wordmark -->
+      <a href="#" class="brand-link" aria-label="QOTA Home">
+        <img src="favicon.svg" alt="QOTA Logo" class="brand-logo-img" width="32" height="32">
+        <span class="brand-name">QOTA</span>
+      </a>
+
+      <!-- Center Status Pill -->
+      <div class="status-pill-wrap">
+        <span class="status-live-dot">
+          <span class="ping-ring"></span>
+          <span class="ping-dot"></span>
+        </span>
+        <span class="status-pill-text">v1.0.4 &bull; 100% Local Daemon</span>
+      </div>
+
+      <!-- Right: Links & CTA -->
+      <div class="nav-right">
+        <a href="#tutorial" class="nav-link">Tutorial</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#specs" class="nav-link">Specs</a>
+        <a href="#download" class="nav-btn-dark">
+          <svg viewBox="0 0 17 20" width="13" height="15" fill="currentColor">
+            <path d="M12.15 0c.12 1.17-.35 2.33-1.05 3.17-.71.84-1.85 1.5-2.97 1.41-.14-1.13.36-2.33 1.03-3.07C9.87.67 11.06.06 12.15 0zm3.56 6.82c-.09.05-2.12 1.22-2.1 3.63.02 2.88 2.54 3.87 2.57 3.88-.02.07-.4 1.37-1.33 2.72-.82 1.17-1.67 2.34-3.01 2.36-1.32.02-1.74-.78-3.25-.78s-1.99.76-3.24.8c-1.29.04-2.27-1.27-3.1-2.43C.55 14.72-.73 10.2 1.03 7.14c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.49.87 3.27.87.78 0 2.24-1.07 3.77-.91.64.03 2.45.26 3.61 1.95l-.09.08z"/>
+          </svg>
+          <span>Download</span>
+        </a>
+        <!-- Light / Dark Toggle -->
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14l-1.41 1.41"/>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Keeby-Style Hero Section -->
+    <section class="hero-section">
+      <div class="hero-container">
+        <!-- Top App Icon & Status Badge -->
+        <div class="hero-badge-row">
+          <div class="app-icon-squircle">
+            <img src="favicon.svg" alt="QOTA App Icon" width="64" height="64">
+          </div>
+          <div class="hero-live-pill">
+            <span class="live-dot-pulse"></span>
+            <span class="mono">LIVE MENU BAR TELEMETRY</span>
+          </div>
+        </div>
+
+        <!-- Main Hero Title -->
+        <h1 class="hero-title">
+          Your AI quotas,<br>
+          <span class="hero-title-accent">but effortless.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Satisfying, real-time quota tracking for your Mac and Windows.
+          Continuous local telemetry for <strong>Antigravity</strong>, <strong>Claude Code</strong>, and <strong>OpenAI Codex</strong>.
+        </p>
+
+        <!-- Primary CTA Buttons -->
+        <div class="hero-cta-group">
+          <!-- macOS Download Button -->
+          <a href="downloads/qota-macos.zip" class="cta-primary-btn" download="qota-macos.zip" id="btn-hero-mac">
+            <svg viewBox="0 0 17 20" width="20" height="22" fill="currentColor">
+              <path d="M12.15 0c.12 1.17-.35 2.33-1.05 3.17-.71.84-1.85 1.5-2.97 1.41-.14-1.13.36-2.33 1.03-3.07C9.87.67 11.06.06 12.15 0zm3.56 6.82c-.09.05-2.12 1.22-2.1 3.63.02 2.88 2.54 3.87 2.57 3.88-.02.07-.4 1.37-1.33 2.72-.82 1.17-1.67 2.34-3.01 2.36-1.32.02-1.74-.78-3.25-.78s-1.99.76-3.24.8c-1.29.04-2.27-1.27-3.1-2.43C.55 14.72-.73 10.2 1.03 7.14c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.49.87 3.27.87.78 0 2.24-1.07 3.77-.91.64.03 2.45.26 3.61 1.95l-.09.08z"/>
+            </svg>
+            <div class="cta-btn-text">
+              <span class="cta-btn-sub">One-Click Installer &bull; ZIP</span>
+              <span class="cta-btn-main">Download for macOS</span>
+            </div>
+          </a>
+
+          <!-- Windows Download Button -->
+          <a href="downloads/qota-windows.zip" class="cta-secondary-btn" download="qota-windows.zip" id="btn-hero-win">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4h-13.051M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.899"/>
+            </svg>
+            <div class="cta-btn-text">
+              <span class="cta-btn-sub">Installer &bull; Portable &bull; ZIP</span>
+              <span class="cta-btn-main">Download for Windows</span>
+            </div>
+          </a>
+        </div>
+
+        <p class="hero-foot-note">
+          Free &amp; open-source &bull; No credit card &bull; 100% Offline &bull; v1.0.4
+        </p>
+
+        <!-- Quick Terminal Snippet -->
+        <div class="hero-cli-bar">
+          <div class="cli-label mono">CLI QUICKSTART</div>
+          <code class="cli-cmd mono">git clone https://github.com/jlsonon/qota.git &amp;&amp; cd qota &amp;&amp; npm start</code>
+          <button type="button" class="cli-copy-action mono" id="hero-copy-btn">COPY</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keeby-Style MacBook Visualizer Frame -->
+    <section class="visualizer-section" id="showcase">
+      <div class="vis-container">
+        <div class="macbook-frame">
+          <!-- macOS Desktop Menu Bar -->
+          <div class="macos-menubar">
+            <div class="menubar-left">
+              <span class="apple-glyph">&apple;</span>
+              <span class="menubar-app">Qota</span>
+              <span class="menubar-item">File</span>
+              <span class="menubar-item">Edit</span>
+              <span class="menubar-item">View</span>
+              <span class="menubar-item">Window</span>
+              <span class="menubar-item">Help</span>
+            </div>
+            <div class="menubar-right">
+              <!-- Live Menu Bar Pill -->
+              <div class="menubar-qota-pill">
+                <span class="pill-dot"></span>
+                <span class="pill-pct mono">88%</span>
+                <span class="pill-model mono">AGY FLASH</span>
+              </div>
+              <span class="menubar-icon">&wifi;</span>
+              <span class="menubar-icon">&empty;</span>
+              <span class="menubar-time mono" id="mac-clock-time">Thu 11:32 AM</span>
+            </div>
+          </div>
+
+          <!-- Screen Canvas with Full-Screen Editor & Floating HUD -->
+          <div class="mac-canvas">
+            <div class="canvas-editor-header">
+              <div class="canvas-dots">
+                <span class="c-dot red"></span>
+                <span class="c-dot yellow"></span>
+                <span class="c-dot green"></span>
+              </div>
+              <span class="canvas-title mono">daemon.ts &bull; Full Screen Space</span>
+              <span class="canvas-level-tag mono">NSScreenSaver (Level 1001)</span>
+            </div>
+
+            <div class="canvas-body">
+              <pre class="canvas-code mono"><code><span class="c-comment">// QOTA: Background Session Telemetry Daemon</span>
+<span class="c-keyword">import</span> { QuotaEngine, DesktopHUD } <span class="c-keyword">from</span> <span class="c-string">'@qota/core'</span>;
+
+<span class="c-const">const</span> hud = <span class="c-keyword">new</span> <span class="c-func">DesktopHUD</span>({
+  windowLevel: <span class="c-string">'screen-saver'</span>, <span class="c-comment">// Stays above full-screen IDEs</span>
+  multipliers: {
+    gemini: <span class="c-number">1</span>,  <span class="c-comment">// Flash 3.8 (1 unit)</span>
+    codex:  <span class="c-number">2</span>,  <span class="c-comment">// o3-mini (2 units)</span>
+    claude: <span class="c-number">4</span>,  <span class="c-comment">// Sonnet 4.6 (4 units)</span>
+    opus:   <span class="c-number">8</span>   <span class="c-comment">// Opus / o1 (8 units)</span>
+  },
+  watchPaths: [<span class="c-string">'~/.gemini/antigravity'</span>, <span class="c-string">'~/.claude/sessions'</span>]
+});
+
+hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
+
+              <!-- Floating Tactile HUD Micro-Pill (Level 1001 Replica) -->
+              <div class="screen-hud-pill">
+                <div class="hud-header-row">
+                  <div class="hud-brand-tag mono">AGY</div>
+                  <div class="hud-model-title">Gemini 3.8 Flash (High)</div>
+                  <div class="hud-rate-badge mono">1x &bull; 88%</div>
+                </div>
+
+                <!-- Dual Progress Limit Rails -->
+                <div class="hud-rail-section">
+                  <div class="rail-title-row mono">
+                    <span>5-HOUR SPRINT LIMIT</span>
+                    <span>220 / 250u</span>
+                  </div>
+                  <div class="rail-bar-track">
+                    <div class="rail-bar-fill sprint-fill" style="width: 88%;">
+                      <div class="rail-glow"></div>
+                    </div>
+                  </div>
+
+                  <div class="rail-title-row mono weekly-row">
+                    <span>7-DAY BASELINE</span>
+                    <span>97%</span>
+                  </div>
+                  <div class="rail-bar-track">
+                    <div class="rail-bar-fill weekly-fill" style="width: 97%;">
+                      <div class="rail-glow"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hud-bottom-row mono">
+                  <span>RESETS IN 3H 14M</span>
+                  <span>ZERO CLOUD RELAYS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vis-caption">
+          <p><strong>NSScreenSaverWindowLevel (1001)</strong>: Floating HUD stays tactile and visible even in native macOS Full Screen spaces.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keeby-Style 3-Step Visual Tutorial ("See it in action") -->
+    <section class="tutorial-section" id="tutorial">
+      <div class="section-container">
+        <div class="section-header text-center">
+          <span class="pill-kicker mono">TUTORIAL &bull; 3 EASY STEPS</span>
+          <h2 class="section-title">See it in action.</h2>
+          <p class="section-sub">Up and running in 60 seconds. Zero config, no API keys, and no login required.</p>
+        </div>
+
+        <div class="tutorial-card-grid">
+          <!-- Step 1 Card -->
+          <div class="t-card">
+            <div class="t-card-top">
+              <span class="t-step-num mono">01</span>
+              <span class="t-step-tag mono">INSTALL</span>
+            </div>
+            <h3 class="t-card-title">Download &amp; Launch</h3>
+            <p class="t-card-desc">
+              Download the universal build for macOS or Windows. QOTA attaches quietly to your system status bar and launches a local daemon.
+            </p>
+            <div class="t-card-visual">
+              <div class="t-visual-item">
+                <span class="t-dot green"></span>
+                <span><strong>macOS:</strong> Unzip &amp; double-click <code>Install-Qota.command</code></span>
+              </div>
+              <div class="t-visual-item">
+                <span class="t-dot green"></span>
+                <span><strong>Windows:</strong> Unzip &amp; run <code>install.bat</code></span>
+              </div>
+              <div class="t-visual-item">
+                <span class="t-dot green"></span>
+                <span><strong>Android:</strong> Enable floating overlay permission</span>
+              </div>
+            </div>
+            <div class="t-card-foot mono">
+              <span>Ready on first launch &bull; No restart</span>
+            </div>
+          </div>
+
+          <!-- Step 2 Card -->
+          <div class="t-card">
+            <div class="t-card-top">
+              <span class="t-step-num mono">02</span>
+              <span class="t-step-tag mono">PERSISTENCE</span>
+            </div>
+            <h3 class="t-card-title">Anchored Floating HUD</h3>
+            <p class="t-card-desc">
+              Standard windows vanish when you go full-screen. QOTA commands Cocoa level 1001 to float permanently in your peripheral vision without stealing window focus.
+            </p>
+            <div class="t-card-visual">
+              <div class="t-visual-item">
+                <span class="t-dot blue"></span>
+                <span>Stays in front of full-screen VS Code &amp; Ghostty</span>
+              </div>
+              <div class="t-visual-item">
+                <span class="t-dot blue"></span>
+                <span>Live percentage readout in the native menu bar</span>
+              </div>
+              <div class="t-visual-item">
+                <span class="t-dot blue"></span>
+                <span>Hover to view cycle resets and multipliers</span>
+              </div>
+            </div>
+            <div class="t-card-foot mono">
+              <span>Cocoa NSScreenSaverWindowLevel</span>
+            </div>
+          </div>
+
+          <!-- Step 3 Card -->
+          <div class="t-card">
+            <div class="t-card-top">
+              <span class="t-step-num mono">03</span>
+              <span class="t-step-tag mono">TELEMETRY</span>
+            </div>
+            <h3 class="t-card-title">Automatic Local Accounting</h3>
+            <p class="t-card-desc">
+              QOTA hooks directly into local session files and SQLite transcripts in <code>~/.gemini</code> and <code>~/.claude</code>. Prompts deduct weighted units in real-time.
+            </p>
+            <div class="t-card-visual">
+              <div class="t-visual-item">
+                <span class="t-dot orange"></span>
+                <span><strong>Gemini 3.8 Flash:</strong> 1x multiplier (1u)</span>
+              </div>
+              <div class="t-visual-item">
+                <span class="t-dot orange"></span>
+                <span><strong>OpenAI o3-mini:</strong> 2x multiplier (2u)</span>
+              </div>
+              <div class="t-visual-item">
+                <span class="t-dot orange"></span>
+                <span><strong>Claude Sonnet:</strong> 4x multiplier (4u)</span>
+              </div>
+            </div>
+            <div class="t-card-foot mono">
+              <span>100% Private &bull; 0 bytes network egress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keeby-Style Feature Grid (6 Cards) -->
+    <section class="features-section" id="features">
+      <div class="section-container">
+        <div class="section-header text-center">
+          <span class="pill-kicker mono">DESIGNED FOR CLARITY</span>
+          <h2 class="section-title">Built with tactile precision.</h2>
+          <p class="section-sub">Everything you need to keep continuous visibility over your sprint budgets.</p>
+        </div>
+
+        <div class="features-grid">
+          <!-- 1. Menu Bar App -->
+          <div class="feature-box">
+            <div class="feature-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h3 class="feature-heading">All from your menu bar</h3>
+            <p class="feature-text">Live percentage and assistant indicators rest quietly beside your clock and Wi-Fi tray, giving you instant glanceability.</p>
+          </div>
+
+          <!-- 2. Hardware Level 1001 -->
+          <div class="feature-box">
+            <div class="feature-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                <polyline points="2 17 12 22 22 17"/>
+                <polyline points="2 12 12 17 22 12"/>
+              </svg>
+            </div>
+            <h3 class="feature-heading">Level 1001 Overlay</h3>
+            <p class="feature-text">Never gets trapped behind native full-screen IDEs. Binds to Cocoa NSScreenSaverWindowLevel across every workspace.</p>
+          </div>
+
+          <!-- 3. Completely Private -->
+          <div class="feature-box">
+            <div class="feature-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <h3 class="feature-heading">Completely Private</h3>
+            <p class="feature-text">Zero network access. No API keys, no passwords, no tokens sent to third-party servers. All session parsing is strictly local.</p>
+          </div>
+
+          <!-- 4. Multi-Model Weights -->
+          <div class="feature-box">
+            <div class="feature-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <h3 class="feature-heading">Proportional Multipliers</h3>
+            <p class="feature-text">Accurately tracks consumption across different models. Flash 1x, o3-mini 2x, Sonnet 4x, Opus 8x with dual sprint and weekly rails.</p>
+          </div>
+
+          <!-- 5. Low Latency & Memory -->
+          <div class="feature-box">
+            <div class="feature-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <h3 class="feature-heading">Whisper-Quiet Daemon</h3>
+            <p class="feature-text">Under 28MB resident memory footprint. Negligible CPU usage with native OS filesystem event listeners.</p>
+          </div>
+
+          <!-- 6. Multi-Platform Ready -->
+          <div class="feature-box">
+            <div class="feature-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                <rect x="9" y="9" width="6" height="6"/>
+                <line x1="9" y1="1" x2="9" y2="4"/>
+                <line x1="15" y1="1" x2="15" y2="4"/>
+                <line x1="9" y1="20" x2="9" y2="23"/>
+                <line x1="15" y1="20" x2="15" y2="23"/>
+              </svg>
+            </div>
+            <h3 class="feature-heading">Universal Deployment</h3>
+            <p class="feature-text">Universal binaries for Apple Silicon &amp; Intel, Windows 10/11 standalone installer, and Android floating overlay.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specifications Table Section -->
+    <section class="specs-section" id="specs">
+      <div class="section-container">
+        <div class="section-header text-center">
+          <span class="pill-kicker mono">TECHNICAL ARCHITECTURE</span>
+          <h2 class="section-title">Model Multipliers &amp; Hardware Specs</h2>
+        </div>
+
+        <div class="specs-wrapper">
+          <!-- Table -->
+          <div class="specs-card">
+            <h3 class="specs-card-title mono">MODEL MULTIPLIER MATRIX</h3>
+            <table class="keeby-table mono">
+              <thead>
+                <tr>
+                  <th>ASSISTANT / ENGINE</th>
+                  <th>MULTIPLIER</th>
+                  <th>COST / PROMPT</th>
+                  <th>LOCAL SOCKET</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Google Antigravity</strong> (Flash 3.8)</td>
+                  <td><span class="multiplier-chip">1x</span></td>
+                  <td>1 unit</td>
+                  <td>~/.gemini/antigravity/*.jsonl</td>
+                </tr>
+                <tr>
+                  <td><strong>OpenAI Codex</strong> (o3-mini High)</td>
+                  <td><span class="multiplier-chip">2x</span></td>
+                  <td>2 units</td>
+                  <td>~/.codex/session.db</td>
+                </tr>
+                <tr>
+                  <td><strong>Anthropic Claude Code</strong> (Sonnet 4.6)</td>
+                  <td><span class="multiplier-chip">4x</span></td>
+                  <td>4 units</td>
+                  <td>~/.claude/history/*.sqlite</td>
+                </tr>
+                <tr>
+                  <td><strong>Anthropic Claude Code</strong> (Opus / o1)</td>
+                  <td><span class="multiplier-chip">8x</span></td>
+                  <td>8 units</td>
+                  <td>~/.claude/transcripts/</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Specs List -->
+          <div class="specs-card specs-meta-card mono">
+            <h3 class="specs-card-title">SYSTEM SPECIFICATIONS</h3>
+            <div class="spec-meta-row">
+              <span class="meta-label">WINDOW LEVEL</span>
+              <span class="meta-val">Cocoa NSScreenSaverWindowLevel (1001)</span>
+            </div>
+            <div class="spec-meta-row">
+              <span class="meta-label">WINDOWS LAYER</span>
+              <span class="meta-val">WS_EX_TOPMOST &bull; Layered Translucent</span>
+            </div>
+            <div class="spec-meta-row">
+              <span class="meta-label">MEMORY FOOTPRINT</span>
+              <span class="meta-val">&le; 28MB RSS (Daemon mode)</span>
+            </div>
+            <div class="spec-meta-row">
+              <span class="meta-label">NETWORK EGRESS</span>
+              <span class="meta-val">0 bytes &bull; Air-gapped local parser</span>
+            </div>
+            <div class="spec-meta-row">
+              <span class="meta-label">LICENSE</span>
+              <span class="meta-val">MIT Open Source</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keeby-Style Bottom Hero CTA ("Try it. You'll hear the difference.") -->
+    <section class="bottom-cta-section" id="download">
+      <div class="bottom-cta-box">
+        <h2 class="bottom-cta-title">
+          Try it.<br>
+          You'll feel the clarity.
+        </h2>
+        <p class="bottom-cta-sub">
+          Keep full control over your sprint budgets. Download for your OS below.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="downloads/qota-macos.zip" class="cta-primary-btn" download="qota-macos.zip">
+            <svg viewBox="0 0 17 20" width="20" height="22" fill="currentColor">
+              <path d="M12.15 0c.12 1.17-.35 2.33-1.05 3.17-.71.84-1.85 1.5-2.97 1.41-.14-1.13.36-2.33 1.03-3.07C9.87.67 11.06.06 12.15 0zm3.56 6.82c-.09.05-2.12 1.22-2.1 3.63.02 2.88 2.54 3.87 2.57 3.88-.02.07-.4 1.37-1.33 2.72-.82 1.17-1.67 2.34-3.01 2.36-1.32.02-1.74-.78-3.25-.78s-1.99.76-3.24.8c-1.29.04-2.27-1.27-3.1-2.43C.55 14.72-.73 10.2 1.03 7.14c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.49.87 3.27.87.78 0 2.24-1.07 3.77-.91.64.03 2.45.26 3.61 1.95l-.09.08z"/>
+            </svg>
+            <div class="cta-btn-text">
+              <span class="cta-btn-sub">One-Click Installer &bull; ZIP</span>
+              <span class="cta-btn-main">Download for macOS</span>
+            </div>
+          </a>
+
+          <a href="downloads/qota-windows.zip" class="cta-secondary-btn" download="qota-windows.zip">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4h-13.051M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.899"/>
+            </svg>
+            <div class="cta-btn-text">
+              <span class="cta-btn-sub">Installer &bull; Portable &bull; ZIP</span>
+              <span class="cta-btn-main">Download for Windows</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="bottom-checksum mono">
+          <span>SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Keeby-Style Minimal Footer -->
+  <footer class="keeby-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="f-logo">QOTA</span>
+        <span class="f-copy mono">&copy; 2026 QOTA DEV &bull; OPEN-SOURCE MIT</span>
+      </div>
+      <div class="footer-nav mono">
+        <a href="#tutorial">TUTORIAL</a>
+        <a href="#features">FEATURES</a>
+        <a href="#specs">SPECS</a>
+        <a href="https://github.com/jlsonon/qota" target="_blank" rel="noopener">GITHUB</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
