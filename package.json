@@ -2,6 +2,7 @@
   "name": "qota",
   "version": "1.0.0",
   "description": "Universal cross-platform macOS Menu Bar and Windows System Tray HUD for Antigravity, Claude Code, and OpenAI Codex quotas.",
+  "homepage": "https://qota.live",
   "main": "main.js",
   "scripts": {
     "build": "mkdir -p public && cp -r website/* public/",
