@@ -92,10 +92,10 @@
 
 
     <!-- Navigation Bar -->
-    <nav class="matrix-nav">
-      <button class="nav-item active" data-tab="overview">Quotas</button>
-      <button class="nav-item" data-tab="models">Models</button>
-      <button class="nav-item" data-tab="settings">Settings</button>
+    <nav class="matrix-nav" role="tablist" aria-label="Dashboard sections">
+      <button class="nav-item active" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Quotas</button>
+      <button class="nav-item" data-tab="models" role="tab" aria-selected="false" aria-controls="tab-models">Models</button>
+      <button class="nav-item" data-tab="settings" role="tab" aria-selected="false" aria-controls="tab-settings">Settings</button>
     </nav>
 
     <!-- Tab Viewport -->

@@ -4,10 +4,10 @@
    ======================================================== */
 
 :root, [data-theme="obsidian"] {
-  --bg-base: #000000;
-  --bg-surface: rgba(14, 14, 14, 0.92);
-  --bg-surface-elevated: rgba(24, 24, 24, 0.96);
-  --bg-hud: rgba(10, 10, 10, 0.95);
+  --bg-base: #09090b;
+  --bg-surface: rgba(14, 14, 17, 0.92);
+  --bg-surface-elevated: rgba(24, 24, 28, 0.96);
+  --bg-hud: rgba(10, 10, 14, 0.95);
 
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.16);
@@ -16,8 +16,8 @@
   --text-pure: #ffffff;
   --text-main: #ededed;
   --text-muted: #8e8e93;
-  --text-subtle: #555555;
-  --text-inverted: #000000;
+  --text-subtle: #71717a;
+  --text-inverted: #09090b;
 
   --bar-rail: rgba(255, 255, 255, 0.08);
   --bar-fill: #ffffff;
@@ -98,6 +98,8 @@
   --radius-pill: 9999px;
 
   --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 * {
@@ -232,12 +234,16 @@ body.mode-expanded #full-dashboard { display: flex; }
   color: var(--text-muted);
   border: 1px solid var(--border-subtle);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), background 0.15s var(--ease-out), transform 0.12s var(--ease-out);
 }
 
 .hud-pill-toggle:hover {
   color: var(--text-pure);
   border-color: var(--border-bright);
+}
+
+.hud-pill-toggle:active {
+  transform: scale(0.92);
 }
 
 .hud-pill-toggle.active {
@@ -257,13 +263,17 @@ body.mode-expanded #full-dashboard { display: flex; }
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), background 0.15s var(--ease-out), transform 0.12s var(--ease-out);
 }
 
 .hud-icon-btn:hover {
   background: var(--btn-active-bg);
   color: var(--btn-active-text);
   border-color: var(--btn-active-bg);
+}
+
+.hud-icon-btn:active {
+  transform: scale(0.92);
 }
 
 /* Progress Rail Rows: Razor-thin 2.5px - 3px lines */
@@ -308,9 +318,19 @@ body.mode-expanded #full-dashboard { display: flex; }
   50%, 100% { transform: translateX(100%); }
 }
 
-/* Collapsible Weekly Row */
+/* Collapsible Weekly Row with Smooth Transition */
+.hud-weekly-rail-row {
+  max-height: 8px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.2s var(--ease-out), opacity 0.16s var(--ease-out), margin 0.18s var(--ease-out);
+}
+
 .floating-hud-pill.hide-weekly .hud-weekly-rail-row {
-  display: none !important;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
 }
 
 /* ========================================================
@@ -503,12 +523,16 @@ body.mode-expanded #full-dashboard { display: flex; }
   font-weight: 700;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.16s ease;
+  transition: color 0.16s var(--ease-out), background 0.16s var(--ease-out), transform 0.12s var(--ease-out), box-shadow 0.16s var(--ease-out);
 }
 
 .nav-item:hover {
   color: var(--text-pure);
   background: var(--bg-surface-elevated);
+}
+
+.nav-item:active {
+  transform: scale(0.97);
 }
 
 .nav-item.active {
