@@ -749,6 +749,16 @@ a {
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+.macos-menu-popover.popover-closing {
+  animation: popoverScaleOut 0.12s var(--ease-out) forwards;
+  pointer-events: none;
+}
+
+@keyframes popoverScaleOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.96) translateY(-4px); }
+}
+
 .pop-header {
   display: flex;
   align-items: center;
@@ -1120,13 +1130,17 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #8b949e;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), transform 0.12s var(--ease-out);
 }
 
 .dash-ctrl-btn:hover {
   background: #ffffff;
   color: #000000;
   border-color: #ffffff;
+}
+
+.dash-ctrl-btn:active {
+  transform: scale(0.92);
 }
 
 .dash-tabs {
@@ -1144,11 +1158,15 @@ a {
   padding: 6px 10px;
   border-bottom: 2px solid transparent;
   cursor: pointer;
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), transform 0.12s var(--ease-out);
 }
 
 .dash-tab:hover {
   color: #ffffff;
+}
+
+.dash-tab:active {
+  transform: scale(0.96);
 }
 
 .dash-tab.active {
