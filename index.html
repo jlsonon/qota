@@ -131,7 +131,7 @@
         "name": "What is QOTA?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "QOTA is a tactile, zero-cloud desktop application and floating HUD for macOS and Windows. It provides continuous real-time visibility over your AI sprint quotas and weekly rate limits across Antigravity, Claude Code, and OpenAI Codex."
+          "text": "A zero-cloud desktop HUD and menu bar pill tracking real-time AI sprint and weekly rate limits across Antigravity, Claude Code, and Codex."
         }
       },
       {
@@ -139,7 +139,7 @@
         "name": "How does QOTA track quotas without cloud relays?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "QOTA hooks directly into local session files and SQLite WAL databases on your drive (~/.gemini/antigravity and ~/.claude/sessions). Zero API keys are needed, and 0 bytes ever leave your computer."
+          "text": "Reads local session files and SQLite WAL databases directly on your drive. Zero API keys required; zero bytes leave your machine."
         }
       },
       {
@@ -147,7 +147,7 @@
         "name": "What is Cocoa Level 1001?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "On macOS, window level 1001 (NSScreenSaverWindowLevel) pins the floating HUD above all native full-screen spaces (such as full-screen VS Code or Ghostty) without stealing window focus or interrupting keystrokes."
+          "text": "Level 1001 (NSScreenSaverWindowLevel) pins the HUD above full-screen IDEs and spaces without stealing window focus or keystrokes."
         }
       },
       {
@@ -155,7 +155,7 @@
         "name": "Which AI models and multipliers are supported?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "QOTA supports Google Antigravity (Flash 3.8 at 1x), OpenAI Codex (o3-mini High at 2x), and Anthropic Claude Code (Sonnet 4.6 at 4x and Opus / o1 at 8x) with automatic proportional accounting."
+          "text": "Antigravity (Flash 1x), OpenAI Codex (o3-mini 2x), and Claude Code (Sonnet 4x, Opus 8x) with automatic proportional accounting."
         }
       },
       {
@@ -163,7 +163,7 @@
         "name": "Is QOTA free and open source?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, QOTA is 100% free and open-source software distributed under the permissive MIT License on GitHub."
+          "text": "Yes. 100% free and open-source software under the permissive MIT License on GitHub."
         }
       },
       {
@@ -171,7 +171,7 @@
         "name": "Does QOTA work on Windows and Linux?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! QOTA includes universal packages for Windows 10/11 (with native System Tray integration and WS_EX_TOPMOST pinning) as well as Linux and Android overlay support."
+          "text": "Yes! Native System Tray for Windows 10/11 with WS_EX_TOPMOST, plus Linux and Android overlay support."
         }
       }
     ]
@@ -295,18 +295,6 @@
           Free &amp; open-source &bull; No credit card &bull; 100% Offline &bull; v1.0.4
         </p>
 
-        <!-- Hero GitHub Star Row -->
-        <div class="hero-star-row">
-          <a href="https://github.com/jlsonon/qota" target="_blank" rel="noopener noreferrer" class="hero-star-badge" title="Star QOTA on GitHub" aria-label="Star QOTA on GitHub">
-            <svg class="gh-icon" viewBox="0 0 16 16" width="15" height="15" fill="currentColor">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-            </svg>
-            <span class="star-sparkle">★</span>
-            <span class="hero-star-label">Star us on GitHub</span>
-            <span class="hero-star-counter" id="hero-gh-stars">Star</span>
-          </a>
-        </div>
-
         <!-- Quick Terminal Snippet -->
         <div class="hero-cli-bar">
           <div class="cli-label mono">CLI QUICKSTART</div>
@@ -323,7 +311,11 @@
           <!-- macOS Desktop Menu Bar -->
           <div class="macos-menubar">
             <div class="menubar-left">
-              <span class="apple-glyph">&apple;</span>
+              <span class="apple-glyph" aria-hidden="true">
+                <svg viewBox="0 0 170 170" width="12" height="12" fill="currentColor">
+                  <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.88-14.24-5.23-8.04-9.35-17.1-12.37-27.17-3.03-10.07-4.55-19.8-4.55-29.18 0-14.58 3.73-26.6 11.2-36.05 7.47-9.46 16.92-14.29 28.34-14.51 4.79 0 10.15 1.25 16.08 3.75 5.92 2.5 9.48 3.86 10.68 4.08 1.96-.33 5.71-1.8 11.25-4.41 5.54-2.61 10.5-3.8 14.88-3.58 11.09.54 20.08 4.67 26.98 12.39-9.8 5.98-14.58 14.24-14.35 24.78.23 8.37 3.37 15.33 9.46 20.87 6.09 5.54 13.26 8.7 21.52 9.46-2.18 6.41-4.79 12.5-7.83 18.27zm-25.22-114.73c0 6.74-2.45 13.04-7.39 17.83-4.95 4.89-11.09 7.72-18.48 7.72-.33-.87-.49-1.85-.49-2.93 0-6.52 2.61-12.83 7.83-17.83 5.22-5 11.31-7.83 18.27-8.48.11 1.2.26 2.4.26 3.7z"/>
+                </svg>
+              </span>
               <span class="menubar-app">Qota</span>
               <span class="menubar-item">File</span>
               <span class="menubar-item">Edit</span>
@@ -370,8 +362,18 @@
                 </div>
               </div>
 
-              <span class="menubar-icon">&wifi;</span>
-              <span class="menubar-icon">&empty;</span>
+              <span class="menubar-icon" aria-hidden="true" title="Wi-Fi Connected">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                  <path d="M12 18c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-4.95-3.05a7.001 7.001 0 0 1 9.9 0l1.41-1.41a9.002 9.002 0 0 0-12.72 0l1.41 1.41zm-2.83-2.83a11.002 11.002 0 0 1 15.56 0l1.41-1.41a13.003 13.003 0 0 0-18.38 0l1.41 1.41z"/>
+                </svg>
+              </span>
+              <span class="menubar-icon" aria-hidden="true" title="Battery 100%">
+                <svg viewBox="0 0 24 24" width="14" height="12" fill="currentColor">
+                  <rect x="2" y="6" width="17" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                  <rect x="4" y="8" width="11" height="8" rx="1" fill="currentColor"/>
+                  <path d="M21 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </span>
               <span class="menubar-time mono" id="mac-clock-time">Thu 11:32 AM</span>
             </div>
           </div>
@@ -681,82 +683,114 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
           <p class="section-sub">Everything you need to keep continuous visibility over your sprint budgets.</p>
         </div>
 
-        <div class="features-grid">
-          <!-- 1. Menu Bar App -->
-          <div class="feature-box">
-            <div class="feature-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                <line x1="8" y1="21" x2="16" y2="21"/>
-                <line x1="12" y1="17" x2="12" y2="21"/>
-              </svg>
+        <div class="features-grid bento-grid">
+          <!-- 1. Hardware Level 1001 (Bento Hero Tile - Span 2) -->
+          <div class="feature-box bento-hero">
+            <div class="bento-top-row">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                  <polyline points="2 17 12 22 22 17"/>
+                  <polyline points="2 12 12 17 22 12"/>
+                </svg>
+              </div>
+              <span class="bento-badge mono">LEVEL 1001 &bull; ALWAYS ON TOP</span>
+            </div>
+            <h3 class="feature-heading">Cocoa NSScreenSaver Window Level</h3>
+            <p class="feature-text">Never trapped behind full-screen IDEs. Binds to level 1001 so limits stay in your peripheral vision.</p>
+          </div>
+
+          <!-- 2. Menu Bar App (Bento Span 1) -->
+          <div class="feature-box bento-tile">
+            <div class="bento-top-row">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <span class="bento-badge mono">STATUS TRAY</span>
             </div>
             <h3 class="feature-heading">All from your menu bar</h3>
-            <p class="feature-text">Live percentage and assistant indicators rest quietly beside your clock and Wi-Fi tray, giving you instant glanceability.</p>
+            <p class="feature-text">Live percentage and assistant indicators rest quietly beside your clock for instant, at-a-glance visibility.</p>
           </div>
 
-          <!-- 2. Hardware Level 1001 -->
-          <div class="feature-box">
-            <div class="feature-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                <polyline points="2 17 12 22 22 17"/>
-                <polyline points="2 12 12 17 22 12"/>
-              </svg>
-            </div>
-            <h3 class="feature-heading">Level 1001 Overlay</h3>
-            <p class="feature-text">Never gets trapped behind native full-screen IDEs. Binds to Cocoa NSScreenSaverWindowLevel across every workspace.</p>
-          </div>
-
-          <!-- 3. Completely Private -->
-          <div class="feature-box">
-            <div class="feature-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
+          <!-- 3. Completely Private (Bento Span 1) -->
+          <div class="feature-box bento-tile">
+            <div class="bento-top-row">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <span class="bento-badge mono">ZERO EGRESS</span>
             </div>
             <h3 class="feature-heading">Completely Private</h3>
-            <p class="feature-text">Zero network access. No API keys, no passwords, no tokens sent to third-party servers. All session parsing is strictly local.</p>
+            <p class="feature-text">Zero network calls or API keys. All session accounting parses strictly on your local disk.</p>
           </div>
 
-          <!-- 4. Multi-Model Weights -->
-          <div class="feature-box">
-            <div class="feature-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
+          <!-- 4. Multi-Model Weights (Bento Span 1) -->
+          <div class="feature-box bento-tile">
+            <div class="bento-top-row">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <span class="bento-badge mono">4 MULTIPLIERS</span>
             </div>
             <h3 class="feature-heading">Proportional Multipliers</h3>
-            <p class="feature-text">Accurately tracks consumption across different models. Flash 1x, o3-mini 2x, Sonnet 4x, Opus 8x with dual sprint and weekly rails.</p>
+            <p class="feature-text">Accurately tracks consumption across model tiers with dual sprint and weekly rails.</p>
+            <div class="bento-pill-row mono">
+              <span class="bento-mini-pill">1x Flash</span>
+              <span class="bento-mini-pill">2x o3-mini</span>
+              <span class="bento-mini-pill">4x Sonnet</span>
+              <span class="bento-mini-pill">8x Opus</span>
+            </div>
           </div>
 
-          <!-- 5. Low Latency & Memory -->
-          <div class="feature-box">
-            <div class="feature-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-              </svg>
+          <!-- 5. Low Latency & Memory (Bento Span 1) -->
+          <div class="feature-box bento-tile">
+            <div class="bento-top-row">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <span class="bento-badge mono">&lt; 28MB RAM</span>
             </div>
             <h3 class="feature-heading">Whisper-Quiet Daemon</h3>
-            <p class="feature-text">Under 28MB resident memory footprint. Negligible CPU usage with native OS filesystem event listeners.</p>
+            <p class="feature-text">Under 28MB resident RAM and near-zero CPU using native OS filesystem event listeners.</p>
           </div>
 
-          <!-- 6. Multi-Platform Ready -->
-          <div class="feature-box">
-            <div class="feature-icon-circle">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="4" y="4" width="16" height="16" rx="2"/>
-                <rect x="9" y="9" width="6" height="6"/>
-                <line x1="9" y1="1" x2="9" y2="4"/>
-                <line x1="15" y1="1" x2="15" y2="4"/>
-                <line x1="9" y1="20" x2="9" y2="23"/>
-                <line x1="15" y1="20" x2="15" y2="23"/>
-              </svg>
+          <!-- 6. Multi-Platform Ready (Bento Banner - Span 3) -->
+          <div class="feature-box bento-banner">
+            <div class="bento-banner-content">
+              <div class="bento-banner-left">
+                <div class="feature-icon-circle">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2"/>
+                    <rect x="9" y="9" width="6" height="6"/>
+                    <line x1="9" y1="1" x2="9" y2="4"/>
+                    <line x1="15" y1="1" x2="15" y2="4"/>
+                    <line x1="9" y1="20" x2="9" y2="23"/>
+                    <line x1="15" y1="20" x2="15" y2="23"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="feature-heading">Universal Platform Distribution</h3>
+                  <p class="feature-text">Standalone native packages compiled without bloat. Ready to run out of the box with zero runtime dependencies.</p>
+                </div>
+              </div>
+              <div class="bento-platform-tags mono">
+                <span class="plat-tag">macOS Universal (Apple Silicon &amp; Intel)</span>
+                <span class="plat-tag">Windows 10 / 11 (64-bit)</span>
+                <span class="plat-tag">Android Floating Overlay</span>
+              </div>
             </div>
-            <h3 class="feature-heading">Universal Deployment</h3>
-            <p class="feature-text">Universal binaries for Apple Silicon &amp; Intel, Windows 10/11 standalone installer, and Android floating overlay.</p>
           </div>
         </div>
       </div>
@@ -852,32 +886,32 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
         <div class="faq-grid">
           <div class="faq-card">
             <h3 class="faq-question">What is QOTA?</h3>
-            <p class="faq-answer">QOTA is a tactile, zero-cloud desktop application and floating HUD for macOS and Windows. It provides continuous real-time visibility over your AI sprint quotas and weekly rate limits across Antigravity, Claude Code, and OpenAI Codex.</p>
+            <p class="faq-answer">A zero-cloud desktop HUD and menu bar pill tracking real-time AI sprint and weekly rate limits across Antigravity, Claude Code, and Codex.</p>
           </div>
 
           <div class="faq-card">
             <h3 class="faq-question">How does QOTA track quotas without cloud relays?</h3>
-            <p class="faq-answer">QOTA hooks directly into local session files and SQLite WAL databases on your drive (such as <code>~/.gemini/antigravity</code> and <code>~/.claude/sessions</code>). Zero API keys are needed, and 0 bytes ever leave your computer.</p>
+            <p class="faq-answer">Reads local session files and SQLite WAL databases directly on your drive. Zero API keys required; zero bytes leave your machine.</p>
           </div>
 
           <div class="faq-card">
             <h3 class="faq-question">What is Cocoa Level 1001?</h3>
-            <p class="faq-answer">On macOS, window level 1001 (<code>NSScreenSaverWindowLevel</code>) pins the floating HUD above all native full-screen spaces (such as full-screen VS Code or Ghostty) without stealing window focus or interrupting keystrokes.</p>
+            <p class="faq-answer">Level 1001 (<code>NSScreenSaverWindowLevel</code>) pins the HUD above full-screen IDEs and spaces without stealing window focus or keystrokes.</p>
           </div>
 
           <div class="faq-card">
             <h3 class="faq-question">Which AI models and multipliers are supported?</h3>
-            <p class="faq-answer">QOTA supports Google Antigravity (Flash 3.8 at 1x), OpenAI Codex (o3-mini High at 2x), and Anthropic Claude Code (Sonnet 4.6 at 4x and Opus / o1 at 8x) with automatic proportional accounting.</p>
+            <p class="faq-answer">Antigravity (Flash 1x), OpenAI Codex (o3-mini 2x), and Claude Code (Sonnet 4x, Opus 8x) with automatic proportional accounting.</p>
           </div>
 
           <div class="faq-card">
             <h3 class="faq-question">Is QOTA free and open source?</h3>
-            <p class="faq-answer">Yes, QOTA is 100% free and open-source software distributed under the permissive MIT License on GitHub.</p>
+            <p class="faq-answer">Yes. 100% free and open-source software under the permissive MIT License on GitHub.</p>
           </div>
 
           <div class="faq-card">
             <h3 class="faq-question">Does QOTA work on Windows and Linux?</h3>
-            <p class="faq-answer">Yes! QOTA includes universal packages for Windows 10/11 (with native System Tray integration and <code>WS_EX_TOPMOST</code> pinning) as well as Linux and Android overlay support.</p>
+            <p class="faq-answer">Yes! Native System Tray for Windows 10/11 with <code>WS_EX_TOPMOST</code>, plus Linux and Android overlay support.</p>
           </div>
         </div>
       </div>
