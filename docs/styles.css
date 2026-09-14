@@ -88,6 +88,8 @@ body {
   line-height: 1.55;
   font-weight: 500;
   overflow-x: hidden;
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
@@ -854,9 +856,11 @@ a {
 }
 
 .canvas-code {
-  font-size: 12px;
+  font-size: clamp(10.5px, 2.4vw, 12px);
   line-height: 1.8;
   color: #c9d1d9;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .c-comment { color: #6e7681; font-style: italic; }
@@ -1322,7 +1326,7 @@ a {
 
 .tutorial-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 24px;
 }
 
@@ -1620,6 +1624,21 @@ a {
   border-radius: 22px;
   padding: 30px;
   box-shadow: var(--shadow-card);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.specs-card::-webkit-scrollbar {
+  height: 4px;
+}
+
+.specs-card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.specs-card::-webkit-scrollbar-thumb {
+  background: var(--border-btn);
+  border-radius: 4px;
 }
 
 .specs-card-title {
@@ -1632,6 +1651,7 @@ a {
 
 .keeby-table {
   width: 100%;
+  min-width: 460px;
   border-collapse: collapse;
   font-size: 12px;
   text-align: left;
@@ -1730,7 +1750,7 @@ a {
 
 .faq-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 20px;
 }
 
@@ -1896,5 +1916,61 @@ a {
   }
   .menubar-item {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .cta-primary-btn,
+  .cta-secondary-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-cli-bar {
+    flex-direction: column;
+    border-radius: 16px;
+    padding: 10px 14px;
+    align-items: stretch;
+    text-align: center;
+    gap: 8px;
+  }
+  .cli-cmd {
+    white-space: normal;
+    word-break: break-all;
+    font-size: 11px;
+  }
+  .cli-copy-action {
+    width: 100%;
+  }
+  .navbar {
+    flex-wrap: nowrap;
+  }
+  .navbar-wrap {
+    padding: 10px 14px;
+  }
+  .nav-right {
+    gap: 8px;
+  }
+  .nav-btn-dark {
+    padding: 6px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .nav-github-star {
+    padding: 5px 8px;
+    gap: 4px;
+  }
+  .nav-github-star .gh-icon {
+    display: none;
+  }
+  .hero-section {
+    padding: 40px 16px 30px;
+  }
+  .bottom-cta-box {
+    padding: 40px 18px;
+    border-radius: 20px;
   }
 }

@@ -223,6 +223,7 @@ body.mode-expanded #full-dashboard { display: flex; }
 }
 
 .hud-pill-toggle {
+  position: relative;
   font-size: 8px;
   font-family: var(--font-mono);
   font-weight: 700;
@@ -235,6 +236,19 @@ body.mode-expanded #full-dashboard { display: flex; }
   border: 1px solid var(--border-subtle);
   cursor: pointer;
   transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), background 0.15s var(--ease-out), transform 0.12s var(--ease-out);
+}
+
+.hud-pill-toggle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 36px;
+  min-height: 36px;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
 }
 
 .hud-pill-toggle:hover {
@@ -253,6 +267,7 @@ body.mode-expanded #full-dashboard { display: flex; }
 }
 
 .hud-icon-btn {
+  position: relative;
   width: 16px;
   height: 16px;
   display: flex;
@@ -264,6 +279,19 @@ body.mode-expanded #full-dashboard { display: flex; }
   color: var(--text-muted);
   cursor: pointer;
   transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), background 0.15s var(--ease-out), transform 0.12s var(--ease-out);
+}
+
+.hud-icon-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 36px;
+  min-height: 36px;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
 }
 
 .hud-icon-btn:hover {
@@ -483,6 +511,7 @@ body.mode-expanded #full-dashboard { display: flex; }
 }
 
 .action-icon-btn {
+  position: relative;
   width: 24px;
   height: 24px;
   display: flex;
@@ -494,6 +523,19 @@ body.mode-expanded #full-dashboard { display: flex; }
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.16s ease;
+}
+
+.action-icon-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 36px;
+  min-height: 36px;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
 }
 
 .action-icon-btn:hover {
@@ -519,6 +561,10 @@ body.mode-expanded #full-dashboard { display: flex; }
   border: none;
   color: var(--text-muted);
   padding: 5px 8px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 10px;
   font-weight: 700;
   border-radius: var(--radius-sm);
