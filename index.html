@@ -337,6 +337,10 @@
                   <span class="pop-dot"></span>
                   <span>QOTA Telemetry &bull; Healthy</span>
                 </div>
+                <div class="pop-item mono" id="pop-open-monitor">
+                  <span>Open Quota Monitor</span>
+                  <span class="pop-highlight">Dashboard ↗</span>
+                </div>
                 <div class="pop-divider"></div>
                 <div class="pop-item mono" id="pop-cycle-model">
                   <span>Active Model</span>
@@ -352,8 +356,8 @@
                 </div>
                 <div class="pop-divider"></div>
                 <div class="pop-item mono" id="pop-toggle-hud">
-                  <span>Floating HUD</span>
-                  <span class="pop-highlight">Visible (Level 1001)</span>
+                  <span>Float Circular Notch HUD</span>
+                  <span class="pop-highlight" id="pop-hud-status">Disabled (Menu Bar Only)</span>
                 </div>
                 <div class="pop-divider"></div>
                 <div class="pop-item mono text-muted" id="pop-quit">
@@ -407,62 +411,41 @@
 
 hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
 
-              <!-- Floating Tactile HUD (Authentic Level 1001 Island HUD) -->
-              <div id="sim-hud-pill" class="screen-hud-pill sim-draggable" title="Drag to reposition &bull; Double-click to expand">
-                <div class="hud-drag-zone" id="sim-hud-drag-handle">
-                  <!-- Top Line: Model Name, Assistant Tag, and Actions -->
-                  <div class="hud-header-row">
-                    <button id="sim-hud-asst-badge" class="hud-brand-tag mono btn-interactive" title="Click to cycle model">AGY</button>
-                    <div id="sim-hud-model-name" class="hud-model-title">Gemini 3.8 Flash (High)</div>
-                    <div id="sim-hud-rate-badge" class="hud-rate-badge mono">1x &bull; 88%</div>
-                    <div class="hud-actions-group">
-                      <button id="sim-hud-7d-toggle" class="hud-mini-btn active mono" title="Toggle 7D Baseline Rail">7D</button>
-                      <button id="sim-hud-expand-btn" class="hud-mini-btn" title="Expand Full Matrix Dashboard">
-                        <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2.2" fill="none">
-                          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Dual Progress Limit Rails -->
-                  <div class="hud-rail-section">
-                    <!-- Progress Rail 1: 5-Hour Limit Straight Rail -->
-                    <div class="hud-rail-item" id="sim-sprint-rail-item">
-                      <div class="rail-title-row mono">
-                        <span>5-HOUR SPRINT LIMIT</span>
-                        <span id="sim-sprint-units">220 / 250u</span>
-                      </div>
-                      <div class="rail-bar-track">
-                        <div id="sim-sprint-fill" class="rail-bar-fill sprint-fill" style="width: 88%;">
-                          <div class="rail-glow"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Progress Rail 2: Weekly Limit Straight Rail -->
-                    <div class="hud-rail-item" id="sim-weekly-rail-item">
-                      <div class="rail-title-row mono weekly-row">
-                        <span>7-DAY BASELINE</span>
-                        <span id="sim-weekly-pct">97%</span>
-                      </div>
-                      <div class="rail-bar-track">
-                        <div id="sim-weekly-fill" class="rail-bar-fill weekly-fill" style="width: 97%;">
-                          <div class="rail-glow"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Bottom Telemetry Status Row -->
-                  <div class="hud-bottom-row mono">
-                    <span id="sim-reset-timer">RESETS IN 3H 14M</span>
-                    <span class="zero-cloud-tag">ZERO CLOUD RELAYS</span>
-                  </div>
+              <!-- Top-Center Minimalist Circular Notch / Island HUD (Level 1001) -->
+              <div id="sim-hud-pill" class="screen-hud-pill notch-island-hud" style="display: flex;" title="Hover to view full telemetry • Click to lock open">
+                <!-- 1. Circular Percentage Bar -->
+                <div class="notch-gauge-wrap">
+                  <svg class="circle-gauge-svg" viewBox="0 0 28 28">
+                    <circle class="circle-gauge-track" cx="14" cy="14" r="11" />
+                    <circle id="sim-circle-gauge-fill" class="circle-gauge-fill" cx="14" cy="14" r="11" />
+                  </svg>
+                  <span id="sim-hud-rate-badge" class="circle-percent-val mono">88</span>
                 </div>
+
+                <!-- 2. Name of the Model -->
+                <div class="notch-model-wrap">
+                  <span id="sim-hud-model-name" class="notch-model-text mono">Flash 3.8</span>
+                </div>
+
+                <!-- 3. 5 hr Reset Time -->
+                <div class="notch-timer-wrap">
+                  <svg class="notch-clock-icon" viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  <span id="sim-reset-timer" class="notch-reset-text mono"><span class="timer-num">1</span><span class="timer-unit"> hour, </span><span class="timer-num">31</span><span class="timer-unit"> minutes</span></span>
+                </div>
+
+                <!-- Status Beacon Dot -->
+                <span id="sim-hud-status-dot" class="notch-status-dot healthy" title="Status: Healthy"></span>
+
+                <!-- Hidden compatibility hooks -->
+                <button id="sim-hud-asst-badge" style="display: none;">AGY</button>
+                <button id="sim-hud-expand-btn" style="display: none;"></button>
+                <div id="sim-sprint-fill" style="display: none; width: 88%;"></div>
               </div>
 
-              <!-- Interactive Expanded Matrix Dashboard Replica (Opened via [↗] or double-click) -->
+              <!-- Interactive Expanded Matrix Dashboard Replica (Opened on Hover or Double-click) -->
               <div id="sim-hud-dashboard" class="sim-dashboard-shell sim-draggable" style="display: none;">
                 <div class="dash-header" id="sim-dash-drag-handle">
                   <div class="dash-brand">
@@ -475,7 +458,13 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
                     <span class="dash-status safe mono">HEALTHY</span>
                   </div>
                   <div class="dash-controls">
-                    <button id="sim-dash-collapse" class="dash-ctrl-btn" title="Collapse to Floating HUD">
+                    <button id="sim-dash-pin" class="dash-ctrl-btn" title="Pin / Lock Dashboard Open">
+                      <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2" fill="none">
+                        <line x1="12" y1="17" x2="12" y2="22"/>
+                        <path d="M5 17h14v-2l-2-3V6a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v6l-2 3v2z"/>
+                      </svg>
+                    </button>
+                    <button id="sim-dash-collapse" class="dash-ctrl-btn" title="Collapse to Top Notch">
                       <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.2" fill="none">
                         <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>
                       </svg>
@@ -501,51 +490,123 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
 
                 <div class="dash-content">
                   <div class="dash-pane active" id="pane-quotas">
-                    <div class="dash-tile">
-                      <div class="tile-label-row mono">
-                        <span>WEEKLY BASELINE CAP</span>
-                        <span class="chip-safe mono">NORMAL</span>
+                    <div class="quota-cards-stack">
+                      <!-- 1. Current Session -->
+                      <div class="telemetry-card quota-card" id="sim-card-session">
+                        <div class="telemetry-header">
+                          <span class="telemetry-tag mono">CURRENT SESSION</span>
+                          <span id="dash-session-remaining-text" class="quota-limit-display mono highlight">88% Remaining</span>
+                        </div>
+                        <div class="telemetry-bar-rail">
+                          <div id="dash-sprint-fill" class="telemetry-bar-fill sprint safe" style="width: 88%;"></div>
+                        </div>
+                        <div class="telemetry-footer">
+                          <span class="subtle">5-hour Reset:</span>
+                          <span id="dash-reset-timer" class="mono highlight">3h 14m remaining</span>
+                        </div>
+                        <!-- Compatibility anchors -->
+                        <span id="dash-sprint-units" style="display: none;">220 / 250u</span>
+                        <span id="dash-active-multiplier" style="display: none;">1x • 88%</span>
                       </div>
-                      <div class="tile-val-row mono">
-                        <span id="dash-weekly-units">2,716 / 2,800 units</span>
-                        <span id="dash-weekly-pct">97%</span>
-                      </div>
-                      <div class="rail-bar-track">
-                        <div id="dash-weekly-fill" class="rail-bar-fill weekly-fill" style="width: 97%;"></div>
-                      </div>
-                    </div>
 
-                    <div class="dash-tile">
-                      <div class="tile-label-row mono">
-                        <span id="dash-active-model-title">GEMINI 3.8 FLASH (HIGH)</span>
-                        <span id="dash-active-multiplier" class="chip-mult mono">1x</span>
+                      <!-- 2. This Week -->
+                      <div class="telemetry-card quota-card" id="sim-card-week">
+                        <div class="telemetry-header">
+                          <span class="telemetry-tag mono">THIS WEEK</span>
+                          <span id="dash-weekly-remaining-text" class="quota-limit-display mono highlight">97% Remaining</span>
+                        </div>
+                        <div class="telemetry-bar-rail">
+                          <div id="dash-weekly-fill" class="telemetry-bar-fill weekly safe" style="width: 97%;"></div>
+                        </div>
+                        <div class="telemetry-footer">
+                          <span class="subtle">Weekly Reset in:</span>
+                          <span class="mono highlight">7d 00h</span>
+                        </div>
+                        <!-- Compatibility anchors -->
+                        <span id="dash-weekly-units" style="display: none;">2,716 / 2,800u</span>
+                        <span id="dash-weekly-pct" style="display: none;">97%</span>
                       </div>
-                      <div class="tile-val-row mono">
-                        <span id="dash-sprint-units">220 / 250 units (88%)</span>
-                        <span id="dash-reset-timer" style="color: #8b949e;">Resets in 3h 14m</span>
-                      </div>
-                      <div class="rail-bar-track">
-                        <div id="dash-sprint-fill" class="rail-bar-fill sprint-fill" style="width: 88%;"></div>
+
+                      <!-- Hidden compatibility anchor -->
+                      <div id="sim-other-models-list" style="display: none;"></div>
+
+                      <!-- 3. Plan Limits -->
+                      <div class="telemetry-card quota-card" id="sim-card-plan">
+                        <div class="telemetry-header">
+                          <span class="telemetry-tag mono">PLAN LIMITS</span>
+                          <span class="status-chip neutral mono">TIER 1</span>
+                        </div>
+                        <div class="plan-limits-body">
+                          <div class="telemetry-limit-row">
+                            <span class="subtle">Sprint Cap:</span>
+                            <span class="mono">250 units / 5h</span>
+                          </div>
+                          <div class="telemetry-limit-row">
+                            <span class="subtle">Baseline Pool:</span>
+                            <span class="mono">2,800 units / 7d</span>
+                          </div>
+                          <div class="telemetry-limit-row">
+                            <span class="subtle">Multipliers:</span>
+                            <div class="telemetry-multipliers-row">
+                              <span class="multiplier-chip mono">1x Flash</span>
+                              <span class="multiplier-chip mono">2x Codex</span>
+                              <span class="multiplier-chip mono">4x Sonnet</span>
+                              <span class="multiplier-chip mono">8x Opus</span>
+                            </div>
+                          </div>
+                          <div class="telemetry-footer">
+                            <span class="subtle">Egress Policy:</span>
+                            <span class="mono subtle-text">Zero Cloud Relays &bull; 100% Local</span>
+                          </div>
+                        </div>
+                        <span id="dash-active-model-title" style="display: none;">GEMINI 3.8 FLASH</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="dash-pane" id="pane-models" style="display: none;">
-                    <div class="model-row-item">
-                      <span class="mono">Gemini 3.8 Flash</span>
-                      <span class="mono tag-unit">1 unit (1x)</span>
-                    </div>
-                    <div class="model-row-item">
-                      <span class="mono">Claude 3.7 Sonnet</span>
-                      <span class="mono tag-unit">4 units (4x)</span>
-                    </div>
-                    <div class="model-row-item">
-                      <span class="mono">OpenAI o3-mini</span>
-                      <span class="mono tag-unit">2 units (2x)</span>
+                    <div class="model-cards-matrix" id="sim-models-matrix">
+                      <div class="sim-model-card active" data-model-index="0">
+                        <div class="model-card-head">
+                          <span class="model-name-title">Gemini 3.8 Flash</span>
+                          <span class="cost-pill">1x (Standard)</span>
+                        </div>
+                        <div class="telemetry-bar-rail">
+                          <div class="telemetry-bar-fill safe" style="width: 88%;"></div>
+                        </div>
+                        <div class="model-card-foot mono">88% Available</div>
+                      </div>
+                      <div class="sim-model-card" data-model-index="1">
+                        <div class="model-card-head">
+                          <span class="model-name-title">Claude 3.7 Sonnet</span>
+                          <span class="cost-pill">4x (High)</span>
+                        </div>
+                        <div class="telemetry-bar-rail">
+                          <div class="telemetry-bar-fill safe" style="width: 64%;"></div>
+                        </div>
+                        <div class="model-card-foot mono">64% Available</div>
+                      </div>
+                      <div class="sim-model-card" data-model-index="2">
+                        <div class="model-card-head">
+                          <span class="model-name-title">OpenAI o3-mini</span>
+                          <span class="cost-pill">2x (Standard)</span>
+                        </div>
+                        <div class="telemetry-bar-rail">
+                          <div class="telemetry-bar-fill safe" style="width: 78%;"></div>
+                        </div>
+                        <div class="model-card-foot mono">78% Available</div>
+                      </div>
                     </div>
                   </div>
 
                   <div class="dash-pane" id="pane-settings" style="display: none;">
+                    <div class="settings-row mono">
+                      <span>Float Circular Notch HUD</span>
+                      <label class="sim-toggle-switch">
+                        <input type="checkbox" id="sim-chk-float-hud" checked>
+                        <span class="sim-toggle-slider"></span>
+                      </label>
+                    </div>
                     <div class="settings-row mono">
                       <span>Window Level</span>
                       <span style="color: #2ea043;">NSScreenSaver (1001)</span>
@@ -563,7 +624,7 @@ hud.<span class="c-func">pinToAllWorkspaces</span>();</code></pre>
               </div>
 
               <!-- Interactive Guide Hint -->
-              <div class="canvas-hint mono" id="sim-drag-hint">✦ Tactile HUD: Drag to reposition &bull; Click AGY to switch model &bull; Click ↗ to expand</div>
+              <div class="canvas-hint mono" id="sim-drag-hint">✦ Top Notch HUD: Hover to expand full telemetry cards &bull; Click to lock open</div>
             </div>
           </div>
         </div>

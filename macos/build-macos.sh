@@ -64,7 +64,7 @@ DMG_OUTPUT="$SCRIPT_DIR/Qota-macOS-Universal.dmg"
 rm -f "$DMG_OUTPUT"
 
 echo "==> Generating disk image $DMG_OUTPUT..."
-hdiutil create -volname "Qota" -srcfolder "$DMG_STAGE" -ov -format UDZO "$DMG_OUTPUT"
+hdiutil create -volname "Qota" -srcfolder "$DMG_STAGE" -ov -format ULMO "$DMG_OUTPUT"
 
 rm -rf "$DMG_STAGE"
 echo "==> Successfully created $DMG_OUTPUT."

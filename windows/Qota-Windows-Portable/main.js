@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, ipcMain, screen, Notification, nativeImage, dialog } = require('electron');
+const { app, BrowserWindow, Tray, Menu, ipcMain, screen, Notification, nativeImage, dialog, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { QuotaService, SPRINT_MAX } = require('./src/quota-service');
@@ -180,6 +180,13 @@ app.whenReady().then(async () => {
   setupIpcHandlers();
   startBackgroundPolling();
 
+  // Register Global Hotkey (CommandOrControl+Alt+Q) to toggle telemetry anywhere
+  try {
+    globalShortcut.register('CommandOrControl+Alt+Q', () => {
+      toggleWindow();
+    });
+  } catch (err) {}
+
   if (process.env.ELECTRON_SMOKE_TEST === 'true') {
     console.log('[OK] Smoke test: Initialized Tray, Window, IPC and QuotaService successfully.');
     app.isQuitting = true;
@@ -295,43 +302,18 @@ function createTray() {
   });
 
   tray.on('right-click', () => {
-    const isCompact = (quotaService.state.windowMode || 'compact') === 'compact';
+    const isFloating = !!(quotaService.state.settings && quotaService.state.settings.enableFloatingHud);
     const contextMenu = Menu.buildFromTemplate([
       {
         label: 'Open Quota Monitor',
         click: () => showWindow()
       },
       {
-        label: 'Floating Quota Bar Mode',
+        label: 'Float Circular Notch HUD on Screen',
         type: 'checkbox',
-        checked: isCompact,
-        click: () => {
-          quotaService.setWindowMode('compact');
-          if (mainWindow) {
-            const showWeekly = !!(quotaService.state.settings && quotaService.state.settings.showWeeklyInHud);
-            mainWindow.setResizable(true);
-            mainWindow.setSize(285, showWeekly ? 52 : 40);
-            mainWindow.setResizable(false);
-            applyAlwaysOnFront();
-            mainWindow.show();
-            safeSend(mainWindow, 'quota-updated', quotaService.getStatus());
-          }
-        }
-      },
-      {
-        label: 'Full Matrix View',
-        type: 'checkbox',
-        checked: !isCompact,
-        click: () => {
-          quotaService.setWindowMode('expanded');
-          if (mainWindow) {
-            mainWindow.setResizable(true);
-            mainWindow.setSize(380, 540);
-            mainWindow.setResizable(false);
-            applyAlwaysOnFront();
-            showWindow();
-            safeSend(mainWindow, 'quota-updated', quotaService.getStatus());
-          }
+        checked: isFloating,
+        click: (menuItem) => {
+          setFloatingHudState(menuItem.checked);
         }
       },
       { type: 'separator' },
@@ -402,13 +384,37 @@ function applyAlwaysOnFront() {
   }
 }
 
+function setFloatingHudState(enabled) {
+  if (!quotaService.state.settings) quotaService.state.settings = {};
+  quotaService.state.settings.enableFloatingHud = !!enabled;
+  quotaService.saveState();
+
+  if (mainWindow) {
+    if (enabled) {
+      quotaService.setWindowMode('compact');
+      mainWindow.setResizable(true);
+      const primaryDisplay = screen.getPrimaryDisplay();
+      const { width: screenWidth } = primaryDisplay.workAreaSize;
+      const targetW = 310;
+      const targetH = 40;
+      const x = Math.round((screenWidth - targetW) / 2);
+      mainWindow.setBounds({ x, y: 0, width: targetW, height: targetH }, false);
+      mainWindow.setResizable(false);
+      applyAlwaysOnFront();
+      mainWindow.show();
+    } else {
+      mainWindow.hide();
+    }
+    safeSend(mainWindow, 'quota-updated', quotaService.getStatus());
+  }
+  return !!enabled;
+}
+
 function createWindow() {
   const isCompact = (quotaService.state.windowMode || 'compact') === 'compact';
-  const showWeekly = !!(quotaService.state.settings && quotaService.state.settings.showWeeklyInHud);
-  const compactHeight = showWeekly ? 52 : 40;
   mainWindow = new BrowserWindow({
-    width: isCompact ? 285 : 380,
-    height: isCompact ? compactHeight : 540,
+    width: isCompact ? 310 : 380,
+    height: isCompact ? 40 : 560,
     show: false,
     frame: false,
     resizable: false,
@@ -435,27 +441,49 @@ function createWindow() {
     safeSend(mainWindow, 'quota-updated', status);
   });
 
-  // Immediately display the Floating Bar HUD on startup!
   mainWindow.once('ready-to-show', () => {
-    positionWindow();
-    mainWindow.show();
-    mainWindow.focus();
-    applyAlwaysOnFront();
+    const isFloating = !!(quotaService.state.settings && quotaService.state.settings.enableFloatingHud);
+    const isTesting = process.env.ELECTRON_SMOKE_TEST === 'true' || process.env.ELECTRON_E2E_TEST === 'true';
+
+    if (isFloating || isTesting) {
+      positionWindow();
+      mainWindow.show();
+      mainWindow.focus();
+      applyAlwaysOnFront();
+    }
+
     console.log('\n======================================================');
     console.log('QOTA RUNNING');
-    console.log('- Floating Quota Bar is visible on your screen.');
-    console.log('- Always on front (visible even over Full Screen apps).');
-    console.log('- Drag it anywhere on your desktop.');
-    console.log('- Click expand button or double-click to view Full Dashboard.');
+    if (isFloating) {
+      console.log('- Floating Circular Notch HUD is pinned to top center of screen.');
+      console.log('- Hover over the notch to view full telemetry cards.');
+    } else {
+      console.log('- Running in macOS Menu Bar / System Tray mode.');
+      console.log('- Floating Circular Notch HUD is OFF by default.');
+      console.log('- Click the tray icon to view quota metrics.');
+      console.log('- Enable "Float Circular Notch HUD on Screen" in Settings or Tray to float.');
+    }
+    console.log('- Always on front when active.');
     console.log('- macOS Menu Bar indicator is active.');
     console.log('- Press Ctrl+C in terminal to stop.');
     console.log('======================================================\n');
   });
 
-  // Only auto-hide if in expanded popover mode
   mainWindow.on('blur', () => {
-    if (quotaService.state.windowMode === 'expanded' && !mainWindow.webContents.isDevToolsOpened()) {
-      mainWindow.hide();
+    const isFloating = !!(quotaService.state.settings && quotaService.state.settings.enableFloatingHud);
+    if (!isFloating) {
+      if (!mainWindow.webContents.isDevToolsOpened()) {
+        mainWindow.hide();
+      }
+    } else if (quotaService.state.windowMode === 'expanded' && !mainWindow.webContents.isDevToolsOpened()) {
+      quotaService.setWindowMode('compact');
+      mainWindow.setResizable(true);
+      const primaryDisplay = screen.getPrimaryDisplay();
+      const { width: screenWidth } = primaryDisplay.workAreaSize;
+      mainWindow.setBounds({ x: Math.round((screenWidth - 310) / 2), y: 0, width: 310, height: 40 }, false);
+      mainWindow.setResizable(false);
+      applyAlwaysOnFront();
+      safeSend(mainWindow, 'quota-updated', quotaService.getStatus());
     }
   });
 
@@ -478,8 +506,22 @@ function toggleWindow() {
 
 async function showWindow() {
   if (!mainWindow) return;
+  const isFloating = !!(quotaService.state.settings && quotaService.state.settings.enableFloatingHud);
 
-  positionWindow();
+  if (!isFloating) {
+    quotaService.setWindowMode('expanded');
+    mainWindow.setResizable(true);
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width: screenWidth } = primaryDisplay.workAreaSize;
+    const targetW = 380;
+    const targetH = 560;
+    const x = Math.round((screenWidth - targetW) / 2);
+    mainWindow.setBounds({ x, y: 0, width: targetW, height: targetH }, false);
+    mainWindow.setResizable(false);
+  } else {
+    positionWindow();
+  }
+
   mainWindow.show();
   mainWindow.focus();
   applyAlwaysOnFront();
@@ -497,40 +539,12 @@ async function showWindow() {
 function positionWindow() {
   if (!mainWindow) return;
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
+  const { width: screenWidth } = primaryDisplay.workAreaSize;
   const windowBounds = mainWindow.getBounds();
 
-  let x = 0;
-  let y = 0;
-
-  if (tray) {
-    try {
-      const trayBounds = tray.getBounds();
-      if (trayBounds && trayBounds.width > 0 && trayBounds.height > 0) {
-        if (process.platform === 'darwin') {
-          x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
-          y = Math.round(trayBounds.y + trayBounds.height + 6);
-        } else {
-          x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
-          y = Math.round(trayBounds.y - windowBounds.height - 8);
-        }
-      } else {
-        // Fallback: top right corner near menu bar
-        x = screenWidth - windowBounds.width - 24;
-        y = 48;
-      }
-    } catch (e) {
-      x = screenWidth - windowBounds.width - 24;
-      y = 48;
-    }
-  } else {
-    x = screenWidth - windowBounds.width - 24;
-    y = 48;
-  }
-
-  // Keep within screen edges
-  x = Math.max(10, Math.min(x, screenWidth - windowBounds.width - 10));
-  y = Math.max(10, Math.min(y, screenHeight - windowBounds.height - 10));
+  // Top-most center alignment (Dynamic Notch / Island)
+  const x = Math.round((screenWidth - windowBounds.width) / 2);
+  const y = 0; // Pinned directly flush to the top bezel
 
   mainWindow.setPosition(x, y, false);
 }
@@ -593,11 +607,18 @@ function setupIpcHandlers() {
     if (!mainWindow) return newMode;
 
     mainWindow.setResizable(true);
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width: screenWidth } = primaryDisplay.workAreaSize;
     if (newMode === 'compact') {
-      const showWeekly = !!(quotaService.state.settings && quotaService.state.settings.showWeeklyInHud);
-      mainWindow.setSize(285, showWeekly ? 52 : 40);
+      const targetW = 310;
+      const targetH = 40;
+      const x = Math.round((screenWidth - targetW) / 2);
+      mainWindow.setBounds({ x, y: 0, width: targetW, height: targetH }, false);
     } else {
-      mainWindow.setSize(380, 540);
+      const targetW = 380;
+      const targetH = 560;
+      const x = Math.round((screenWidth - targetW) / 2);
+      mainWindow.setBounds({ x, y: 0, width: targetW, height: targetH }, false);
     }
     mainWindow.setResizable(false);
     applyAlwaysOnFront();
@@ -614,6 +635,10 @@ function setupIpcHandlers() {
       applyAlwaysOnFront();
     }
     return show;
+  });
+
+  ipcMain.handle('set-floating-hud', (event, enabled) => {
+    return setFloatingHudState(enabled);
   });
 
   ipcMain.on('hide-window', () => {
@@ -704,4 +729,10 @@ function checkAndSendThresholdNotification(status) {
 app.on('window-all-closed', (e) => {
   // Prevent quitting when window is closed; app stays in tray
   e.preventDefault();
+});
+
+app.on('will-quit', () => {
+  try {
+    globalShortcut.unregisterAll();
+  } catch (e) {}
 });

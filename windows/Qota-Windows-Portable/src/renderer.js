@@ -119,11 +119,140 @@ function setupActionListeners() {
     });
   }
 
-  // Expand Floating Bar to Full Dashboard
+  // Pin HUD Toggle
+  let isPinned = false;
+  let hoverTimer = null;
+  let leaveTimer = null;
+
+  const pinBtn = document.getElementById('btn-pin-hud');
+  if (pinBtn) {
+    pinBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isPinned = !isPinned;
+      pinBtn.classList.toggle('active', isPinned);
+      if (floatingHud) floatingHud.classList.toggle('is-pinned', isPinned);
+      pinBtn.title = isPinned ? 'Unpin HUD (Auto-collapse on mouse leave)' : 'Pin HUD (Keep open)';
+    });
+  }
+
+  // Hover on Notch Island to expand
+  const floatingHud = document.getElementById('floating-hud');
+  const fullDashboard = document.getElementById('full-dashboard');
+
+  if (floatingHud) {
+    floatingHud.addEventListener('mouseenter', () => {
+      if (document.body.classList.contains('mode-compact')) {
+        clearTimeout(leaveTimer);
+        floatingHud.classList.add('is-hovered');
+        hoverTimer = setTimeout(async () => {
+          await window.antigravityAPI.setWindowMode('expanded');
+          document.body.className = 'mode-expanded';
+          if (fullDashboard) {
+            fullDashboard.classList.remove('collapsing');
+            fullDashboard.classList.add('expanding');
+          }
+          currentStatus = await window.antigravityAPI.getQuotaStatus();
+          renderStatus(currentStatus);
+        }, 20); // Fast response trigger
+      }
+    });
+
+    floatingHud.addEventListener('mouseleave', () => {
+      floatingHud.classList.remove('is-hovered');
+      clearTimeout(hoverTimer);
+    });
+
+    // Single-click on notch to toggle sticky pin & open
+    floatingHud.addEventListener('click', async (e) => {
+      if (e.target.closest('#btn-hud-expand')) return;
+      isPinned = !isPinned;
+      if (pinBtn) pinBtn.classList.toggle('active', isPinned);
+      floatingHud.classList.toggle('is-pinned', isPinned);
+
+      if (isPinned && !document.body.classList.contains('mode-expanded')) {
+        await window.antigravityAPI.setWindowMode('expanded');
+        document.body.className = 'mode-expanded';
+        if (fullDashboard) {
+          fullDashboard.classList.remove('collapsing');
+          fullDashboard.classList.add('expanding');
+        }
+        currentStatus = await window.antigravityAPI.getQuotaStatus();
+        renderStatus(currentStatus);
+      }
+    });
+  }
+
+  // Escape key to dismiss/collapse back to compact notch
+  document.addEventListener('keydown', async (e) => {
+    if (e.key === 'Escape') {
+      isPinned = false;
+      if (pinBtn) pinBtn.classList.remove('active');
+      if (floatingHud) floatingHud.classList.remove('is-pinned');
+      if (document.body.classList.contains('mode-expanded')) {
+        if (fullDashboard) {
+          fullDashboard.classList.remove('expanding');
+          fullDashboard.classList.add('collapsing');
+          setTimeout(async () => {
+            await window.antigravityAPI.setWindowMode('compact');
+            document.body.className = 'mode-compact';
+            fullDashboard.classList.remove('collapsing');
+            if (floatingHud) {
+              floatingHud.classList.remove('is-pinned');
+              floatingHud.classList.remove('notch-reappear');
+              void floatingHud.offsetWidth;
+              floatingHud.classList.add('notch-reappear');
+            }
+            currentStatus = await window.antigravityAPI.getQuotaStatus();
+            renderStatus(currentStatus);
+          }, 200);
+        }
+      }
+    }
+  });
+
+  // Mouseleave on full dashboard collapses back to notch unless pinned
+  if (fullDashboard) {
+    fullDashboard.addEventListener('mouseleave', () => {
+      if (!isPinned && document.body.classList.contains('mode-expanded')) {
+        clearTimeout(hoverTimer);
+        leaveTimer = setTimeout(() => {
+          if (!isPinned) {
+            fullDashboard.classList.remove('expanding');
+            fullDashboard.classList.add('collapsing');
+            setTimeout(async () => {
+              if (!isPinned) {
+                await window.antigravityAPI.setWindowMode('compact');
+                document.body.className = 'mode-compact';
+                fullDashboard.classList.remove('collapsing');
+                if (floatingHud) {
+                  floatingHud.classList.remove('is-pinned');
+                  floatingHud.classList.remove('notch-reappear');
+                  void floatingHud.offsetWidth;
+                  floatingHud.classList.add('notch-reappear');
+                }
+                currentStatus = await window.antigravityAPI.getQuotaStatus();
+                renderStatus(currentStatus);
+              }
+            }, 220);
+          }
+        }, 90); // Fast, smooth collapse back to notch on hover away
+      }
+    });
+
+    fullDashboard.addEventListener('mouseenter', () => {
+      clearTimeout(leaveTimer);
+      fullDashboard.classList.remove('collapsing');
+    });
+  }
+
+  // Explicit Expand Button
   const hudExpandBtn = document.getElementById('btn-hud-expand');
   if (hudExpandBtn) {
     hudExpandBtn.addEventListener('click', async (e) => {
       e.stopPropagation();
+      isPinned = true;
+      if (pinBtn) pinBtn.classList.add('active');
+      if (floatingHud) floatingHud.classList.add('is-pinned');
       await window.antigravityAPI.setWindowMode('expanded');
       document.body.className = 'mode-expanded';
       currentStatus = await window.antigravityAPI.getQuotaStatus();
@@ -131,26 +260,22 @@ function setupActionListeners() {
     });
   }
 
-  // Double-click Floating HUD to expand
-  const floatingHud = document.getElementById('floating-hud');
-  if (floatingHud) {
-    floatingHud.addEventListener('dblclick', async (e) => {
-      if (e.target.closest('#btn-hud-expand')) return;
-      await window.antigravityAPI.setWindowMode('expanded');
-      document.body.className = 'mode-expanded';
-      currentStatus = await window.antigravityAPI.getQuotaStatus();
-      renderStatus(currentStatus);
-    });
-  }
-
-  // Collapse Full Dashboard back to Floating Bar
+  // Collapse Full Dashboard back to Notch
   const collapseBtn = document.getElementById('btn-collapse-hud');
   if (collapseBtn) {
     collapseBtn.addEventListener('click', async () => {
-      await window.antigravityAPI.setWindowMode('compact');
-      document.body.className = 'mode-compact';
-      currentStatus = await window.antigravityAPI.getQuotaStatus();
-      renderStatus(currentStatus);
+      isPinned = false;
+      if (pinBtn) pinBtn.classList.remove('active');
+      if (floatingHud) floatingHud.classList.remove('is-pinned');
+      const isFloating = !!(currentStatus?.settings?.enableFloatingHud);
+      if (!isFloating) {
+        window.antigravityAPI.hideWindow();
+      } else {
+        await window.antigravityAPI.setWindowMode('compact');
+        document.body.className = 'mode-compact';
+        currentStatus = await window.antigravityAPI.getQuotaStatus();
+        renderStatus(currentStatus);
+      }
     });
   }
 
@@ -159,12 +284,14 @@ function setupActionListeners() {
   if (saveBtn) {
     saveBtn.addEventListener('click', async () => {
       const selectedInterval = document.querySelector('input[name="refresh-interval"]:checked');
+      const isFloatingChecked = document.getElementById('chk-float-hud')?.checked ?? false;
       const newSettings = {
         notifySprintLow: document.getElementById('chk-sprint-low')?.checked ?? true,
         notifyWeeklyLow: document.getElementById('chk-weekly-low')?.checked ?? true,
         notifySprintRefilled: document.getElementById('chk-sprint-refill')?.checked ?? true,
         notifyContextLimit: document.getElementById('chk-context-nudge')?.checked ?? true,
         showWeeklyInHud: document.getElementById('chk-hud-weekly')?.checked ?? true,
+        enableFloatingHud: isFloatingChecked,
         soundEnabled: document.getElementById('chk-sound')?.checked ?? true,
         pollingIntervalSec: selectedInterval ? parseInt(selectedInterval.value, 10) : 60,
         theme: currentTheme,
@@ -176,6 +303,9 @@ function setupActionListeners() {
         }
       };
 
+      if (window.antigravityAPI && window.antigravityAPI.setFloatingHud) {
+        await window.antigravityAPI.setFloatingHud(isFloatingChecked);
+      }
       currentStatus = await window.antigravityAPI.saveSettings(newSettings);
       renderStatus(currentStatus);
 
@@ -226,6 +356,19 @@ function setupActionListeners() {
       const show = chkHudWeekly.checked;
       applyWeeklyHudVisibility(show);
       await window.antigravityAPI.setHudWeekly(show);
+    });
+  }
+
+  // Float Circular Notch HUD on Screen checkbox in Settings
+  const chkFloatHud = document.getElementById('chk-float-hud');
+  if (chkFloatHud) {
+    chkFloatHud.addEventListener('change', async () => {
+      const enabled = chkFloatHud.checked;
+      if (window.antigravityAPI && window.antigravityAPI.setFloatingHud) {
+        await window.antigravityAPI.setFloatingHud(enabled);
+      }
+      currentStatus = await window.antigravityAPI.saveSettings({ enableFloatingHud: enabled });
+      renderStatus(currentStatus);
     });
   }
 
@@ -280,11 +423,44 @@ function renderStatus(status) {
   // Synchronize Section Visibilities
   applySectionVisibility(status.visibleSections);
 
-  // 1. FLOATING DYNAMIC DECREASING QUOTA BAR (HUD Island)
+  // 1. TOP-CENTER MINIMALIST CIRCULAR NOTCH / ISLAND HUD
   const hudModelName = document.getElementById('hud-model-name');
   const hudAssistantBadge = document.getElementById('hud-assistant-badge');
   const hudBarFill = document.getElementById('hud-bar-fill');
   const hudWeeklyBarFill = document.getElementById('hud-weekly-bar-fill');
+  const hudStatusDot = document.getElementById('hud-status-dot');
+  const hudQuotaPct = document.getElementById('hud-quota-pct');
+  const hudResetTimer = document.getElementById('hud-reset-timer');
+  const circleGaugeFill = document.getElementById('circle-gauge-fill');
+
+  const sprintPct = status.sprint ? status.sprint.percentage : (status.activeModel ? status.activeModel.percentage : 100);
+  const quotaColor = getQuotaHueColor(sprintPct);
+
+  if (circleGaugeFill) {
+    // Circumference for r=11: 2 * Math.PI * 11 = 69.115
+    const circum = 69.12;
+    circleGaugeFill.style.strokeDashoffset = circum * (1 - sprintPct / 100);
+    // Dynamic continuous HSL color lerp (Green -> Amber -> Red)
+    circleGaugeFill.style.stroke = quotaColor;
+    circleGaugeFill.style.filter = `drop-shadow(0 0 4px ${quotaColor})`;
+  }
+
+  if (hudStatusDot) {
+    const healthClass = sprintPct < 20 ? 'critical' : sprintPct < 50 ? 'warning' : 'healthy';
+    hudStatusDot.className = `notch-status-dot circle-status-dot ${healthClass}`;
+    hudStatusDot.style.backgroundColor = quotaColor;
+    hudStatusDot.style.boxShadow = `0 0 6px ${quotaColor}`;
+    hudStatusDot.title = `Status: ${healthClass.toUpperCase()} (${sprintPct}%)`;
+  }
+
+  if (hudQuotaPct) {
+    hudQuotaPct.textContent = `${sprintPct}`;
+  }
+
+  if (hudResetTimer && status.sprint) {
+    const sprintMs = Math.max(0, (status.sprint.resetAt || Date.now()) - Date.now());
+    hudResetTimer.innerHTML = formatFriendlyDurationHtml(sprintMs);
+  }
 
   if (hudAssistantBadge) {
     const asst = status.activeAssistant || (status.activeModel && status.activeModel.assistant) || 'antigravity';
@@ -298,7 +474,8 @@ function renderStatus(status) {
   }
 
   if (hudModelName && status.activeModel) {
-    hudModelName.textContent = status.activeModel.name;
+    const shortName = status.activeModel.name.replace(/^Gemini\s+/, '').replace(/^Claude\s+/, '').replace(/^OpenAI\s+/, '').split(' (')[0];
+    hudModelName.textContent = shortName;
     hudModelName.title = `[${(status.activeAssistant || 'Assistant').toUpperCase()}] ${status.activeModel.name} (${status.activeModel.multiplier}x cost)`;
   }
   if (hudBarFill && status.activeModel) {
@@ -308,46 +485,125 @@ function renderStatus(status) {
     hudWeeklyBarFill.style.width = `${status.weekly.percentage}%`;
   }
 
-
-
-  // 3. Status Pill in Header
-  const pill = document.getElementById('status-pill');
-  const pillText = document.getElementById('status-text');
-  if (pill && pillText) {
-    pill.className = `status-badge ${status.statusTier}`;
-    pillText.textContent = status.statusTier.toUpperCase();
+  // 2. HOVER TELEMETRY CARDS (Quotas Tab)
+  // Section 1: Current Session
+  const sessionRemainingText = document.getElementById('session-remaining-text');
+  const sessionUnits = document.getElementById('session-units');
+  const sessionPct = document.getElementById('session-pct');
+  const sessionRailFill = document.getElementById('session-rail-fill');
+  const sessionTimer = document.getElementById('session-timer');
+  const sessionChip = document.getElementById('session-status-chip');
+  if (sessionRemainingText && status.sprint) {
+    sessionRemainingText.textContent = `${status.sprint.percentage}% Remaining`;
+  }
+  if (sessionUnits && status.sprint) {
+    sessionUnits.textContent = `${status.sprint.remaining.toLocaleString()} / ${status.sprint.max.toLocaleString()}u`;
+  }
+  if (sessionPct && status.sprint) {
+    sessionPct.textContent = `${status.sprint.percentage}%`;
+  }
+  if (sessionRailFill && status.sprint) {
+    sessionRailFill.style.width = `${status.sprint.percentage}%`;
+    const healthClass = status.sprint.percentage < 20 ? 'critical' : status.sprint.percentage < 50 ? 'warning' : 'safe';
+    sessionRailFill.className = `telemetry-bar-fill sprint ${healthClass}`;
+  }
+  if (sessionTimer && status.sprint) {
+    sessionTimer.textContent = `${status.sprint.friendlyReset || status.sprint.formattedReset || '38m'} remaining`;
+  }
+  if (sessionChip && status.sprint) {
+    if (status.sprint.percentage <= 20) {
+      sessionChip.className = 'status-chip critical mono';
+      sessionChip.textContent = 'LOW';
+    } else if (status.sprint.percentage <= 50) {
+      sessionChip.className = 'status-chip warning mono';
+      sessionChip.textContent = 'MODERATE';
+    } else {
+      sessionChip.className = 'status-chip safe mono';
+      sessionChip.textContent = 'ACTIVE';
+    }
   }
 
-  // 4. Official Antigravity Telemetry Pools
-  renderOfficialPools(status.groups, status.activeModel);
-
-  // 5. Weekly Linear Rail
+  // Section 2: This Week
+  const weeklyRemainingText = document.getElementById('weekly-remaining-text');
   const weeklyFill = document.getElementById('weekly-progress-fill');
   const weeklyUnitsEl = document.getElementById('weekly-units');
   const weeklyPctEl = document.getElementById('weekly-pct');
   const weeklyChip = document.getElementById('weekly-status-chip');
+  const weeklyTimerEl = document.getElementById('weekly-timer');
 
+  if (weeklyRemainingText && status.weekly) {
+    weeklyRemainingText.textContent = `${status.weekly.percentage}% Remaining`;
+  }
   if (weeklyFill && status.weekly) {
     weeklyFill.style.width = `${status.weekly.percentage}%`;
+    const healthClass = status.weekly.percentage < 20 ? 'critical' : status.weekly.percentage < 50 ? 'warning' : 'safe';
+    weeklyFill.className = `telemetry-bar-fill weekly ${healthClass}`;
   }
   if (weeklyUnitsEl && status.weekly) {
-    weeklyUnitsEl.textContent = `${status.weekly.remaining.toLocaleString()} / ${status.weekly.max.toLocaleString()} units`;
+    weeklyUnitsEl.textContent = `${status.weekly.remaining.toLocaleString()} / ${status.weekly.max.toLocaleString()}u`;
   }
   if (weeklyPctEl && status.weekly) {
     weeklyPctEl.textContent = `${status.weekly.percentage}%`;
   }
-
+  if (weeklyTimerEl && status.weekly) {
+    weeklyTimerEl.textContent = status.weekly.formattedReset || '7d 00h';
+  }
   if (weeklyChip && status.weekly) {
     if (status.weekly.percentage <= 15) {
-      weeklyChip.className = 'status-tag critical';
+      weeklyChip.className = 'status-chip critical mono';
       weeklyChip.textContent = 'CRITICAL';
     } else if (status.weekly.percentage <= 50) {
-      weeklyChip.className = 'status-tag warning';
+      weeklyChip.className = 'status-chip warning mono';
       weeklyChip.textContent = 'MODERATE';
     } else {
-      weeklyChip.className = 'status-tag safe';
+      weeklyChip.className = 'status-chip safe mono';
       weeklyChip.textContent = 'NORMAL';
     }
+  }
+
+  // Section 3: Other Models (Horizontal percentage bar + remaining limit)
+  const otherModelsContainer = document.getElementById('other-models-list');
+  if (otherModelsContainer && status.models) {
+    const activeModelId = status.activeModelId || (status.activeModel && status.activeModel.id);
+    const otherModels = status.models.filter(m => m.id !== activeModelId);
+
+    otherModelsContainer.innerHTML = otherModels.map(m => {
+      const isLow = m.percentage < 20;
+      const isMid = m.percentage < 50;
+      const colorClass = isLow ? 'critical' : isMid ? 'warning' : 'safe';
+      return `
+        <div class="other-model-item">
+          <div class="other-model-row">
+            <div class="other-model-info">
+              <span class="other-model-name">${m.name.split(' (')[0]}</span>
+              <span class="cost-pill">${m.badge || (m.multiplier + 'x')}</span>
+            </div>
+            <div class="other-model-limit mono">
+              <span class="${colorClass}">${m.percentage}%</span> &bull; ~${m.remainingCalls} calls
+            </div>
+          </div>
+          <div class="telemetry-bar-rail">
+            <div class="telemetry-bar-fill ${colorClass}" style="width: ${m.percentage}%;"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Section 3: Plan Limits
+  const planSprintCap = document.getElementById('plan-sprint-cap');
+  const planActiveMult = document.getElementById('plan-active-mult');
+  if (planSprintCap && status.sprint) {
+    planSprintCap.textContent = `${status.sprint.max} units / 5h`;
+  }
+  if (planActiveMult && status.activeModel) {
+    planActiveMult.textContent = `${status.activeModel.multiplier}x (${status.activeModel.name.split(' (')[0]})`;
+  }
+
+  // Section 4: Weekly Limits
+  const weeklyPoolCap = document.getElementById('weekly-pool-cap');
+  if (weeklyPoolCap && status.weekly) {
+    weeklyPoolCap.textContent = `${status.weekly.max.toLocaleString()} units / 7d`;
   }
 
   // 6. Claude Code Prompt Cache Health (Only show if active model is Claude)
@@ -528,7 +784,7 @@ function renderModelsMatrix(models) {
             <span class="cost-pill">${model.badge}</span>
           </div>
           <div class="matrix-card-calls mono" style="color: ${isLow ? 'var(--text-subtle)' : 'var(--text-pure)'};">
-            ~${model.remainingCalls} <span class="subtle">left</span>
+            ${model.percentage}%
           </div>
         </div>
         <div class="matrix-rail">
@@ -536,7 +792,7 @@ function renderModelsMatrix(models) {
         </div>
         <div class="matrix-card-sub">
           <span>${model.tier}</span>
-          <span class="mono">~${model.weeklyCalls.toLocaleString()} weekly</span>
+          <span class="mono">${model.percentage}% Available</span>
         </div>
       </div>
     `;
@@ -560,6 +816,9 @@ function populateSettings(settings) {
 
   const hudWeekly = document.getElementById('chk-hud-weekly');
   if (hudWeekly) hudWeekly.checked = settings.showWeeklyInHud !== undefined ? !!settings.showWeeklyInHud : true;
+
+  const floatHud = document.getElementById('chk-float-hud');
+  if (floatHud) floatHud.checked = !!settings.enableFloatingHud;
 
   const sound = document.getElementById('chk-sound');
   if (sound) sound.checked = !!settings.soundEnabled;
@@ -601,8 +860,16 @@ function startCountdownTicker() {
     const weeklyTimerEl = document.getElementById('weekly-timer');
     if (weeklyTimerEl) weeklyTimerEl.textContent = formatDuration(weeklyMs);
 
-    const hudTimerEl = document.getElementById('hud-refill-timer');
-    if (hudTimerEl) hudTimerEl.textContent = formatDuration(sprintMs);
+    // Update hud-reset-timer with friendly duration (e.g. 1 hour, 31 minutes)
+    const hudResetTimer = document.getElementById('hud-reset-timer');
+    if (hudResetTimer) {
+      hudResetTimer.innerHTML = formatFriendlyDurationHtml(sprintMs);
+    }
+
+    const sessionTimerEl = document.getElementById('session-timer');
+    if (sessionTimerEl) {
+      sessionTimerEl.textContent = `${formatFriendlyDuration(sprintMs)} remaining`;
+    }
 
     // Claude Prompt Cache Countdown
     if (currentStatus.promptCache && currentStatus.promptCache.available && currentStatus.promptCache.expiresAt) {
@@ -627,6 +894,15 @@ function startCountdownTicker() {
   }, 1000);
 }
 
+function getQuotaHueColor(pct) {
+  const clamped = Math.max(0, Math.min(100, pct));
+  // At 100% remaining: Hue 130° (crisp Apple neon emerald)
+  // At 50%: Hue 45° (warm amber gold)
+  // At 0%: Hue 0° (pure coral crimson warning)
+  const hue = clamped >= 50 ? (45 + ((clamped - 50) / 50) * 85) : ((clamped / 50) * 45);
+  return `hsl(${Math.round(hue)}, 84%, 48%)`;
+}
+
 function formatCountdown(ms) {
   const totalSecs = Math.floor(ms / 1000);
   const mins = Math.floor(totalSecs / 60);
@@ -647,6 +923,42 @@ function formatDuration(ms) {
   }
   const pad = (n) => n.toString().padStart(2, '0');
   return `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+}
+
+function formatFriendlyDurationHtml(ms) {
+  if (ms <= 0) return '<span class="timer-num">0</span><span class="timer-unit"> minutes</span>';
+  const totalSecs = Math.floor(ms / 1000);
+  const totalMins = Math.floor(totalSecs / 60);
+  const hours = Math.floor(totalMins / 60);
+  const mins = totalMins % 60;
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+
+  if (days > 0) {
+    return `<span class="timer-num">${days}</span><span class="timer-unit"> day${days > 1 ? 's' : ''}, </span><span class="timer-num">${remHours}</span><span class="timer-unit"> hour${remHours > 1 ? 's' : ''}</span>`;
+  }
+  if (hours > 0) {
+    return `<span class="timer-num">${hours}</span><span class="timer-unit"> hour${hours > 1 ? 's' : ''}, </span><span class="timer-num">${mins}</span><span class="timer-unit"> minute${mins > 1 ? 's' : ''}</span>`;
+  }
+  return `<span class="timer-num">${mins}</span><span class="timer-unit"> minute${mins > 1 ? 's' : ''}</span>`;
+}
+
+function formatFriendlyDuration(ms) {
+  if (ms <= 0) return '0 minutes';
+  const totalSecs = Math.floor(ms / 1000);
+  const totalMins = Math.floor(totalSecs / 60);
+  const hours = Math.floor(totalMins / 60);
+  const mins = totalMins % 60;
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+
+  if (days > 0) {
+    return `${days} day${days > 1 ? 's' : ''}, ${remHours} hour${remHours > 1 ? 's' : ''}`;
+  }
+  if (hours > 0) {
+    return `${hours} hour${hours > 1 ? 's' : ''}, ${mins} minute${mins > 1 ? 's' : ''}`;
+  }
+  return `${mins} minute${mins > 1 ? 's' : ''}`;
 }
 
 function escapeHtml(text) {

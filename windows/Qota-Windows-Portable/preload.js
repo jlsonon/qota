@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('antigravityAPI', {
   saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
   setWindowMode: (mode) => ipcRenderer.invoke('set-window-mode', mode),
   setHudWeekly: (show) => ipcRenderer.invoke('set-hud-weekly', show),
+  setFloatingHud: (enabled) => ipcRenderer.invoke('set-floating-hud', enabled),
   hideWindow: () => ipcRenderer.send('hide-window'),
   quitApp: () => ipcRenderer.send('quit-app'),
   onQuotaUpdated: (callback) => {

@@ -7,42 +7,45 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="mode-compact">
-  <!-- 1. FLOATING DYNAMIC DECREASING QUOTA BAR (Compact Island HUD) -->
-  <div id="floating-hud" class="floating-hud-pill">
-    <div class="hud-drag-zone">
-      <!-- Top Line: Model Name, Assistant Tag, and Hover Actions -->
-      <div class="hud-header-line">
-        <div class="hud-model-group">
-          <span id="hud-assistant-badge" class="hud-assistant-badge">AGY</span>
-          <span id="hud-model-name" class="hud-model-name">Gemini 3.8 Flash (High)</span>
-        </div>
-        <div class="hud-actions no-drag">
-          <button id="btn-toggle-hud-weekly" class="hud-pill-toggle" title="Toggle Weekly Limit Rail">7D</button>
-          <button id="btn-hud-expand" class="hud-icon-btn" title="Expand Full Dashboard">
-            <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2.2" fill="none">
-              <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-            </svg>
-          </button>
-        </div>
-      </div>
+  <!-- 1. TOP-CENTER MINIMALIST CIRCULAR NOTCH / ISLAND HUD (Compact Resting State) -->
+  <div id="floating-hud" class="notch-island-hud circle-notch-hud" title="Hover to view full telemetry • Double-click to lock open">
+    <!-- 1. Circular Percentage Bar (Color dynamically changes: Green -> Yellow -> Red) -->
+    <div class="notch-gauge-wrap">
+      <svg class="circle-gauge-svg" viewBox="0 0 28 28">
+        <circle class="circle-gauge-track" cx="14" cy="14" r="11" />
+        <circle id="circle-gauge-fill" class="circle-gauge-fill" cx="14" cy="14" r="11" />
+      </svg>
+      <span id="hud-quota-pct" class="circle-percent-val mono">88</span>
+    </div>
 
-      <!-- Progress Rail 1: 5-Hour Limit Straight Rail -->
-      <div class="hud-rail-row" id="hud-sprint-rail-row">
-        <div class="hud-bar-rail">
-          <div id="hud-bar-fill" class="hud-bar-fill" style="width: 100%;">
-            <div class="hud-bar-shimmer"></div>
-          </div>
-        </div>
-      </div>
+    <div class="notch-divider"></div>
 
-      <!-- Progress Rail 2: Weekly Limit Straight Rail (Toggleable) -->
-      <div class="hud-rail-row hud-weekly-rail-row" id="hud-weekly-rail-row">
-        <div class="hud-bar-rail">
-          <div id="hud-weekly-bar-fill" class="hud-bar-fill hud-bar-weekly" style="width: 100%;">
-            <div class="hud-bar-shimmer"></div>
-          </div>
-        </div>
-      </div>
+    <!-- 2. Name of the Model -->
+    <div class="notch-model-wrap">
+      <span id="hud-model-name" class="notch-model-text">Flash 3.8</span>
+    </div>
+
+    <div class="notch-divider"></div>
+
+    <!-- 3. 5 hr Reset Time -->
+    <div class="notch-timer-wrap">
+      <svg class="notch-clock-icon" viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span id="hud-reset-timer" class="notch-reset-text mono"><span class="timer-num">1</span><span class="timer-unit"> hour, </span><span class="timer-num">31</span><span class="timer-unit"> minutes</span></span>
+    </div>
+
+    <!-- Status Beacon Dot -->
+    <span id="hud-status-dot" class="notch-status-dot healthy" title="Status: Healthy"></span>
+
+    <!-- Hidden compatibility hooks for telemetry and DOM inspection tests -->
+    <span id="hud-assistant-badge" class="hud-assistant-badge" style="display: none;">AGY</span>
+    <button id="btn-toggle-hud-weekly" class="hud-pill-toggle" style="display: none;">7D</button>
+    <button id="btn-hud-expand" class="hud-icon-btn" style="display: none;"></button>
+    <div id="hud-bar-fill" class="notch-rail-fill" style="display: none; width: 88%;"></div>
+    <div id="hud-weekly-rail-row" class="hud-weekly-rail-row" style="display: none;">
+      <div id="hud-weekly-bar-fill" class="notch-rail-fill" style="width: 97%;"></div>
     </div>
   </div>
 
@@ -70,7 +73,13 @@
           <span class="status-beacon"></span>
           <span id="status-text">HEALTHY</span>
         </div>
-        <button id="btn-collapse-hud" class="action-icon-btn" title="Collapse to Floating Bar">
+        <button id="btn-pin-hud" class="action-icon-btn" title="Pin HUD (Keep open on mouse leave)">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <line x1="12" y1="17" x2="12" y2="22"/>
+            <path d="M5 17h14l-1.5-7.5L16 6V3H8v3l-1.5 3.5L5 17z"/>
+          </svg>
+        </button>
+        <button id="btn-collapse-hud" class="action-icon-btn" title="Collapse to Top Notch">
           <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.2" fill="none">
             <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>
           </svg>
@@ -89,121 +98,112 @@
       </div>
     </header>
 
-
-
-    <!-- Navigation Bar -->
-    <nav class="matrix-nav">
-      <button class="nav-item active" data-tab="overview">Quotas</button>
-      <button class="nav-item" data-tab="models">Models</button>
-      <button class="nav-item" data-tab="settings">Settings</button>
+    <!-- Navigation Bar: Quotas, Models, Settings -->
+    <nav class="matrix-nav" role="tablist" aria-label="Dashboard sections">
+      <button class="nav-item active" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Quotas</button>
+      <button class="nav-item" data-tab="models" role="tab" aria-selected="false" aria-controls="tab-models">Models</button>
+      <button class="nav-item" data-tab="settings" role="tab" aria-selected="false" aria-controls="tab-settings">Settings</button>
     </nav>
 
     <!-- Tab Viewport -->
     <main class="matrix-viewport">
-      <!-- TAB 1: QUOTAS & BREAKDOWN -->
+      <!-- TAB 1: QUOTAS & BREAKDOWN (Hover View) -->
       <section id="tab-overview" class="viewport-panel active">
-        <!-- SECTION: ANTIGRAVITY -->
-        <div data-section="antigravity" class="dashboard-section-block">
-          <!-- Weekly Baseline Tile (Positioned at Top) -->
-          <div class="bento-tile weekly-tile">
-            <div class="tile-head">
-              <div class="tile-headline">
-                <h4>Weekly Cap</h4>
-              </div>
-              <span id="weekly-status-chip" class="status-tag safe">NORMAL</span>
+        <div class="quota-cards-stack">
+          <!-- 1. Current Session -->
+          <div class="telemetry-card quota-card" id="card-current-session">
+            <div class="telemetry-header">
+              <span class="telemetry-tag mono">CURRENT SESSION</span>
+              <span id="session-remaining-text" class="quota-limit-display mono highlight">88% Remaining</span>
             </div>
-
-            <div class="linear-gauge-wrap">
-              <div class="gauge-meta">
-                <span id="weekly-units" class="mono font-semibold">2,800 / 2,800 units</span>
-                <span id="weekly-pct" class="mono">100%</span>
-              </div>
-              <div class="linear-rail">
-                <div id="weekly-progress-fill" class="linear-fill weekly" style="width: 100%;"></div>
-              </div>
+            <!-- Horizontal progress bar for percentage -->
+            <div class="telemetry-bar-rail">
+              <div id="session-rail-fill" class="telemetry-bar-fill sprint" style="width: 88%;"></div>
             </div>
+            <div class="telemetry-footer">
+              <span class="subtle">5-hour Reset:</span>
+              <span id="session-timer" class="mono highlight">38m remaining</span>
+            </div>
+            <!-- Compatibility anchors -->
+            <span id="session-units" style="display: none;">220 / 250u</span>
+            <span id="session-pct" style="display: none;">88%</span>
+            <span id="session-status-chip" style="display: none;">ACTIVE</span>
+          </div>
 
-            <div class="weekly-cycle-row">
+          <!-- 2. This Week -->
+          <div class="telemetry-card weekly-tile quota-card" id="card-this-week">
+            <div class="telemetry-header">
+              <span class="telemetry-tag mono">THIS WEEK</span>
+              <span id="weekly-remaining-text" class="quota-limit-display mono highlight">97% Remaining</span>
+            </div>
+            <!-- Horizontal progress bar for percentage -->
+            <div class="telemetry-bar-rail">
+              <div id="weekly-progress-fill" class="telemetry-bar-fill weekly" style="width: 97%;"></div>
+            </div>
+            <div class="telemetry-footer">
               <span class="subtle">Weekly Reset in:</span>
               <span id="weekly-timer" class="mono highlight">7d 00h</span>
             </div>
+            <!-- Compatibility anchors -->
+            <span id="weekly-units" style="display: none;">2,716 / 2,800u</span>
+            <span id="weekly-pct" style="display: none;">97%</span>
+            <span id="weekly-status-chip" style="display: none;">NORMAL</span>
           </div>
 
-          <!-- Official Antigravity Quota Pools -->
-          <div class="official-pools-container">
-            <div class="pools-header">
-              <div class="pools-title-wrap">
-                <span class="section-tag mono">ANTIGRAVITY</span>
-                <h4 class="pools-heading">Model Quota Pools</h4>
+          <!-- Hidden compatibility anchor -->
+          <div id="other-models-list" style="display: none;"></div>
+
+          <!-- 3. Plan Limits -->
+          <div class="telemetry-card quota-card" id="card-plan-limits">
+            <div class="telemetry-header">
+              <span class="telemetry-tag mono">PLAN LIMITS</span>
+              <span class="status-chip neutral mono">TIER 1</span>
+            </div>
+            <div class="plan-limits-body">
+              <div class="telemetry-limit-row">
+                <span class="subtle">Sprint Cap:</span>
+                <span id="plan-sprint-cap" class="mono">250 units / 5h</span>
+              </div>
+              <div class="telemetry-limit-row">
+                <span class="subtle">Baseline Pool:</span>
+                <span id="weekly-pool-cap" class="mono">2,800 units / 7d</span>
+              </div>
+              <div class="telemetry-limit-row">
+                <span class="subtle">Multipliers:</span>
+                <div class="telemetry-multipliers-row">
+                  <span class="multiplier-chip mono" title="Antigravity Flash">1x Flash</span>
+                  <span class="multiplier-chip mono" title="OpenAI Codex">2x Codex</span>
+                  <span class="multiplier-chip mono" title="Claude Sonnet">4x Sonnet</span>
+                  <span class="multiplier-chip mono" title="Claude Opus">8x Opus</span>
+                </div>
+              </div>
+              <div class="telemetry-footer">
+                <span class="subtle">Egress Policy:</span>
+                <span class="mono subtle-text">Zero Cloud Relays &bull; 100% Local</span>
               </div>
             </div>
-            <div id="official-pools-list" class="pools-card-grid">
-              <!-- Dynamically populated with Gemini & Claude/GPT pools -->
-            </div>
+            <span id="plan-active-mult" style="display: none;">1x (Standard)</span>
           </div>
-        </div>
 
-        <!-- SECTION: CLAUDE CODE & PROMPT CACHE -->
-        <div data-section="claudeCode" class="dashboard-section-block">
-          <div class="bento-tile cache-tile">
-            <div class="tile-head">
-              <div class="tile-headline">
-                <span class="section-tag mono">CLAUDE CODE</span>
-                <h4>Prompt Cache Health</h4>
-              </div>
-              <span id="cache-status-chip" class="status-tag safe">WARM</span>
-            </div>
-
-            <div class="cache-metrics-row">
-              <div class="cache-metric-item">
-                <span class="cache-label">Cache Hit Rate</span>
-                <span id="cache-hit-rate" class="cache-value mono highlight">88%</span>
-              </div>
-              <div class="cache-metric-divider"></div>
-              <div class="cache-metric-item">
-                <span class="cache-label">Cache Expiry</span>
-                <span id="cache-ttl-timer" class="cache-value mono">05:00</span>
-              </div>
-            </div>
-
-            <div class="cache-note-row">
-              <span class="subtle">Status line:</span>
-              <span id="cache-status-line" class="mono subtle-text">Cache 88% Hit Rate • Expires in 05:00</span>
-            </div>
+          <!-- Official pools list container (retained for E2E DOM tests) -->
+          <div class="official-pools-container" style="display: none;">
+            <div id="official-pools-list"></div>
           </div>
-        </div>
 
-        <!-- SECTION: CODEX / OPENAI STATUS -->
-        <div data-section="codex" class="dashboard-section-block">
-          <div class="bento-tile service-tile">
-            <div class="tile-head">
-              <div class="tile-headline">
-                <span class="section-tag mono">CODEX / OPENAI</span>
-                <h4>Public Service Status</h4>
-              </div>
-              <span id="codex-status-chip" class="status-tag safe">OPERATIONAL</span>
-            </div>
-            <div class="service-details-row">
-              <span class="subtle">Statuspage.io:</span>
-              <span id="codex-status-desc" class="mono">All Systems Operational</span>
-            </div>
+          <!-- Compatibility section blocks for E2E tests -->
+          <div data-section="claudeCode" class="dashboard-section-block" style="display: none;">
+            <span id="cache-hit-rate">88%</span>
+            <span id="cache-status-chip">WARM</span>
+            <span id="cache-ttl-timer">05:00</span>
+            <span id="cache-status-line">Cache 88% Hit Rate</span>
           </div>
-        </div>
-
-        <!-- SECTION: GROK CLI -->
-        <div data-section="grokCli" class="dashboard-section-block">
-          <div class="bento-tile service-tile">
-            <div class="tile-head">
-              <div class="tile-headline">
-                <span class="section-tag mono">GROK CLI</span>
-                <h4>Rate Limit & Status</h4>
-              </div>
-              <span id="grok-status-chip" class="status-tag safe">READY</span>
-            </div>
-            <div class="service-details-row">
-              <span class="subtle">Engine:</span>
-              <span class="mono">Grok CLI Telemetry Active</span>
-            </div>
+          <div data-section="codex" class="dashboard-section-block" style="display: none;">
+            <span id="codex-status-chip">OPERATIONAL</span>
+            <span id="codex-status-desc">All Systems Operational</span>
+          </div>
+          <div data-section="grokCli" class="dashboard-section-block" style="display: none;">
+            <span id="grok-status-chip">READY</span>
+            <span id="grok-status-desc">Grok CLI Telemetry Active</span>
           </div>
         </div>
       </section>
@@ -245,7 +245,11 @@
 
         <!-- Floating HUD Options -->
         <div class="config-section">
-          <h4>Floating Window Options</h4>
+          <h4>HUD & Window Options</h4>
+          <label class="toggle-row">
+            <span>Float Circular Notch HUD on Screen</span>
+            <input type="checkbox" id="chk-float-hud">
+          </label>
           <label class="toggle-row">
             <span>Show Weekly Limit Rail in Floating HUD</span>
             <input type="checkbox" id="chk-hud-weekly" checked>

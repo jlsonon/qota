@@ -239,6 +239,7 @@ class QuotaService {
         soundEnabled: true,
         theme: 'obsidian',
         showWeeklyInHud: true,
+        enableFloatingHud: true,
         notifyContextLimit: true,
         notifyContextThreshold: 70,
         visibleSections: {
@@ -1462,6 +1463,7 @@ class QuotaService {
       })(),
       projectBreakdown: this.state.projectBreakdown || [],
       showWeeklyInHud: (this.state.settings && this.state.settings.showWeeklyInHud !== undefined) ? this.state.settings.showWeeklyInHud : true,
+      enableFloatingHud: (this.state.settings && this.state.settings.enableFloatingHud !== undefined) ? !!this.state.settings.enableFloatingHud : false,
       visibleSections: (this.state.settings && this.state.settings.visibleSections) || {
         antigravity: true,
         claudeCode: true,

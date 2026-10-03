@@ -7,7 +7,7 @@ const electronBinary = path.join(__dirname, '..', 'node_modules', '.bin', 'elect
 const mainPath = path.join(__dirname, '..', 'main.js');
 
 const env = Object.assign({}, process.env, { ELECTRON_E2E_TEST: 'true' });
-const child = spawn(electronBinary, [mainPath], { env, stdio: ['inherit', 'pipe', 'pipe'] });
+const child = spawn(electronBinary, [mainPath, '--user-data-dir=/tmp/qota-e2e-test'], { env, stdio: ['inherit', 'pipe', 'pipe'] });
 
 let output = '';
 child.stdout.on('data', (data) => {

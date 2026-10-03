@@ -159,13 +159,15 @@ function initInteractiveShowcase() {
     {
       asst: 'AGY',
       name: 'Gemini 3.8 Flash (High)',
+      shortName: 'Flash 3.8',
+      notchReset: '1 hour, 31 minutes',
       rate: '1x • 88%',
       sprintPct: 88,
       sprintUnits: '220 / 250u',
       weeklyPct: 97,
       weeklyUnits: '2,716 / 2,800 units',
-      resetText: 'RESETS IN 3H 14M',
-      dashResetText: 'Resets in 3h 14m',
+      resetText: 'Resets in 1 hour, 31 minutes',
+      dashResetText: 'Resets in 1 hour, 31 minutes',
       menubarTag: 'AGY FLASH',
       menubarPct: '88%',
       multiplier: '1x'
@@ -173,13 +175,15 @@ function initInteractiveShowcase() {
     {
       asst: 'CLAUDE',
       name: 'Claude 3.7 Sonnet (Thinking)',
+      shortName: 'Sonnet 3.7',
+      notchReset: '1 hour, 45 minutes',
       rate: '4x • 64%',
       sprintPct: 64,
       sprintUnits: '160 / 250u',
       weeklyPct: 82,
       weeklyUnits: '2,296 / 2,800 units',
-      resetText: 'RESETS IN 1H 45M',
-      dashResetText: 'Resets in 1h 45m',
+      resetText: 'Resets in 1 hour, 45 minutes',
+      dashResetText: 'Resets in 1 hour, 45 minutes',
       menubarTag: 'CLAUDE',
       menubarPct: '64%',
       multiplier: '4x'
@@ -187,13 +191,15 @@ function initInteractiveShowcase() {
     {
       asst: 'CODEX',
       name: 'OpenAI o3-mini (High)',
+      shortName: 'o3-mini',
+      notchReset: '4 hours, 02 minutes',
       rate: '2x • 78%',
       sprintPct: 78,
       sprintUnits: '195 / 250u',
       weeklyPct: 91,
       weeklyUnits: '2,548 / 2,800 units',
-      resetText: 'RESETS IN 4H 02M',
-      dashResetText: 'Resets in 4h 02m',
+      resetText: 'Resets in 4 hours, 02 minutes',
+      dashResetText: 'Resets in 4 hours, 02 minutes',
       menubarTag: 'CODEX',
       menubarPct: '78%',
       multiplier: '2x'
@@ -206,25 +212,81 @@ function initInteractiveShowcase() {
     currentModelIndex = (index + MODELS.length) % MODELS.length;
     const m = MODELS[currentModelIndex];
 
-    // Update Floating HUD Pill
+    // Update Top-Center Minimalist Circular Notch HUD
     if (asstBadge) asstBadge.textContent = m.asst;
-    if (modelName) modelName.textContent = m.name;
-    if (rateBadge) rateBadge.textContent = m.rate;
+    if (modelName) modelName.textContent = m.shortName || m.name;
+    if (rateBadge) rateBadge.textContent = `${m.sprintPct}`;
     if (sprintUnits) sprintUnits.textContent = m.sprintUnits;
     if (sprintFill) sprintFill.style.width = `${m.sprintPct}%`;
     if (weeklyPct) weeklyPct.textContent = `${m.weeklyPct}%`;
     if (weeklyFill) weeklyFill.style.width = `${m.weeklyPct}%`;
-    if (resetTimer) resetTimer.textContent = m.resetText;
 
-    // Update Expanded Dashboard View
+    function getQuotaHueColor(pct) {
+      const clamped = Math.max(0, Math.min(100, pct));
+      const hue = clamped >= 50 ? (45 + ((clamped - 50) / 50) * 85) : ((clamped / 50) * 45);
+      return `hsl(${Math.round(hue)}, 84%, 48%)`;
+    }
+
+    if (resetTimer) {
+      const parts = (m.notchReset || '1 hour, 31 minutes').split(', ');
+      if (parts.length === 2) {
+        const hMatch = parts[0].match(/(\d+)\s*(hour|hours)/);
+        const mMatch = parts[1].match(/(\d+)\s*(minute|minutes)/);
+        if (hMatch && mMatch) {
+          resetTimer.innerHTML = `<span class="timer-num">${hMatch[1]}</span><span class="timer-unit"> ${hMatch[2]}, </span><span class="timer-num">${mMatch[1]}</span><span class="timer-unit"> ${mMatch[2]}</span>`;
+        } else {
+          resetTimer.textContent = m.notchReset;
+        }
+      } else {
+        resetTimer.textContent = m.notchReset;
+      }
+    }
+
+    const quotaColor = getQuotaHueColor(m.sprintPct);
+    const circleGauge = document.getElementById('sim-circle-gauge-fill');
+    if (circleGauge) {
+      const circum = 69.12;
+      circleGauge.style.strokeDashoffset = circum * (1 - m.sprintPct / 100);
+      circleGauge.style.stroke = quotaColor;
+      circleGauge.style.filter = `drop-shadow(0 0 4px ${quotaColor})`;
+    }
+
+    const notchDot = document.getElementById('sim-hud-status-dot');
+    if (notchDot) {
+      notchDot.className = 'notch-status-dot ' + (m.sprintPct < 20 ? 'critical' : m.sprintPct < 50 ? 'warning' : 'healthy');
+      notchDot.style.backgroundColor = quotaColor;
+      notchDot.style.boxShadow = `0 0 6px ${quotaColor}`;
+    }
+
+    // Update 3 Core Hover Cards in Expanded View (Quotas Tab)
+    // 1. Current Session
+    const dashSessionRemainingText = document.getElementById('dash-session-remaining-text');
+    if (dashSessionRemainingText) {
+      dashSessionRemainingText.textContent = `${m.sprintPct}% Remaining`;
+    }
     if (dashActiveTitle) dashActiveTitle.textContent = m.name.toUpperCase();
-    if (dashActiveMult) dashActiveMult.textContent = m.multiplier;
-    if (dashSprintUnits) dashSprintUnits.textContent = `${m.sprintUnits} (${m.sprintPct}%)`;
+    if (dashActiveMult) dashActiveMult.textContent = `${m.multiplier} • ${m.sprintPct}%`;
+    if (dashSprintUnits) dashSprintUnits.textContent = m.sprintUnits;
     if (dashSprintFill) dashSprintFill.style.width = `${m.sprintPct}%`;
-    if (dashResetTimer) dashResetTimer.textContent = m.dashResetText;
+    if (dashResetTimer) dashResetTimer.textContent = `${m.notchReset || m.resetText} remaining`;
+
+    // 2. This Week
+    const dashWeeklyRemainingText = document.getElementById('dash-weekly-remaining-text');
+    if (dashWeeklyRemainingText) {
+      dashWeeklyRemainingText.textContent = `${m.weeklyPct}% Remaining`;
+    }
     if (dashWeeklyUnits) dashWeeklyUnits.textContent = m.weeklyUnits;
     if (dashWeeklyPct) dashWeeklyPct.textContent = `${m.weeklyPct}%`;
     if (dashWeeklyFill) dashWeeklyFill.style.width = `${m.weeklyPct}%`;
+
+    // Models Matrix Switcher (percentage display)
+    document.querySelectorAll('.sim-model-card').forEach((card, idx) => {
+      card.classList.toggle('active', idx === currentModelIndex);
+      const foot = card.querySelector('.model-card-foot');
+      if (foot && MODELS[idx]) {
+        foot.textContent = `${MODELS[idx].sprintPct}% Available`;
+      }
+    });
 
     // Update Status Bar Pill & Popover
     if (menuPct) menuPct.textContent = m.menubarPct;
@@ -248,6 +310,14 @@ function initInteractiveShowcase() {
     });
   }
 
+  // Interactive Models Matrix Cards in Models Tab
+  document.querySelectorAll('.sim-model-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.getAttribute('data-model-index'), 10);
+      applyModel(idx);
+    });
+  });
+
   // 7-Day Baseline Rail Toggle
   if (toggle7dBtn && weeklyRailItem) {
     toggle7dBtn.addEventListener('click', (e) => {
@@ -257,44 +327,128 @@ function initInteractiveShowcase() {
     });
   }
 
-  // Expand / Collapse Matrix Dashboard
-  function expandDashboard() {
-    if (!dashboard || !hudPill) return;
-    hudPill.style.display = 'none';
-    dashboard.style.display = 'block';
+  // Expand / Collapse Matrix Dashboard with Hover Intent & Pin Locks
+  let hoverTimer = null;
+  let leaveTimer = null;
+  let isPinned = false;
+  let isFloatingHud = true;
+  let isCollapsing = false;
+  const dashPinBtn = document.getElementById('sim-dash-pin');
 
-    // Align dashboard position with current hud pill coordinates if set
-    if (hudPill.style.left) {
-      const maxLeft = Math.max(10, canvas.clientWidth - dashboard.offsetWidth - 10);
-      const targetLeft = Math.min(parseFloat(hudPill.style.left), maxLeft);
-      dashboard.style.left = `${targetLeft}px`;
-      dashboard.style.right = 'auto';
+  function expandDashboard(pinned = false) {
+    if (!dashboard || !hudPill) return;
+    clearTimeout(hoverTimer);
+    clearTimeout(leaveTimer);
+    isCollapsing = false;
+    if (pinned) {
+      isPinned = true;
+      if (dashPinBtn) dashPinBtn.classList.add('active');
     }
-    if (hudPill.style.top) {
-      const maxTop = Math.max(10, canvas.clientHeight - dashboard.offsetHeight - 10);
-      const targetTop = Math.min(parseFloat(hudPill.style.top), maxTop);
-      dashboard.style.top = `${targetTop}px`;
-      dashboard.style.bottom = 'auto';
-    }
+    dashboard.classList.remove('collapsing');
+    dashboard.classList.add('expanding');
+    dashboard.style.display = 'block';
+    hudPill.style.display = 'none';
   }
 
   function collapseDashboard() {
-    if (!dashboard || !hudPill) return;
-    dashboard.style.display = 'none';
-    hudPill.style.display = 'block';
+    if (!dashboard || !hudPill || isCollapsing) return;
+    clearTimeout(hoverTimer);
+    clearTimeout(leaveTimer);
+    isPinned = false;
+    hudPill.classList.remove('is-pinned');
+    if (dashPinBtn) dashPinBtn.classList.remove('active');
+    
+    isCollapsing = true;
+    dashboard.classList.remove('expanding');
+    dashboard.classList.add('collapsing');
+
+    setTimeout(() => {
+      if (isCollapsing) {
+        dashboard.style.display = 'none';
+        dashboard.classList.remove('collapsing');
+        isCollapsing = false;
+        if (isFloatingHud) {
+          hudPill.style.display = 'flex';
+          hudPill.classList.remove('notch-reappear');
+          void hudPill.offsetWidth;
+          hudPill.classList.add('notch-reappear');
+        }
+      }
+    }, 220);
   }
 
-  if (expandBtn) {
-    expandBtn.addEventListener('click', (e) => {
+  // Hover to view full details with snappy 20ms response delay
+  hudPill.addEventListener('mouseenter', () => {
+    clearTimeout(leaveTimer);
+    hudPill.classList.add('is-hovered');
+    hoverTimer = setTimeout(() => {
+      expandDashboard(false);
+    }, 20);
+  });
+
+  hudPill.addEventListener('mouseleave', () => {
+    hudPill.classList.remove('is-hovered');
+    clearTimeout(hoverTimer);
+  });
+
+  // Leaving the expanded dashboard collapses it back to resting notch quickly after 90ms
+  dashboard.addEventListener('mouseenter', () => {
+    clearTimeout(leaveTimer);
+    if (isCollapsing) {
+      isCollapsing = false;
+      dashboard.classList.remove('collapsing');
+      dashboard.classList.add('expanding');
+    }
+  });
+
+  dashboard.addEventListener('mouseleave', () => {
+    if (!isPinned) {
+      clearTimeout(hoverTimer);
+      leaveTimer = setTimeout(() => {
+        if (!isPinned) {
+          collapseDashboard();
+        }
+      }, 90);
+    }
+  });
+
+  // Pin button toggles sticky lock
+  if (dashPinBtn) {
+    dashPinBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      expandDashboard();
+      isPinned = !isPinned;
+      dashPinBtn.classList.toggle('active', isPinned);
+      hudPill.classList.toggle('is-pinned', isPinned);
     });
   }
 
-  // Double-click floating HUD to expand
-  hudPill.addEventListener('dblclick', (e) => {
+  // Explicit expand button locks open
+  if (expandBtn) {
+    expandBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      expandDashboard(true);
+    });
+  }
+
+  // Single-click on notch toggles sticky pin and opens
+  hudPill.addEventListener('click', (e) => {
     if (e.target.closest('button')) return;
-    expandDashboard();
+    isPinned = !isPinned;
+    hudPill.classList.toggle('is-pinned', isPinned);
+    if (dashPinBtn) dashPinBtn.classList.toggle('active', isPinned);
+    if (isPinned) {
+      expandDashboard(true);
+    }
+  });
+
+  // Escape key listener to dismiss
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      isPinned = false;
+      hudPill.classList.remove('is-pinned');
+      if (dashPinBtn) dashPinBtn.classList.remove('active');
+      collapseDashboard();
+    }
   });
 
   if (dashCollapse) {
@@ -371,17 +525,45 @@ function initInteractiveShowcase() {
     });
   }
 
+  const simChkFloatHud = document.getElementById('sim-chk-float-hud');
+  const popOpenMonitor = document.getElementById('pop-open-monitor');
+  const popHudStatus = document.getElementById('pop-hud-status');
+
+  function setFloatingHud(enabled) {
+    isFloatingHud = !!enabled;
+    if (simChkFloatHud) simChkFloatHud.checked = isFloatingHud;
+    if (popHudStatus) {
+      popHudStatus.textContent = isFloatingHud ? 'Visible (Top Notch)' : 'Disabled (Menu Bar Only)';
+    }
+
+    if (isFloatingHud) {
+      if (!dashboard || dashboard.style.display !== 'block') {
+        hudPill.style.display = 'flex';
+      }
+    } else {
+      hudPill.style.display = 'none';
+      if (!isPinned && dashboard) {
+        dashboard.style.display = 'none';
+      }
+    }
+  }
+
+  if (simChkFloatHud) {
+    simChkFloatHud.addEventListener('change', () => {
+      setFloatingHud(simChkFloatHud.checked);
+    });
+  }
+
   if (popToggleHud) {
     popToggleHud.addEventListener('click', () => {
-      const isHidden = hudPill.style.display === 'none' && (!dashboard || dashboard.style.display === 'none');
-      if (isHidden) {
-        hudPill.style.display = 'block';
-        popToggleHud.querySelector('.pop-highlight').textContent = 'Visible (Level 1001)';
-      } else {
-        hudPill.style.display = 'none';
-        if (dashboard) dashboard.style.display = 'none';
-        popToggleHud.querySelector('.pop-highlight').textContent = 'Hidden';
-      }
+      setFloatingHud(!isFloatingHud);
+    });
+  }
+
+  if (popOpenMonitor) {
+    popOpenMonitor.addEventListener('click', () => {
+      if (menuPopover) menuPopover.style.display = 'none';
+      expandDashboard(true);
     });
   }
 
@@ -391,14 +573,20 @@ function initInteractiveShowcase() {
       if (hudPill) hudPill.style.display = 'none';
       if (dashboard) dashboard.style.display = 'none';
       setTimeout(() => {
-        if (hudPill) hudPill.style.display = 'block';
+        if (isFloatingHud && hudPill) hudPill.style.display = 'flex';
       }, 1200);
     });
   }
 
-  // Draggable Mechanics for Floating HUD and Dashboard
-  makeElementDraggable(hudPill, canvas, document.getElementById('sim-hud-drag-handle'));
-  makeElementDraggable(dashboard, canvas, document.getElementById('sim-dash-drag-handle'));
+  // Draggable Mechanics (Only if dedicated drag handles exist)
+  const hudDragHandle = document.getElementById('sim-hud-drag-handle');
+  if (hudDragHandle) {
+    makeElementDraggable(hudPill, canvas, hudDragHandle);
+  }
+  const dashDragHandle = document.getElementById('sim-dash-drag-handle');
+  if (dashDragHandle) {
+    makeElementDraggable(dashboard, canvas, dashDragHandle);
+  }
 
   function makeElementDraggable(el, container, handle) {
     if (!el || !container) return;
@@ -472,6 +660,10 @@ function initInteractiveShowcase() {
     dragTarget.addEventListener('pointerup', stopDrag);
     dragTarget.addEventListener('pointercancel', stopDrag);
   }
+
+  // Initialize default active model and topnotch HUD floating visibility
+  applyModel(0);
+  setFloatingHud(true);
 }
 
 /* --------------------------------------------------------------------------
