@@ -53,12 +53,27 @@ cp -R "$ROOT_DIR/assets" "$APP_RESOURCES/"
 # Remove default_app.asar if present
 rm -f "$APP_DIR/Contents/Resources/default_app.asar"
 
-echo "==> Built standalone $APP_DIR successfully."
+# 6. Re-sign App Bundle with Ad-Hoc Signature
+echo "==> Ad-hoc signing Qota.app and all embedded components..."
+codesign --force --deep --sign - "$APP_DIR"
+codesign --verify --deep --strict "$APP_DIR"
 
-# 6. Create DMG Installer
+echo "==> Built and signed standalone $APP_DIR successfully."
+
+# 7. Create DMG Installer
 DMG_STAGE="$(mktemp -d)"
 cp -R "$APP_DIR" "$DMG_STAGE/"
 ln -s /Applications "$DMG_STAGE/Applications"
+
+# Add one-click Gatekeeper un-quarantine helper
+cat << 'EOF' > "$DMG_STAGE/Open-Qota-If-Blocked.command"
+#!/usr/bin/env bash
+echo "Allowing Qota to run on macOS (removing Gatekeeper quarantine)..."
+xattr -cr /Applications/Qota.app 2>/dev/null || true
+xattr -cr "$(dirname "$0")/Qota.app" 2>/dev/null || true
+open -a /Applications/Qota.app 2>/dev/null || open "$(dirname "$0")/Qota.app" 2>/dev/null || true
+EOF
+chmod +x "$DMG_STAGE/Open-Qota-If-Blocked.command"
 
 DMG_OUTPUT="$SCRIPT_DIR/Qota-macOS-Universal.dmg"
 rm -f "$DMG_OUTPUT"
