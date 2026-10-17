@@ -10,8 +10,22 @@ const WEEKLY_MAX = 2800;
 const WEEKLY_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 // Exact Antigravity, Claude Code & OpenAI Codex Models & Multipliers
+// Exact Antigravity, Claude Code & OpenAI Codex Models & Multipliers
 const MODELS = [
   // Antigravity / Gemini Models
+  {
+    id: 'gemini-4-argon',
+    name: 'Gemini 4 Argon (High)',
+    shortName: '4 Argon',
+    family: 'Google DeepMind',
+    assistant: 'antigravity',
+    group: 'gemini',
+    multiplier: 3,
+    badge: '3x Cost',
+    tier: 'Frontier Architecture & Reasoning',
+    color: '#ffffff',
+    iconKey: 'sparkles'
+  },
   {
     id: 'gemini-3.8-flash',
     name: 'Gemini 3.8 Flash (High)',
@@ -38,19 +52,32 @@ const MODELS = [
     color: '#e5e5e5',
     iconKey: 'zap'
   },
+  {
+    id: 'gemini-3.7-pro',
+    name: 'Gemini 3.7 Pro (Thinking)',
+    shortName: 'Pro 3.7',
+    family: 'Google DeepMind',
+    assistant: 'antigravity',
+    group: 'gemini',
+    multiplier: 3,
+    badge: '3x Cost',
+    tier: 'Deep Reasoning & Analysis',
+    color: '#ffffff',
+    iconKey: 'sparkles'
+  },
   // Claude Code Models
   {
-    id: 'claude-sonnet-4.6',
-    name: 'Claude Sonnet 4.6 (Thinking)',
-    shortName: 'Sonnet 4.6',
+    id: 'claude-opus-5',
+    name: 'Claude Opus 5 (Thinking)',
+    shortName: 'Opus 5',
     family: 'Anthropic',
     assistant: 'claude',
     group: '3p',
-    multiplier: 4,
-    badge: '4x Cost',
-    tier: 'Deep Architecture & Coding',
+    multiplier: 8,
+    badge: '8x Cost',
+    tier: 'Next-Gen Autonomous Synthesis',
     color: '#ffffff',
-    iconKey: 'sparkles'
+    iconKey: 'crown'
   },
   {
     id: 'claude-opus-4.6',
@@ -64,6 +91,19 @@ const MODELS = [
     tier: 'Maximum Synthesis Depth',
     color: '#e5e5e5',
     iconKey: 'crown'
+  },
+  {
+    id: 'claude-sonnet-4.6',
+    name: 'Claude Sonnet 4.6 (Thinking)',
+    shortName: 'Sonnet 4.6',
+    family: 'Anthropic',
+    assistant: 'claude',
+    group: '3p',
+    multiplier: 4,
+    badge: '4x Cost',
+    tier: 'Deep Architecture & Coding',
+    color: '#ffffff',
+    iconKey: 'sparkles'
   },
   {
     id: 'claude-3-7-sonnet',
@@ -92,6 +132,97 @@ const MODELS = [
     iconKey: 'zap'
   },
   // OpenAI Codex Models
+  {
+    id: 'gpt-6.1-sol',
+    name: 'GPT-6.1-Sol (Codex)',
+    shortName: 'GPT-6.1-Sol',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 3,
+    badge: '3x Cost',
+    tier: 'Frontier Workhorse Coding & Reasoning',
+    color: '#ffffff',
+    iconKey: 'sparkles'
+  },
+  {
+    id: 'gpt-6-astra',
+    name: 'GPT-6-Astra (Codex)',
+    shortName: 'GPT-6-Astra',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 8,
+    badge: '8x Cost',
+    tier: 'Flagship Frontier Reasoning',
+    color: '#ffffff',
+    iconKey: 'crown'
+  },
+  {
+    id: 'gpt-6-sol',
+    name: 'GPT-6-Sol (Codex)',
+    shortName: 'GPT-6-Sol',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 3,
+    badge: '3x Cost',
+    tier: 'High-Performance Coding',
+    color: '#e5e5e5',
+    iconKey: 'sparkles'
+  },
+  {
+    id: 'gpt-6-luna',
+    name: 'GPT-6-Luna (Codex)',
+    shortName: 'GPT-6-Luna',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 1,
+    badge: '1x Cost',
+    tier: 'Ultra-Fast Subagent Loop',
+    color: '#ffffff',
+    iconKey: 'zap'
+  },
+  {
+    id: 'gpt-5.6-sol',
+    name: 'GPT-5.6-Sol (Codex)',
+    shortName: 'GPT-5.6-Sol',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 3,
+    badge: '3x Cost',
+    tier: 'High-Capacity Coding',
+    color: '#e5e5e5',
+    iconKey: 'sparkles'
+  },
+  {
+    id: 'gpt-5.6-terra',
+    name: 'GPT-5.6-Terra (Codex)',
+    shortName: 'GPT-5.6-Terra',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 2,
+    badge: '2x Cost',
+    tier: 'Balanced Code Synthesis',
+    color: '#e5e5e5',
+    iconKey: 'sparkles'
+  },
+  {
+    id: 'gpt-5.6-luna',
+    name: 'GPT-5.6-Luna (Codex)',
+    shortName: 'GPT-5.6-Luna',
+    family: 'OpenAI',
+    assistant: 'codex',
+    group: 'openai',
+    multiplier: 1,
+    badge: '1x Cost',
+    tier: 'Rapid Code Execution',
+    color: '#e5e5e5',
+    iconKey: 'zap'
+  },
   {
     id: 'o3-mini',
     name: 'OpenAI o3-mini',
@@ -136,7 +267,21 @@ const MODELS = [
 class QuotaService {
   constructor(storagePath) {
     this.storagePath = storagePath || this.getDefaultStoragePath();
+    this.dynamicModels = new Map();
+    for (const m of MODELS) {
+      this.dynamicModels.set(m.id, Object.assign({}, m));
+    }
+
     this.state = this.loadState();
+
+    if (this.state.discoveredModels && Array.isArray(this.state.discoveredModels)) {
+      for (const m of this.state.discoveredModels) {
+        if (m && m.id) {
+          this.dynamicModels.set(m.id, Object.assign({}, this.dynamicModels.get(m.id) || {}, m));
+        }
+      }
+    }
+
     this.activeWatchers = {};
     this.cachedConnection = null;
     this.onQuotaChangeCallback = null;
@@ -144,6 +289,40 @@ class QuotaService {
     this.initAntigravityWatcher();
     this.initClaudeWatcher();
     this.initCodexWatcher();
+  }
+
+  registerModel(modelObj) {
+    if (!modelObj || !modelObj.id) return null;
+    const existing = this.dynamicModels.get(modelObj.id) || {};
+    const merged = {
+      id: modelObj.id,
+      name: modelObj.name || existing.name || modelObj.id,
+      shortName: modelObj.shortName || existing.shortName || modelObj.name || modelObj.id,
+      family: modelObj.family || existing.family || 'AI Model',
+      assistant: modelObj.assistant || existing.assistant || 'codex',
+      group: modelObj.group || existing.group || (modelObj.assistant === 'claude' ? '3p' : (modelObj.assistant === 'antigravity' ? 'gemini' : 'openai')),
+      multiplier: Number(modelObj.multiplier || existing.multiplier || 2),
+      badge: modelObj.badge || existing.badge || `${modelObj.multiplier || 2}x Cost`,
+      tier: modelObj.tier || existing.tier || 'Dynamic Telemetry Model',
+      color: modelObj.color || existing.color || '#ffffff',
+      iconKey: modelObj.iconKey || existing.iconKey || (modelObj.multiplier >= 6 ? 'crown' : (modelObj.multiplier <= 1 ? 'zap' : 'sparkles'))
+    };
+
+    this.dynamicModels.set(merged.id, merged);
+
+    if (!this.state.discoveredModels) this.state.discoveredModels = [];
+    const idx = this.state.discoveredModels.findIndex(m => m.id === merged.id);
+    if (idx >= 0) {
+      this.state.discoveredModels[idx] = merged;
+    } else {
+      this.state.discoveredModels.push(merged);
+    }
+    this.saveState();
+    return merged;
+  }
+
+  getAllModels() {
+    return Array.from(this.dynamicModels.values());
   }
 
   getDefaultStoragePath() {
@@ -186,8 +365,9 @@ class QuotaService {
       lastSyncedAt: now,
       logWatermarks: {}, // filePath -> byte offset
       activeAssistant: 'antigravity', // 'antigravity' | 'claude' | 'codex'
-      activeModelId: 'gemini-3.8-flash',
-      activeModelName: 'Gemini 3.8 Flash (High)',
+      activeModelId: 'gemini-4-argon',
+      activeModelName: 'Gemini 4 Argon (High)',
+      discoveredModels: [],
       activeSessionId: null,
       antigravityPath: this.getDefaultAntigravityDir(),
       claudePath: this.getDefaultClaudeDir(),
@@ -271,6 +451,7 @@ class QuotaService {
         return {
           ...def,
           ...parsed,
+          discoveredModels: parsed.discoveredModels || def.discoveredModels,
           serviceStatuses: parsed.serviceStatuses || def.serviceStatuses,
           contextUsage: parsed.contextUsage || def.contextUsage,
           promptCache: parsed.promptCache || def.promptCache,
@@ -406,54 +587,152 @@ class QuotaService {
   }
 
   resolveModel(modelIdentifier) {
-    if (!modelIdentifier) return MODELS[0];
+    if (!modelIdentifier) {
+      return this.dynamicModels.get('gemini-4-argon') || this.dynamicModels.get('gemini-3.8-flash') || MODELS[0];
+    }
 
-    // Check exact id match
-    let found = MODELS.find(m => m.id === modelIdentifier);
-    if (found) return found;
+    // 1. Direct ID match in dynamic models registry
+    if (this.dynamicModels.has(modelIdentifier)) {
+      return this.dynamicModels.get(modelIdentifier);
+    }
 
-    // Check name match
-    const lower = modelIdentifier.toLowerCase();
-    found = MODELS.find(m => m.name.toLowerCase() === lower || m.id.toLowerCase() === lower);
-    if (found) return found;
+    const lower = String(modelIdentifier).toLowerCase().trim();
 
-    // Fuzzy matching for Antigravity, Claude Code & Codex model strings
-    if (lower.includes('o3') || lower.includes('o3-mini')) {
-      return MODELS.find(m => m.id === 'o3-mini') || MODELS[6];
+    // 2. Exact name or ID match across dynamic models
+    for (const model of this.dynamicModels.values()) {
+      if (model.id.toLowerCase() === lower || model.name.toLowerCase() === lower || (model.shortName && model.shortName.toLowerCase() === lower)) {
+        return model;
+      }
     }
-    if (lower.includes('o1')) {
-      return MODELS.find(m => m.id === 'o1') || MODELS[7];
+
+    // 3. Normalized slug matching (e.g. "gpt-6.1-sol" <-> "gpt-6-1-sol")
+    const cleanSlug = lower.replace(/[^a-z0-9.-]/g, '');
+    for (const model of this.dynamicModels.values()) {
+      if (model.id.replace(/[^a-z0-9.-]/g, '') === cleanSlug) {
+        return model;
+      }
     }
-    if (lower.includes('4o') || lower.includes('gpt-4')) {
-      return MODELS.find(m => m.id === 'gpt-4o') || MODELS[8];
+
+    // 4. Fuzzy heuristics for known frontier series
+    // Antigravity / Gemini
+    if (lower.includes('argon')) {
+      return this.dynamicModels.get('gemini-4-argon') || MODELS[0];
     }
-    if (lower.includes('haiku')) {
-      return MODELS.find(m => m.id === 'claude-3-5-haiku') || MODELS[5];
+    if (lower.includes('3.8') || lower.includes('m318')) {
+      return this.dynamicModels.get('gemini-3.8-flash') || MODELS[1];
     }
-    if (lower.includes('opus')) {
-      return MODELS.find(m => m.id === 'claude-opus-4.6') || MODELS[3];
-    }
-    if (lower.includes('sonnet')) {
-      return MODELS.find(m => m.id === 'claude-sonnet-4.6') || MODELS[2];
+    if (lower.includes('3.7') && lower.includes('pro')) {
+      return this.dynamicModels.get('gemini-3.7-pro') || MODELS[3];
     }
     if (lower.includes('3.7') || lower.includes('m37')) {
-      return MODELS.find(m => m.id === 'gemini-3.7-flash') || MODELS[1];
+      return this.dynamicModels.get('gemini-3.7-flash') || MODELS[2];
     }
-    if (lower.includes('flash') || lower.includes('gemini') || lower.includes('m318')) {
-      return MODELS.find(m => m.id === 'gemini-3.8-flash') || MODELS[0];
+    if (lower.includes('gemini') || lower.includes('flash')) {
+      return this.dynamicModels.get('gemini-3.8-flash') || MODELS[1];
     }
 
-    return {
-      id: modelIdentifier.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+    // Claude Code
+    if (lower.includes('opus 5') || lower.includes('opus-5')) {
+      return this.dynamicModels.get('claude-opus-5') || MODELS[4];
+    }
+    if (lower.includes('opus')) {
+      return this.dynamicModels.get('claude-opus-4.6') || MODELS[5];
+    }
+    if (lower.includes('sonnet 4') || lower.includes('sonnet-4') || lower.includes('sonnet 4.6')) {
+      return this.dynamicModels.get('claude-sonnet-4.6') || MODELS[6];
+    }
+    if (lower.includes('sonnet')) {
+      return this.dynamicModels.get('claude-3-7-sonnet') || MODELS[7];
+    }
+    if (lower.includes('haiku')) {
+      return this.dynamicModels.get('claude-3-5-haiku') || MODELS[8];
+    }
+
+    // OpenAI Codex
+    if (lower.includes('6.1') || lower.includes('6-1') || (lower.includes('gpt-6') && lower.includes('sol'))) {
+      return this.dynamicModels.get('gpt-6.1-sol') || MODELS[9];
+    }
+    if (lower.includes('astra')) {
+      return this.dynamicModels.get('gpt-6-astra') || MODELS[10];
+    }
+    if (lower.includes('6-luna') || lower.includes('6.luna')) {
+      return this.dynamicModels.get('gpt-6-luna') || MODELS[12];
+    }
+    if (lower.includes('5.6-sol') || lower.includes('5-6-sol')) {
+      return this.dynamicModels.get('gpt-5.6-sol') || MODELS[13];
+    }
+    if (lower.includes('terra')) {
+      return this.dynamicModels.get('gpt-5.6-terra') || MODELS[14];
+    }
+    if (lower.includes('5.6-luna') || lower.includes('5-6-luna') || lower.includes('luna')) {
+      return this.dynamicModels.get('gpt-5.6-luna') || MODELS[15];
+    }
+    if (lower.includes('o3') || lower.includes('o3-mini')) {
+      return this.dynamicModels.get('o3-mini') || MODELS[16];
+    }
+    if (lower.includes('o1')) {
+      return this.dynamicModels.get('o1') || MODELS[17];
+    }
+    if (lower.includes('4o') || lower.includes('gpt-4')) {
+      return this.dynamicModels.get('gpt-4o') || MODELS[18];
+    }
+
+    // 5. Intelligent Dynamic Auto-Classifier for Any New Future Model (Always Up-to-Date)
+    const isCodex = lower.includes('gpt') || lower.includes('codex') || lower.includes('o1') || lower.includes('o3') || lower.includes('o4') || lower.includes('o5') || lower.includes('astra') || lower.includes('sol') || lower.includes('luna') || lower.includes('terra');
+    const isClaude = lower.includes('claude') || lower.includes('sonnet') || lower.includes('opus') || lower.includes('haiku') || lower.includes('anthropic');
+    const isGemini = lower.includes('gemini') || lower.includes('flash') || lower.includes('argon') || lower.includes('deepmind') || lower.includes('google');
+
+    let assistant = 'codex';
+    let family = 'OpenAI';
+    let group = 'openai';
+
+    if (isClaude) {
+      assistant = 'claude';
+      family = 'Anthropic';
+      group = '3p';
+    } else if (isGemini) {
+      assistant = 'antigravity';
+      family = 'Google DeepMind';
+      group = 'gemini';
+    } else if (!isCodex && this.state.activeAssistant) {
+      assistant = this.state.activeAssistant;
+      family = assistant === 'antigravity' ? 'Google DeepMind' : (assistant === 'claude' ? 'Anthropic' : 'OpenAI');
+      group = assistant === 'claude' ? '3p' : (assistant === 'antigravity' ? 'gemini' : 'openai');
+    }
+
+    let multiplier = 2;
+    let iconKey = 'sparkles';
+    let tier = 'Balanced Execution';
+
+    if (lower.includes('opus') || lower.includes('astra') || lower.includes('ultra') || lower.includes('max') || lower.includes('o1')) {
+      multiplier = 8;
+      iconKey = 'crown';
+      tier = 'Maximum Synthesis & Frontier Reasoning';
+    } else if (lower.includes('pro') || lower.includes('sonnet') || lower.includes('sol') || lower.includes('4o') || lower.includes('argon')) {
+      multiplier = 3;
+      iconKey = 'sparkles';
+      tier = 'Frontier Architecture & Coding';
+    } else if (lower.includes('flash') || lower.includes('haiku') || lower.includes('luna') || lower.includes('mini') || lower.includes('lite')) {
+      multiplier = 1;
+      iconKey = 'zap';
+      tier = 'High-Speed / Rapid Loop';
+    }
+
+    const newModel = {
+      id: lower.replace(/[^a-z0-9.-]/g, '-').replace(/-+/g, '-'),
       name: modelIdentifier,
       shortName: modelIdentifier.split(' ')[0],
-      family: 'External / Custom',
-      multiplier: 1,
-      badge: '1x Cost',
-      tier: 'Custom Model',
+      family,
+      assistant,
+      group,
+      multiplier,
+      badge: `${multiplier}x Cost`,
+      tier,
       color: '#ffffff',
-      iconKey: 'zap'
+      iconKey
     };
+
+    return this.registerModel(newModel);
   }
 
   detectActiveAntigravityModel() {
@@ -1199,28 +1478,112 @@ class QuotaService {
 
   scanCodexActivity(codexDir) {
     try {
-      // 1. Watch history.jsonl
+      // 1. Ingest and watch models_cache.json for live model updates
+      const cachePath = path.join(codexDir, 'models_cache.json');
+      if (fs.existsSync(cachePath)) {
+        this.watchCodexModelsCacheFile(cachePath);
+        this.syncCodexModelsCache(cachePath);
+      }
+
+      // 2. Watch history.jsonl
       const histFile = path.join(codexDir, 'history.jsonl');
       if (fs.existsSync(histFile)) {
         this.watchCodexHistoryFile(histFile);
       }
 
-      // 2. Check models_cache.json or config.toml for active model
+      // 3. Check config.toml for active model
       const cfgPath = path.join(codexDir, 'config.toml');
       if (fs.existsSync(cfgPath)) {
-        try {
-          const text = fs.readFileSync(cfgPath, 'utf8');
-          const m = text.match(/model\s*=\s*["']([^"']+)["']/i);
-          if (m) {
-            const detected = this.resolveModel(m[1]);
-            if (detected && detected.assistant === 'codex' && this.state.activeAssistant === 'codex') {
-              this.state.activeModelId = detected.id;
-              this.state.activeModelName = detected.name;
-            }
-          }
-        } catch (e) {}
+        this.watchCodexConfigFile(cfgPath);
+        this.syncCodexConfigFile(cfgPath);
       }
     } catch (err) {}
+  }
+
+  watchCodexModelsCacheFile(filePath) {
+    if (this.activeWatchers[filePath]) return;
+    try {
+      const watcher = fs.watch(filePath, (evt) => {
+        if (evt === 'change') {
+          this.syncCodexModelsCache(filePath);
+        }
+      });
+      this.activeWatchers[filePath] = watcher;
+    } catch (e) {}
+  }
+
+  watchCodexConfigFile(filePath) {
+    if (this.activeWatchers[filePath]) return;
+    try {
+      const watcher = fs.watch(filePath, (evt) => {
+        if (evt === 'change') {
+          this.syncCodexConfigFile(filePath);
+        }
+      });
+      this.activeWatchers[filePath] = watcher;
+    } catch (e) {}
+  }
+
+  syncCodexModelsCache(cachePath) {
+    try {
+      if (!fs.existsSync(cachePath)) return;
+      const content = fs.readFileSync(cachePath, 'utf8');
+      const data = JSON.parse(content);
+      if (data && Array.isArray(data.models)) {
+        for (const m of data.models) {
+          if (!m.slug) continue;
+          const slug = m.slug;
+          const lower = slug.toLowerCase();
+          let mult = 2;
+          let tier = m.description || 'Frontier Coding Model';
+          let icon = 'sparkles';
+
+          if (lower.includes('astra') || (m.priority && m.priority <= 2 && m.supported_reasoning_levels && m.supported_reasoning_levels.length >= 6)) {
+            mult = 8;
+            icon = 'crown';
+            tier = 'Flagship Frontier Reasoning';
+          } else if (lower.includes('sol') || lower.includes('terra')) {
+            mult = 3;
+            icon = 'sparkles';
+            tier = 'Workhorse Autonomous Coding';
+          } else if (lower.includes('luna') || lower.includes('mini')) {
+            mult = 1;
+            icon = 'zap';
+            tier = 'Ultra-Fast Subagent Loop';
+          }
+
+          this.registerModel({
+            id: slug,
+            name: `${m.display_name || slug} (Codex)`,
+            shortName: m.display_name || slug,
+            family: 'OpenAI',
+            assistant: 'codex',
+            group: 'openai',
+            multiplier: mult,
+            badge: `${mult}x Cost`,
+            tier,
+            color: '#ffffff',
+            iconKey: icon
+          });
+        }
+      }
+    } catch (e) {}
+  }
+
+  syncCodexConfigFile(cfgPath) {
+    try {
+      if (!fs.existsSync(cfgPath)) return;
+      const text = fs.readFileSync(cfgPath, 'utf8');
+      const m = text.match(/model\s*=\s*["']([^"']+)["']/i);
+      if (m) {
+        const detected = this.resolveModel(m[1]);
+        if (detected && detected.assistant === 'codex' && this.state.activeAssistant === 'codex') {
+          this.state.activeModelId = detected.id;
+          this.state.activeModelName = detected.name;
+          this.saveState();
+        }
+      }
+    } catch (e) {}
   }
 
   watchCodexHistoryFile(filePath) {
@@ -1263,7 +1626,10 @@ class QuotaService {
           const rec = JSON.parse(line);
           this.state.activeAssistant = 'codex';
           this.state.lastActiveSource = 'codex';
-          const codexDefaultModel = this.resolveModel('o3-mini');
+          const targetId = (this.state.activeModelId && (this.state.activeModelId.includes('gpt') || this.state.activeModelId.includes('o1') || this.state.activeModelId.includes('o3')))
+            ? this.state.activeModelId
+            : 'gpt-6.1-sol';
+          const codexDefaultModel = this.resolveModel(targetId);
           this.state.activeModelId = codexDefaultModel.id;
           this.state.activeModelName = codexDefaultModel.name;
           this.consume(codexDefaultModel.id, 2, 'Codex prompt dispatched');
@@ -1344,7 +1710,7 @@ class QuotaService {
       statusTier = 'warning';
     }
 
-    const modelStatus = MODELS.map(model => {
+    const modelStatus = this.getAllModels().map(model => {
       const isClaude = model.id.includes('claude');
       const percentage = this.state.liveQuotaGroups ? (isClaude ? claude5hPct : gemini5hPct) : sprintPct;
       const modelWeeklyPct = this.state.liveQuotaGroups ? (isClaude ? claudeWeeklyPct : geminiWeeklyPct) : weeklyPct;

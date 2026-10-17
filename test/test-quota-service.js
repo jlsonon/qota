@@ -62,6 +62,66 @@ try {
   assert.strictEqual(status.sprint.remaining, 196, 'Sprint should be reduced by 4 (2 * 2x multiplier)');
   console.log('[OK] OpenAI Codex o3-mini model resolution and consumption validated.');
 
+  // Test Frontier Models: Gemini 4 Argon, Claude Opus 5, GPT-6.1-Sol, GPT-6-Astra
+  status = service.setActiveModel('gemini-4-argon');
+  assert.strictEqual(status.activeModel.id, 'gemini-4-argon', 'Should resolve Gemini 4 Argon');
+  assert.strictEqual(status.activeModel.assistant, 'antigravity', 'Assistant should be antigravity');
+  assert.strictEqual(status.activeModel.multiplier, 3, 'Multiplier should be 3x');
+
+  status = service.setActiveModel('claude-opus-5');
+  assert.strictEqual(status.activeModel.id, 'claude-opus-5', 'Should resolve Claude Opus 5');
+  assert.strictEqual(status.activeModel.assistant, 'claude', 'Assistant should be claude');
+  assert.strictEqual(status.activeModel.multiplier, 8, 'Multiplier should be 8x');
+
+  status = service.setActiveModel('gpt-6.1-sol');
+  assert.strictEqual(status.activeModel.id, 'gpt-6.1-sol', 'Should resolve GPT-6.1-Sol');
+  assert.strictEqual(status.activeModel.assistant, 'codex', 'Assistant should be codex');
+  assert.strictEqual(status.activeModel.multiplier, 3, 'Multiplier should be 3x');
+
+  status = service.setActiveModel('gpt-6-astra');
+  assert.strictEqual(status.activeModel.id, 'gpt-6-astra', 'Should resolve GPT-6-Astra');
+  assert.strictEqual(status.activeModel.assistant, 'codex', 'Assistant should be codex');
+  assert.strictEqual(status.activeModel.multiplier, 8, 'Multiplier should be 8x');
+  console.log('[OK] Frontier models (Gemini 4 Argon, Opus 5, GPT-6.1-Sol, GPT-6-Astra) validated.');
+
+  // Test Dynamic Auto-Classifier for Unseen Future Models
+  const unseenGemini = service.resolveModel('Gemini 5 Ultra');
+  assert.strictEqual(unseenGemini.assistant, 'antigravity', 'Auto-classifier should map Gemini to antigravity');
+  assert.strictEqual(unseenGemini.multiplier, 8, 'Ultra should get 8x multiplier');
+  assert.strictEqual(unseenGemini.iconKey, 'crown', 'Ultra should get crown icon');
+
+  const unseenCodex = service.resolveModel('GPT-7 Nova');
+  assert.strictEqual(unseenCodex.assistant, 'codex', 'Auto-classifier should map GPT-7 to codex');
+  assert.strictEqual(unseenCodex.family, 'OpenAI', 'Family should be OpenAI');
+
+  const unseenClaude = service.resolveModel('Claude 4.5 Haiku');
+  assert.strictEqual(unseenClaude.assistant, 'claude', 'Auto-classifier should map Claude to claude');
+  assert.strictEqual(unseenClaude.multiplier, 1, 'Haiku should get 1x multiplier');
+  console.log('[OK] Intelligent dynamic auto-classifier for future unseen models validated.');
+
+  // Test Live Codex Cache Ingestion
+  const mockCachePath = path.join(os.tmpdir(), `test-models-cache-${Date.now()}.json`);
+  fs.writeFileSync(mockCachePath, JSON.stringify({
+    models: [
+      {
+        slug: 'gpt-6.5-polaris',
+        display_name: 'GPT-6.5-Polaris',
+        description: 'Next-gen flagship reasoning model',
+        priority: 1,
+        supported_reasoning_levels: [{ effort: 'ultra' }, { effort: 'max' }, { effort: 'high' }, { effort: 'medium' }, { effort: 'low' }, { effort: 'xhigh' }]
+      }
+    ]
+  }));
+  service.syncCodexModelsCache(mockCachePath);
+  fs.unlinkSync(mockCachePath);
+
+  status = service.getStatus();
+  const foundPolaris = status.models.find(m => m.id === 'gpt-6.5-polaris');
+  assert.ok(foundPolaris, 'Newly ingested model should appear in getStatus().models');
+  assert.strictEqual(foundPolaris.assistant, 'codex', 'Ingested model should have assistant codex');
+  assert.strictEqual(foundPolaris.multiplier, 8, 'Polaris with ultra reasoning should have 8x multiplier');
+  console.log('[OK] Live Codex models_cache ingestion into dynamic registry validated.');
+
   // Test Service Status and Incident Alert Formatting
   service.state.serviceStatuses = [
     { id: 'claude', name: 'Claude API', indicator: 'none', description: 'All Systems Operational' },
